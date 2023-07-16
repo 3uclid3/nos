@@ -3,6 +3,7 @@
 #include <limine.h>
 
 #include <abi/cxxabi.hpp>
+#include <arch/arch.hpp>
 #include <base_types.hpp>
 #include <boot/loader.hpp>
 
@@ -11,6 +12,9 @@ namespace nos {
 void kernel::init()
 {
     cxxabi::init();
+
+    arch::print("\n");
+    arch::print("[kernel] intialization completed\n");
 }
 
 void kernel::run()

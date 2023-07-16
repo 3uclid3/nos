@@ -5,6 +5,8 @@
 
 namespace nos {
 
+using nullptr_t = decltype(nullptr);
+
 using ::intmax_t;
 using ::intptr_t;
 
