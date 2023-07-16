@@ -1,0 +1,124 @@
+project('nos', ['c', 'cpp'],
+    version : '0.0.1',
+    license: 'MIT',
+    default_options : [
+        'c_std=gnu17',
+        'cpp_std=gnu++2a',
+        
+        'cpp_eh=none',
+        'cpp_rtti=false',
+        
+        'werror=true',
+        'warning_level=2'
+    ]
+)
+
+
+# ----------------------------------------
+# Basic vars
+
+project_name = 'nos'
+
+c = meson.get_compiler('c')
+cxx = meson.get_compiler('cpp')
+ld = cxx.get_linker_id()
+arch = host_machine.cpu_family()
+
+config_dir = meson.source_root() / 'config'
+sysroot_dir = meson.source_root() / 'sysroot'
+
+supported_archs = [
+#    'aarch64',
+    'x86_64'
+]
+
+if arch not in supported_archs
+    error('Unknown architecture ' + arch)
+endif
+
+
+# ----------------------------------------
+# Warnings
+
+add_global_arguments(
+    [
+        '-Wshadow', # warn the user if a variable declaration shadows one from a parent context
+        
+        # catch hard to track down memory errors
+        '-Wcast-align', # warn for potential performance problem casts
+        '-Wunused', # warn on anything being unused
+        '-Wpedantic', # warn if non-standard C++ is used
+        '-Wconversion', # warn on type conversions that may lose data
+        '-Wsign-conversion', # warn on sign conversions
+        '-Wnull-dereference', # warn if a null dereference is detected
+        '-Wdouble-promotion', # warn if float is implicit promoted to double
+        '-Wformat=2', # warn on security issues around functions that format output (ie printf)
+        '-Wimplicit-fallthrough' # warn on statements that fallthrough without an explicit annotation
+    ],
+    language: ['c', 'cpp']
+)
+
+add_global_arguments(
+    [
+        '-Wextra-semi', # Warn about semicolon after in-class function definition.
+        '-Wnon-virtual-dtor', # warn the user if a class with virtual functions has a non-virtual destructor. This helps
+
+        # catch hard to track down memory errors
+        '-Wold-style-cast', # warn for c-style casts
+        '-Woverloaded-virtual', # warn if you overload (not override) a virtual function
+    ],
+    language: ['cpp']
+)
+
+
+# ----------------------------------------
+# GCC Warnings
+
+if c.get_id() == 'gcc'
+    add_global_arguments(
+        [
+            '-Wmisleading-indentation', # warn if indentation implies blocks where blocks do not exist
+        ],
+        language: ['c', 'cpp']
+    )
+endif
+
+if cxx.get_id() == 'gcc'
+    add_global_arguments(
+        [
+            '-Wduplicated-cond', # warn if if / else chain has duplicated conditions
+            '-Wduplicated-branches', # warn if if / else branches have duplicated code
+            '-Wlogical-op', # warn about logical operations being used where bitwise were probably wanted
+            '-Wuseless-cast', # warn if you perform a cast to the same type
+        ],
+        language: ['cpp']
+    )
+endif
+
+
+# ----------------------------------------
+# Subprojects
+
+limine = subproject('limine')
+
+
+# ----------------------------------------
+# Core
+
+#subdir('libn')
+#subdir('libc')
+
+# ----------------------------------------
+# Kernel
+
+subdir('kernel')
+
+
+# ----------------------------------------
+# User
+
+
+# ----------------------------------------
+# Image
+
+subdir('image')
