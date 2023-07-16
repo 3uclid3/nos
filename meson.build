@@ -106,7 +106,7 @@ limine = subproject('limine')
 # ----------------------------------------
 # Core
 
-#subdir('libn')
+subdir('lib/libcore')
 #subdir('libc')
 
 # ----------------------------------------

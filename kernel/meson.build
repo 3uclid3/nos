@@ -25,7 +25,8 @@ kernel_elf = executable(
     install : false,
     pie: true,
     dependencies : [
-        dependency('limine')
+        dependency('limine'),
+        libcore_dep
     ],
     c_args : [
         c_ccp_args,
