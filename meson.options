@@ -1,0 +1,2 @@
+
+option('gdb', type : 'boolean', value : false, description : 'Add -s -S to qemu. Enables \'qemu_debug\'')
