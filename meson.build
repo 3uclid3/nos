@@ -25,6 +25,7 @@ ld = cxx.get_linker_id()
 arch = host_machine.cpu_family()
 
 config_dir = meson.source_root() / 'config'
+log_dir = meson.source_root() / 'log'
 sysroot_dir = meson.source_root() / 'sysroot'
 
 supported_archs = [
