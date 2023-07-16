@@ -2,8 +2,8 @@ project('nos', ['c', 'cpp'],
     version : '0.0.1',
     license: 'MIT',
     default_options : [
-        'c_std=gnu17',
-        'cpp_std=gnu++2a',
+        'c_std=c17',
+        'cpp_std=c++20',
         
         'cpp_eh=none',
         'cpp_rtti=false',
