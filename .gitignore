@@ -1,2 +1,8 @@
+.vscode/*
 .vscode*
-build*
+
+build/*
+
+subprojects/*
+!subprojects/*.wrap
+!subprojects/packagefiles/*
