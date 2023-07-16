@@ -1,4 +1,8 @@
 src_files = files(
+    './abi/cxxabi.cpp',
+    './arch' / arch / 'arch.cpp',
+    './boot/loader.cpp',
+    './boot/start.cpp',
     './kernel.cpp'
 )
 
