@@ -115,6 +115,7 @@ endif
 # libs
 
 subdir('libs/libc')
+subdir('libs/libcxx')
 
 
 # ----------------------------------------
