@@ -21,23 +21,25 @@ libc_dep  = declare_dependency(
    include_directories : 'include'
 )
 
-tests = files(
-    'tests/string/memcmp_tests.cpp',
-    'tests/string/memcpy_tests.cpp',
-    'tests/string/memmove_tests.cpp',
-    'tests/string/memset_tests.cpp'
-)
+if not meson.is_cross_build()
+    tests = files(
+        'tests/string/memcmp_tests.cpp',
+        'tests/string/memcpy_tests.cpp',
+        'tests/string/memmove_tests.cpp',
+        'tests/string/memset_tests.cpp'
+    )
 
-libc_tests = executable(
-    'c_tests', [src, tests], 
-    install : false,
-    dependencies : catch2_dep,
-    include_directories : [
-        'include_with_prefix',
-        'source',
-        'tests'
-    ],
-    c_args: '-DNOS_LIBC_API_USE_PREFIX'
-)
+    libc_tests = executable(
+        'c_tests', [src, tests], 
+        install : false,
+        dependencies : catch2_dep,
+        include_directories : [
+            'include_with_prefix',
+            'source',
+            'tests'
+        ],
+        c_args: '-DNOS_LIBC_API_USE_PREFIX'
+    )
 
-test('libc', libc_tests)
+    test('libc', libc_tests)
+endif
