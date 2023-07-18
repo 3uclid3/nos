@@ -30,7 +30,7 @@ kernel_elf = executable(
     pie: true,
     dependencies : [
         dependency('limine'),
-        libcore_dep
+        libc_dep
     ],
     c_args : [
         c_ccp_args,

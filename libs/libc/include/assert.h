@@ -1,6 +1,6 @@
 #pragma once 
 
-#define NOS_ASSERT(condition) \
+#define assert(condition) \
 do { \
  if (!(condition)) __builtin_trap(); \
 } while(false)
