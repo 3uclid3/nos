@@ -22,6 +22,9 @@ libc_dep  = declare_dependency(
 )
 
 tests = files(
+    'tests/string/memcmp_tests.cpp',
+    'tests/string/memcpy_tests.cpp',
+    'tests/string/memmove_tests.cpp',
     'tests/string/memset_tests.cpp'
 )
 
@@ -34,7 +37,7 @@ libc_tests = executable(
         'source',
         'tests'
     ],
-    cpp_args: '-DNOS_LIBC_API_USE_PREFIX'
+    c_args: '-DNOS_LIBC_API_USE_PREFIX'
 )
 
 test('libc', libc_tests)
