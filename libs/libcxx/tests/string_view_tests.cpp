@@ -7,14 +7,22 @@ namespace nos
 
 TEST_CASE("string_view - ctor")
 {
+    constexpr const char* my_cstr = "my_cstr";
+    constexpr size_t my_cstr_size = sizeof(my_cstr) - 1ULL;
+
+    SECTION("str, size")
+    {
+        const string_view str_view{my_cstr, my_cstr_size};
+
+        CHECK(str_view.data() == my_cstr);
+        CHECK(str_view.size() == my_cstr_size);
+    }
+
     SECTION("cstr")
     {
-        const char* my_cstr = "my_cstr";
-        const size_t my_cstr_size = sizeof(my_cstr) - 1ULL;
+        const string_view str_view{my_cstr};
 
-        const string_view cstr{"my_cstr"};
-
-        CHECK(cstr.size() == my_cstr_size);
+        CHECK(str_view.size() == my_cstr_size);
     }
 }
 

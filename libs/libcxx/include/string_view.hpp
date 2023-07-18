@@ -30,6 +30,8 @@ public:
 
     constexpr size_t size() const;
 
+    constexpr const Char* data() const;
+
     constexpr auto begin() const;
     constexpr auto end() const;
 
@@ -77,6 +79,12 @@ template<typename Char>
 constexpr size_t basic_string_view<Char>::size() const
 {
     return _size;
+}
+
+template<typename Char>
+constexpr const Char* basic_string_view<Char>::data() const
+{
+    return _data;
 }
 
 template<typename Char>
