@@ -105,9 +105,11 @@ endif
 
 limine = subproject('limine')
 limine_dep = dependency('limine', fallback: ['limine', 'limine_dep'])
-catch2 = subproject('catch2')
-catch2_dep = dependency('catch2', fallback: ['catch2', 'catch2_with_main_dep'], default_options:['tests=false'])
 
+if not meson.is_cross_build()
+    catch2 = subproject('catch2')
+    catch2_dep = dependency('catch2', fallback: ['catch2', 'catch2_with_main_dep'], default_options:['tests=false'])
+endif
 
 # ----------------------------------------
 # libs
