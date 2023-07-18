@@ -30,9 +30,7 @@ using size_t = ::size_t;
 
 enum class byte : u8_t
 {
-    zero = 0x00,
-
-    null_terminated = '\0'
+    zero = 0x00
 };
 
 } // namespace nos
