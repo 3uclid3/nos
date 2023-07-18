@@ -19,6 +19,7 @@ libcxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     tests = files(
+        'tests/type_traits/is_same_tests.cpp',
         'tests/string_view_tests.cpp'
     )
 
