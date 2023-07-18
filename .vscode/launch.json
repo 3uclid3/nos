@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "libc tests",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/libs/libc/c_tests",
+            "args": [],
+            "cwd": "${workspaceRoot}"
+        },
+    ]
+}
