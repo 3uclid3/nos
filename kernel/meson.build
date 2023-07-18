@@ -26,10 +26,9 @@ c_ccp_args = [
 
 kernel_elf = executable(
     'kernel.elf', src_files,
-    install : false,
-    pie: true,
+    install : false, pie : true,
     dependencies : [
-        dependency('limine'),
+        limine_dep,
         libc_dep
     ],
     c_args : [

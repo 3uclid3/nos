@@ -1,17 +1,14 @@
 src = files(
-    'string/memcmp.c',
-    'string/memcpy.c',
-    'string/memmove.c',
-    'string/memset.c'
+    'source/string/memcmp.c',
+    'source/string/memcpy.c',
+    'source/string/memmove.c',
+    'source/string/memset.c'
 )
 
-inc_dirs = ['include']
-
 libc = static_library(
-    'c', 
-    src,
+    'c', src,
     install : false,
-    include_directories : inc_dirs,
+    include_directories : ['source', 'include'],
     c_args : [
         '-ffreestanding',
         '-std=gnu11'
@@ -21,5 +18,23 @@ libc = static_library(
 libc_dep  = declare_dependency(
    link_with : libc,
    sources : src,
-   include_directories : inc_dirs
+   include_directories : 'include'
 )
+
+tests = files(
+    'tests/string/memset_tests.cpp'
+)
+
+libc_tests = executable(
+    'c_tests', [src, tests], 
+    install : false,
+    dependencies : catch2_dep,
+    include_directories : [
+        'include_with_prefix',
+        'source',
+        'tests'
+    ],
+    cpp_args: '-DNOS_LIBC_API_USE_PREFIX'
+)
+
+test('libc', libc_tests)

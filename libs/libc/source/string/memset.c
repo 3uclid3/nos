@@ -1,8 +1,9 @@
-#include <string.h>
+#include <apidef.h>
+#include NOS_LIBC_INCLUDE_STRING_H
 
 #include <stdint.h>
 
-void* memset(void* ptr, int c, size_t size)
+void* NOS_LIBC(memset)(void* ptr, int c, size_t size)
 {
     const uint8_t value = (uint8_t)c; 
 

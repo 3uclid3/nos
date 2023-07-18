@@ -7,9 +7,9 @@ project('nos', ['c', 'cpp'],
         
         'cpp_eh=none',
         'cpp_rtti=false',
-        
-        'werror=true',
-        'warning_level=2'
+
+#        'werror=true',
+#        'warning_level=2'
     ]
 )
 
@@ -41,8 +41,11 @@ endif
 # ----------------------------------------
 # Warnings
 
-add_global_arguments(
+add_project_arguments(
     [
+        '-Werror',
+        '-Wall',
+        '-Wextra',
         '-Wshadow', # warn the user if a variable declaration shadows one from a parent context
         
         # catch hard to track down memory errors
@@ -59,7 +62,7 @@ add_global_arguments(
     language: ['c', 'cpp']
 )
 
-add_global_arguments(
+add_project_arguments(
     [
         '-Wextra-semi', # Warn about semicolon after in-class function definition.
         '-Wnon-virtual-dtor', # warn the user if a class with virtual functions has a non-virtual destructor. This helps
@@ -76,7 +79,7 @@ add_global_arguments(
 # GCC Warnings
 
 if c.get_id() == 'gcc'
-    add_global_arguments(
+    add_project_arguments(
         [
             '-Wmisleading-indentation', # warn if indentation implies blocks where blocks do not exist
         ],
@@ -85,7 +88,7 @@ if c.get_id() == 'gcc'
 endif
 
 if cxx.get_id() == 'gcc'
-    add_global_arguments(
+    add_project_arguments(
         [
             '-Wduplicated-cond', # warn if if / else chain has duplicated conditions
             '-Wduplicated-branches', # warn if if / else branches have duplicated code
@@ -101,6 +104,9 @@ endif
 # Subprojects
 
 limine = subproject('limine')
+limine_dep = dependency('limine', fallback: ['limine', 'limine_dep'])
+catch2 = subproject('catch2')
+catch2_dep = dependency('catch2', fallback: ['catch2', 'catch2_with_main_dep'], default_options:['tests=false'])
 
 
 # ----------------------------------------

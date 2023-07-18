@@ -1,8 +1,9 @@
-#include <string.h>
+#include <apidef.h>
+#include NOS_LIBC_INCLUDE_STRING_H
 
 #include <stdint.h>
 
-int memcmp(const void* lhs, const void* rhs, size_t size)
+int NOS_LIBC(memcmp)(const void* lhs, const void* rhs, size_t size)
 {
     const uint8_t* u8lhs = (const uint8_t*)lhs;
     const uint8_t* u8rhs = (const uint8_t*)rhs;
