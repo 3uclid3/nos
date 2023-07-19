@@ -1,4 +1,4 @@
-#include <abi/cxxabi.hpp>
+#include <lang/cxxabi.hpp>
 
 #include <assert.hpp>
 #include <base_types.hpp>
@@ -76,7 +76,7 @@ void __cxa_pure_virtual()
 
 } // extern "C"
 
-namespace nos::cxxabi {
+namespace nos::lang::cxxabi {
 
 extern "C" void (*__init_array_start[])();
 extern "C" void (*__init_array_end[])();
@@ -89,4 +89,4 @@ void init()
     }
 }
 
-} // namespace nos::cxxabi
+} // namespace nos::lang::cxxabi

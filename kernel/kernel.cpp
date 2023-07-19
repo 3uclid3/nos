@@ -2,16 +2,16 @@
 
 #include <limine.h>
 
-#include <abi/cxxabi.hpp>
 #include <arch/arch.hpp>
 #include <base_types.hpp>
 #include <boot/loader.hpp>
+#include <lang/cxxabi.hpp>
 
 namespace nos {
 
 void kernel::init()
 {
-    cxxabi::init();
+    lang::cxxabi::init();
 
     arch::print("\n");
     arch::print("[kernel] intialization completed\n");
