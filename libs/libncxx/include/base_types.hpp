@@ -1,5 +1,6 @@
 #pragma once
 
+#include <def.hpp>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -32,5 +33,11 @@ enum class byte : u8_t
 {
     zero = 0x00
 };
+
+enum class alignment_t : size_t
+{
+};
+
+inline constexpr alignment_t default_alignment{NOS_DEFAULT_ALIGNMENT};
 
 } // namespace nos
