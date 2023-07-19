@@ -114,8 +114,7 @@ endif
 # ----------------------------------------
 # libs
 
-subdir('libs/libc')
-subdir('libs/libcxx')
+subdir('libs/libncxx')
 
 
 # ----------------------------------------

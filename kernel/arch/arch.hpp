@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string/string_view.hpp>
+#include <string_view.hpp>
 
 namespace nos::arch {
 

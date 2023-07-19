@@ -29,7 +29,7 @@ kernel_elf = executable(
     install : false, pie : true,
     dependencies : [
         limine_dep,
-        libc_dep
+        libncxx_dep
     ],
     c_args : [
         c_ccp_args,

@@ -1,8 +1,8 @@
 src = files(
 )
 
-libcxx = static_library(
-    'cxx', src,
+libncxx = static_library(
+    'ncxx', src,
     install : false,
     include_directories : ['source', 'include'],
     c_args : [
@@ -11,8 +11,8 @@ libcxx = static_library(
     ],
 )
 
-libcxx_dep  = declare_dependency(
-   link_with : libcxx,
+libncxx_dep  = declare_dependency(
+   link_with : libncxx,
    sources : src,
    include_directories : 'include'
 )
@@ -23,10 +23,10 @@ if not meson.is_cross_build()
         'tests/string_view_tests.cpp'
     )
 
-    libcxx_tests = executable(
-        'cxx_tests', [tests], 
+    libncxx_tests = executable(
+        'ncxx_tests', [tests], 
         install : false,
-        dependencies : [catch2_dep, libcxx_dep],
+        dependencies : [catch2_dep, libncxx_dep],
         include_directories : [
             'include',
             'source',
@@ -34,5 +34,5 @@ if not meson.is_cross_build()
         ]
     )
 
-    test('libcxx', libcxx_tests)
+    test('libncxx', libncxx_tests)
 endif
