@@ -19,8 +19,9 @@ libncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     tests = files(
+        'tests/memory/allocator/null_tests.cpp',
         'tests/type_traits/is_same_tests.cpp',
-        'tests/string_view_tests.cpp'
+        'tests/string/string_view_tests.cpp'
     )
 
     libncxx_tests = executable(
