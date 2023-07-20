@@ -4,29 +4,104 @@
 
 namespace nos::memory {
 
-TEST_CASE("StackAllocator<TSize, TAlignment>::", "[memory]")
+using StackAllocator64 = StackAllocator<64>;
+
+TEST_CASE("StackAllocator::allocate", "[memory]")
 {
-    using StackAllocator64 = StackAllocator<64>;
+    StackAllocator64 allocator64;
+
+    SECTION("returns block if size < stack size")
+    {
+        Block block = allocator64.allocate(StackAllocator64::Size - 2);
+
+        CHECK(block != nullblk);
+    }
+
+    SECTION("returns block if size == stack size")
+    {
+        Block block = allocator64.allocate(StackAllocator64::Size);
+
+        CHECK(block != nullblk);
+    }
+
+    SECTION("returns block if size is 0")
+    {
+        Block block = allocator64.allocate(0);
+
+        CHECK(block == nullblk);
+    }
+
+    SECTION("returns nullblk if size > stack size")
+    {
+        Block block = allocator64.allocate(StackAllocator64::Size + 1);
+
+        CHECK(block == nullblk);
+    }
+
+    SECTION("returns nullblk if size > remaining stack size")
+    {
+        Block block = allocator64.allocate(1);
+
+        REQUIRE(block != nullblk);
+
+        block = allocator64.allocate(StackAllocator64::Size);
+
+        CHECK(block == nullblk);
+    }
+
+    SECTION("returns nullblk if size > remaining stack size")
+    {
+        Block block = allocator64.allocate(StackAllocator64::Size - 1);
+
+        REQUIRE(block != nullblk);
+
+        block = allocator64.allocate(2);
+
+        CHECK(block == nullblk);
+    }
+
+    SECTION("returns nullblk if stack empty")
+    {
+        Block block = allocator64.allocate(StackAllocator64::Size);
+
+        REQUIRE(block != nullblk);
+
+        block = allocator64.allocate(1);
+
+        CHECK(block == nullblk);
+    }
+}
+
+TEST_CASE("StackAllocator::deallocate", "[memory]")
+{
+    // fill the allocator and use that information to verify the deallocation has succeeded
+    static constexpr size_t Size = StackAllocator64::Size / 2;
 
     StackAllocator64 allocator;
 
-    SECTION("allocate returns allocated block")
+    Block firstBlock = allocator.allocate(Size);
+    Block lastBlock = allocator.allocate(Size);
+
+    REQUIRE(firstBlock != nullblk);
+    REQUIRE(lastBlock != nullblk);
+
+    SECTION("if last allocated block")
     {
-        static constexpr size_t Size = StackAllocator64::Size / 2;
+        allocator.deallocate(lastBlock);
 
-        Block block = allocator.allocate(Size);
+        Block newBlock = allocator.allocate(Size);
 
-        CHECK(block.pointer != nullptr);
-        CHECK(block.size == roundToAlignment(Size, StackAllocator64::Alignment));
+        CHECK(newBlock == lastBlock);
     }
 
-    SECTION("allocate returns nullblk if not enough memory")
+    SECTION("nothing not last allocated block")
     {
-        static constexpr size_t Size = StackAllocator64::Size + 2;
+        allocator.deallocate(firstBlock);
 
-        Block block = allocator.allocate(Size);
+        Block newBlock = allocator.allocate(Size);
 
-        CHECK(block == nullblk);
+        // allocator was full
+        CHECK(newBlock == nullblk);
     }
 }
 
