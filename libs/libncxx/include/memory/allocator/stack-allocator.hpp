@@ -1,43 +1,44 @@
 #pragma once
 
-#include <memory/allocator/utility.hpp>
 #include <memory/block.hpp>
+#include <memory/utility.hpp>
 #include <static-array.hpp>
 
-namespace nos::memory::allocator {
+namespace nos::memory {
 
 template<size_t TSize, alignment_t TAlignment = alignment_t{16}>
-class Stack
+class StackAllocator
 {
 public:
+    static constexpr size_t Size{TSize};
     static constexpr alignment_t Alignment{TAlignment};
 
-    constexpr bool owns(Block block) const;
+    constexpr bool owns(ConstBlock block) const;
 
     constexpr Block allocate(size_t size);
 
     constexpr void deallocate(Block block);
     constexpr void deallocateAll();
 
-    constexpr bool expand(Block& block, size_t size);
-    constexpr bool reallocate(Block& block, size_t size);
+    constexpr Block expand(Block block, size_t size);
+    constexpr Block reallocate(Block block, size_t size);
 
 private:
-    constexpr bool isLastAllocatedBlock(Block block) const;
+    constexpr bool isLastAllocatedBlock(ConstBlock block) const;
 
 private:
     StaticArray<u8_t, TSize> _data;
-    u8_t* _pointer{_data};
+    u8_t* _pointer{_data.data()};
 };
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr bool Stack<TSize, TAlignment>::owns(Block block) const
+constexpr bool StackAllocator<TSize, TAlignment>::owns(ConstBlock block) const
 {
     return block.pointer >= _data.begin() && block.pointer < _data.end();
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr Block Stack<TSize, TAlignment>::allocate(size_t size)
+constexpr Block StackAllocator<TSize, TAlignment>::allocate(size_t size)
 {
     if (size == 0)
     {
@@ -61,7 +62,7 @@ constexpr Block Stack<TSize, TAlignment>::allocate(size_t size)
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr void Stack<TSize, TAlignment>::deallocate(Block block)
+constexpr void StackAllocator<TSize, TAlignment>::deallocate(Block block)
 {
     if (block == nullblk)
     {
@@ -70,46 +71,68 @@ constexpr void Stack<TSize, TAlignment>::deallocate(Block block)
 
     if (isLastAllocatedBlock(block))
     {
-        _pointer = block.pointer;
+        _pointer = static_cast<u8_t*>(block.pointer);
     }
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr void Stack<TSize, TAlignment>::deallocateAll()
+constexpr void StackAllocator<TSize, TAlignment>::deallocateAll()
 {
-    _pointer = _block;
+    _pointer = _data;
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr bool Stack<TSize, TAlignment>::expand(Block& block, size_t size)
+constexpr Block StackAllocator<TSize, TAlignment>::expand(Block block, size_t size)
 {
     if (size == 0)
     {
-        return true;
+        return block;
     }
+
+    if (block == nullblk)
+    {
+        return allocate(size);
+    }
+    
+    if (!isLastAllocatedBlock(block))
+    {
+        return nullblk;
+    }
+
+    const size_t alignedSize = roundToAlignment(size, Alignment);
+
+    u8_t* endPointer = _pointer + alignedSize;
+
+    if (endPointer > _data.end())
+    {
+        return nullblk;
+    }
+
+    _pointer = endPointer;
+
+    block.size += alignedSize;
+    
+    return block;
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr bool Stack<TSize, TAlignment>::reallocate(Block& block, size_t size);
+constexpr Block StackAllocator<TSize, TAlignment>::reallocate(Block block, size_t size)
 {
     if (block.size == size)
     {
-        return true;
+        return block;
     }
 
     if (size == 0)
     {
         deallocate(block);
 
-        block = nullblk;
-
-        return true;
+        return nullblk;
     }
 
     if (block == nullblk)
     {
-        block = allocate(size);
-        return true;
+        return allocate(size);
     }
 
     const size_t alignedSize = roundToAlignment(size, Alignment);
@@ -120,20 +143,20 @@ constexpr bool Stack<TSize, TAlignment>::reallocate(Block& block, size_t size);
 
         if (endPointer > _data.end())
         {
-            return false;
+            return nullblk;
         }
 
         block.size = alignedSize;
 
         _pointer = endPointer;
 
-        return true;
+        return block;
     }
 
     if (alignedSize < block.size)
     {
         block.size = alignedSize;
-        return true;
+        return block;
     }
 
     Block newBlock = allocate(alignedSize);
@@ -141,19 +164,17 @@ constexpr bool Stack<TSize, TAlignment>::reallocate(Block& block, size_t size);
     if (newBlock != nullblk)
     {
         copy(newBlock, block);
-        
-        block = newBlock;
 
-        return true;
+        return newBlock;
     }
 
-    return false;
+    return nullblk;
 }
 
 template<size_t TSize, alignment_t TAlignment>
-constexpr bool Stack<TSize, TAlignment>::isLastAllocatedBlock(Block block) const
+constexpr bool StackAllocator<TSize, TAlignment>::isLastAllocatedBlock(ConstBlock block) const
 {
-    return _pointer == block.pointer + block.size;
+    return _pointer == static_cast<const u8_t*>(block.pointer) + block.size;
 }
 
-} // namespace nos::memory::allocator
+} // namespace nos::memory

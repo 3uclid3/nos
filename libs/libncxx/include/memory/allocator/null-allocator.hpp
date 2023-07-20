@@ -7,9 +7,7 @@ namespace nos::memory {
 
 struct Block;
 
-namespace allocator {
-
-class Null
+class NullAllocator
 {
 public:
     static constexpr alignment_t Alignment{64};
@@ -21,43 +19,42 @@ public:
     constexpr void deallocate(Block block);
     constexpr void deallocateAll();
 
-    constexpr bool expand(Block& block, size_t size);
-    constexpr bool reallocate(Block& block, size_t size);
+    constexpr Block expand(Block block, size_t size);
+    constexpr Block reallocate(Block block, size_t size);
 };
 
-constexpr bool Null::owns(Block block) const
+constexpr bool NullAllocator::owns(Block block) const
 {
     NOS_UNUSED(block);
     return block == nullblk;
 }
 
-constexpr Block Null::allocate(size_t size)
+constexpr Block NullAllocator::allocate(size_t size)
 {
     NOS_UNUSED(size);
     return nullblk;
 }
 
-constexpr void Null::deallocate(Block block)
+constexpr void NullAllocator::deallocate(Block block)
 {
     NOS_UNUSED(block);
     NOS_ASSERT(block == nullblk);
 }
 
-constexpr bool Null::expand(Block& block, size_t size)
-{
-    NOS_UNUSED(block);
-    NOS_UNUSED(size);
-    NOS_ASSERT(block == nullblk);
-    return false;
-}
-
-constexpr bool Null::reallocate(Block& block, size_t size)
+constexpr Block NullAllocator::expand(Block block, size_t size)
 {
     NOS_UNUSED(block);
     NOS_UNUSED(size);
     NOS_ASSERT(block == nullblk);
-    return false;
+    return nullblk;
 }
 
-} // namespace allocator
+constexpr Block NullAllocator::reallocate(Block block, size_t size)
+{
+    NOS_UNUSED(block);
+    NOS_UNUSED(size);
+    NOS_ASSERT(block == nullblk);
+    return nullblk;
+}
+
 } // namespace nos::memory

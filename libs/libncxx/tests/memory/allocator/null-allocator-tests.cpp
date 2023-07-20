@@ -1,22 +1,22 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <memory/allocator/null.hpp>
+#include <memory/allocator/null-allocator.hpp>
 
 namespace nos::memory
 {
 
-TEST_CASE("Null::allocate returns nullblk", "[memory][allocator]")
+TEST_CASE("NullAllocator::allocate returns nullblk", "[memory]")
 {
-    allocator::Null allocator;
+    NullAllocator allocator;
 
     CHECK(allocator.allocate(1) == nullblk);
     CHECK(allocator.allocate(10) == nullblk);
     CHECK(allocator.allocate(100) == nullblk);
 }
 
-TEST_CASE("Null::owns", "[memory][allocator]")
+TEST_CASE("NullAllocator::owns", "[memory]")
 {
-    allocator::Null allocator;
+    NullAllocator allocator;
 
     SECTION("returns true if nullblk")
     {
