@@ -2,18 +2,25 @@
 
 #include <memory/block.hpp>
 
-namespace nos {
+namespace nos::memory::allocator {
 
-template<typename Allocator, size_t MinAllocSize, size_t MaxAllocSize, size_t BatchSize, size_t MaxListSize>
-class freelist_allocator
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+class freelist : private Allocator
 {
 public:
-    bool is_owner_of(memory_block block) const;
+    constexpr bool is_owner(block block) const;
 
-    memory_block allocate(size_t size);
+    constexpr block allocate(size_t size);
+    constexpr block allocate_all();
 
-    void deallocate(memory_block block);
-    void deallocate_all();
+    constexpr void deallocate(block block);
+    constexpr void deallocate_all();
+
+    constexpr void expand(block& block, size_t delta_size);
+    constexpr void reallocate(block& block, size_t size);
+
+private:
+    static constexpr bool in_range(size_t size);
 
 private:
     struct node
@@ -21,33 +28,50 @@ private:
         node* next;
     };
 
-    Allocator _allocator;
     Node* _root{nullptr};
 };
 
-template<typename Allocator, size_t AllocationSize>
-bool freelist_allocator<Allocator, AllocationSize>::is_owner_of(memory_block block) const
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr bool freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::is_owner(block block) const
 {
-    return block.size == Size || _allocator.is_owner_of(block);
+    return in_range(block.size) || Allocator::is_owner_of(block);
 }
 
-template<typename Allocator, size_t AllocationSize>
-memory_block freelist_allocator<Allocator, AllocationSize>::allocate(size_t size)
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr block freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::allocate(size_t size)
 {
-    if (size == Size && _root != nullptr)
+    if (in_range(size))
     {
-        memory_block block{_root, Size};
-        _root = _root.next;
-        return block;
+        if (_root != nullptr)
+        {
+            block block{_root, size};
+            _root = _root.next;
+            return block;
+        }
+
+        const block block{Allocator::allocate(MaximumAllocationSize * BatchSize)};
+
+        for (size_t i = BatchSize - 1; i >= 1; --i)
+        {
+            node* newRoot = static_cast<node*>(block.pointer + i * MaximumAllocationSize);
+            newRoot->next = _root;
+            _root = newRoot;
+        }
+
+        return {block.pointer, size};
     }
-    else
-    {
-        return _allocator.allocate(size);
-    }
+    
+    return Allocator::allocate(size);
 }
 
-template<typename Allocator, size_t AllocationSize>
-void freelist_allocator<Allocator, AllocationSize>::deallocate(memory_block block)
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr block freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::allocate_all()
+{
+    return Allocator::allocate_all();
+}
+
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr void freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::deallocate(block block)
 {
     if (size == Size)
     {
@@ -57,14 +81,22 @@ void freelist_allocator<Allocator, AllocationSize>::deallocate(memory_block bloc
     }
     else
     {
-        _allocator.deallocate(block);
+        Allocator::deallocate(block);
     }
 }
 
-template<typename Allocator, size_t AllocationSize>
-void freelist_allocator<Allocator, AllocationSize>::deallocate_all()
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr void freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::deallocate_all()
 {
     _root = nullptr;
+    
+    Allocator::deallocate_all();
 }
 
-} // namespace nos
+template<typename Allocator, size_t MinimumAllocationSize, size_t MaximumAllocationSize, size_t BatchSize, size_t MaximumListSize>
+constexpr bool freelist<Allocator, MinimumAllocationSize, MaximumAllocationSize, BatchSize, MaximumListSize>::in_range(size_t size)
+{
+    return size >= MinimumAllocationSize && size <= MaximumAllocationSize;
+}
+
+} // namespace nos::memory::allocator

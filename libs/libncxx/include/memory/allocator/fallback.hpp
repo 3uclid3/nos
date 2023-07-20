@@ -2,29 +2,34 @@
 
 #include <memory/block.hpp>
 
-namespace nos {
+namespace nos::memory::allocator {
 
 template<typename PrimaryAllocator, typename FallbackAllocator>
-class fallback_allocator : private PrimaryAllocator, private FallbackAllocator
+class fallback : private PrimaryAllocator, private FallbackAllocator
 {
 public:
-    bool is_owner_of(memory_block block) const;
+    constexpr bool is_owner(block block) const;
 
-    memory_block allocate(size_t size);
+    constexpr block allocate(size_t size);
+    constexpr block allocate_all();
 
-    void deallocate(memory_block block);
+    constexpr void deallocate(block block);
+    constexpr void deallocate_all();
+
+    constexpr void expand(block& block, size_t delta_size);
+    constexpr void reallocate(block& block, size_t size);
 };
 
 template<typename PrimaryAllocator, typename FallbackAllocator>
-bool fallback_allocator<PrimaryAllocator, FallbackAllocator>::is_owner_of(memory_block block) const
+constexpr bool fallback<PrimaryAllocator, FallbackAllocator>::is_owner(block block) const
 {
-    return PrimaryAllocator::is_owner_of(block) || FallbackAllocator::is_owner_of(block);
+    return PrimaryAllocator::is_owner(block) || FallbackAllocator::is_owner(block);
 }
 
 template<typename PrimaryAllocator, typename FallbackAllocator>
-memory_block fallback_allocator<PrimaryAllocator, FallbackAllocator>::allocate(size_t size)
+constexpr block fallback<PrimaryAllocator, FallbackAllocator>::allocate(size_t size)
 {
-    memory_block block = PrimaryAllocator::allocate(size);
+    block block = PrimaryAllocator::allocate(size);
 
     if (block.pointer)
     {
@@ -35,7 +40,20 @@ memory_block fallback_allocator<PrimaryAllocator, FallbackAllocator>::allocate(s
 }
 
 template<typename PrimaryAllocator, typename FallbackAllocator>
-void fallback_allocator<PrimaryAllocator, FallbackAllocator>::deallocate(memory_block block)
+constexpr block fallback<PrimaryAllocator, FallbackAllocator>::allocate_all()
+{
+    block block = PrimaryAllocator::allocate_all();
+
+    if (block.pointer)
+    {
+        return block;
+    }
+
+    return FallbackAllocator::allocate_all();
+}
+
+template<typename PrimaryAllocator, typename FallbackAllocator>
+constexpr void fallback<PrimaryAllocator, FallbackAllocator>::deallocate(block block)
 {
     if (PrimaryAllocator::is_owner_of(block))
     {
@@ -45,6 +63,13 @@ void fallback_allocator<PrimaryAllocator, FallbackAllocator>::deallocate(memory_
     {
         FallbackAllocator::deallocate(block);
     }
+}
+
+template<typename PrimaryAllocator, typename FallbackAllocator>
+constexpr void fallback<PrimaryAllocator, FallbackAllocator>::deallocate_all()
+{
+    PrimaryAllocator::deallocate_all(block);
+    FallbackAllocator::deallocate_all(block);
 }
 
 } // namespace nos
