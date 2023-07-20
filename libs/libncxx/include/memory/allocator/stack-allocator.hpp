@@ -13,15 +13,15 @@ public:
     static constexpr size_t Size{TSize};
     static constexpr alignment_t Alignment{TAlignment};
 
-    constexpr bool owns(ConstBlock block) const;
+    [[nodiscard]] constexpr bool owns(ConstBlock block) const;
 
-    constexpr Block allocate(size_t size);
+    [[nodiscard]] constexpr Block allocate(size_t size);
 
     constexpr void deallocate(Block block);
     constexpr void deallocateAll();
 
-    constexpr Block expand(Block block, size_t size);
-    constexpr Block reallocate(Block block, size_t size);
+    [[nodiscard]] constexpr Block expand(Block block, size_t size);
+    [[nodiscard]] constexpr Block reallocate(Block block, size_t size);
 
 private:
     constexpr bool isLastAllocatedBlock(ConstBlock block) const;
