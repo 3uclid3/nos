@@ -1,6 +1,6 @@
 #pragma once
 
-#include <type_traits/is_same.hpp>
+#include <type-traits/is-same.hpp>
 
 namespace nos {
 

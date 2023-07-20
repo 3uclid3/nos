@@ -1,54 +1,62 @@
 #pragma once
 
+#include <debug/assert.hpp>
 #include <memory/block.hpp>
 
 namespace nos::memory {
 
-struct block;
+struct Block;
 
 namespace allocator {
 
-class null
+class Null
 {
 public:
-    constexpr bool is_owner(block block) const;
+    static constexpr alignment_t Alignment{64};
 
-    constexpr block allocate(size_t size);
+    constexpr bool owns(Block block) const;
 
-    constexpr void deallocate(block block);
-    constexpr void deallocate_all();
+    constexpr Block allocate(size_t size);
 
-    constexpr void expand(block& block, size_t delta_size);
-    constexpr void reallocate(block& block, size_t size);
+    constexpr void deallocate(Block block);
+    constexpr void deallocateAll();
+
+    constexpr bool expand(Block& block, size_t size);
+    constexpr bool reallocate(Block& block, size_t size);
 };
 
-constexpr bool null::is_owner(block block) const
+constexpr bool Null::owns(Block block) const
 {
     NOS_UNUSED(block);
+    return block == nullblk;
+}
+
+constexpr Block Null::allocate(size_t size)
+{
+    NOS_UNUSED(size);
+    return nullblk;
+}
+
+constexpr void Null::deallocate(Block block)
+{
+    NOS_UNUSED(block);
+    NOS_ASSERT(block == nullblk);
+}
+
+constexpr bool Null::expand(Block& block, size_t size)
+{
+    NOS_UNUSED(block);
+    NOS_UNUSED(size);
+    NOS_ASSERT(block == nullblk);
     return false;
 }
 
-constexpr block null::allocate(size_t size)
-{
-    NOS_UNUSED(size);
-    return null_block;
-}
-
-constexpr void null::deallocate(block block)
-{
-    NOS_UNUSED(block);
-}
-
-constexpr void null::expand(block& block, size_t delta_size)
-{
-    NOS_UNUSED(block);
-    NOS_UNUSED(delta_size);
-}
-
-constexpr void null::reallocate(block& block, size_t size)
+constexpr bool Null::reallocate(Block& block, size_t size)
 {
     NOS_UNUSED(block);
     NOS_UNUSED(size);
+    NOS_ASSERT(block == nullblk);
+    return false;
 }
 
 } // namespace allocator

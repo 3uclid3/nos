@@ -1,10 +1,14 @@
 #pragma once
 
-#include <base_types.hpp>
-#include <type_traits/integral_constant.hpp>
+#include <base-types.hpp>
+#include <type-traits/integral-constant.hpp>
 
 namespace nos::memory::allocator {
 
-constexpr size_t round_to_aligned(size_t size, alignment_t align = default_alignment);
+constexpr size_t roundToAlignment(size_t size, alignment_t align)
+{
+    const size_t alignAsSizeT = static_cast<size_t>(align);
+    return size + ((size % alignAsSizeT) == 0 ? 0 : alignAsSizeT - (size % alignAsSizeT));
+}
 
 } // namespace nos::memory::allocator

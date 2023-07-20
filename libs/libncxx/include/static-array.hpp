@@ -1,11 +1,11 @@
 #pragma once
 
-#include <base_types.hpp>
+#include <base-types.hpp>
 
 namespace nos {
 
 template<typename T, size_t Size>
-class static_array
+class StaticArray
 {
 public:
     using value_type = T;
@@ -24,7 +24,7 @@ public:
 
 public:
     void fill(const value_type& value);
-    void swap(static_array& other);
+    void swap(StaticArray& other);
 
 public:
     constexpr const_iterator begin() const;
@@ -60,7 +60,7 @@ public:
 };
 
 template<typename T>
-class static_array<T, 0>
+class StaticArray<T, 0>
 {
 public:
     using value_type = T;
@@ -79,7 +79,7 @@ public:
 
 public:
     void fill(const value_type& value);
-    void swap(static_array& other);
+    void swap(StaticArray& other);
 
 public:
     constexpr const_iterator begin() const;
@@ -115,7 +115,7 @@ public:
 };
 
 template<typename T, size_t Size>
-void static_array<T, Size>::fill(const value_type& value)
+void StaticArray<T, Size>::fill(const value_type& value)
 {
     for (T& v : *this)
     {
@@ -124,229 +124,229 @@ void static_array<T, Size>::fill(const value_type& value)
 }
 
 template<typename T, size_t Size>
-void static_array<T, Size>::swap(static_array& other)
+void StaticArray<T, Size>::swap(StaticArray& other)
 {
     static_assert(false, "To be implemented");
     NOS_UNUSED(other);
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::iterator static_array<T, Size>::begin()
+constexpr StaticArray<T, Size>::iterator StaticArray<T, Size>::begin()
 {
     return iterator(data());
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_iterator static_array<T, Size>::begin() const
+constexpr StaticArray<T, Size>::const_iterator StaticArray<T, Size>::begin() const
 {
     return const_iterator(data());
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::iterator static_array<T, Size>::end()
+constexpr StaticArray<T, Size>::iterator StaticArray<T, Size>::end()
 {
     return iterator(data() + Size);
 }
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_iterator static_array<T, Size>::end() const
+constexpr StaticArray<T, Size>::const_iterator StaticArray<T, Size>::end() const
 {
     return const_iterator(data() + Size);
 }
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_iterator static_array<T, Size>::cbegin() const
+constexpr StaticArray<T, Size>::const_iterator StaticArray<T, Size>::cbegin() const
 {
     return begin();
 }
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_iterator static_array<T, Size>::cend() const
+constexpr StaticArray<T, Size>::const_iterator StaticArray<T, Size>::cend() const
 {
     return end();
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::size_type static_array<T, Size>::size() const
+constexpr StaticArray<T, Size>::size_type StaticArray<T, Size>::size() const
 {
     return Size;
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::size_type static_array<T, Size>::max_size() const
+constexpr StaticArray<T, Size>::size_type StaticArray<T, Size>::max_size() const
 {
     return Size;
 }
 
 template<typename T, size_t Size>
-constexpr bool static_array<T, Size>::is_empty() const
+constexpr bool StaticArray<T, Size>::is_empty() const
 {
     return false;
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::reference static_array<T, Size>::operator[](size_type index)
+constexpr StaticArray<T, Size>::reference StaticArray<T, Size>::operator[](size_type index)
 {
-    NOS_ASSERT(index < Size, "out-of-bounds access in static_array<T, N>");
+    NOS_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
     return _data[index];
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_reference static_array<T, Size>::operator[](size_type index) const
+constexpr StaticArray<T, Size>::const_reference StaticArray<T, Size>::operator[](size_type index) const
 {
-    NOS_ASSERT(index < Size, "out-of-bounds access in static_array<T, N>");
+    NOS_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
     return _data[index];
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_reference static_array<T, Size>::first() const
+constexpr StaticArray<T, Size>::const_reference StaticArray<T, Size>::first() const
 {
     return (*this)[0];
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::reference static_array<T, Size>::first()
+constexpr StaticArray<T, Size>::reference StaticArray<T, Size>::first()
 {
     return (*this)[0];
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::const_reference static_array<T, Size>::last() const
+constexpr StaticArray<T, Size>::const_reference StaticArray<T, Size>::last() const
 {
     return (*this)[Size - 1];
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::reference static_array<T, Size>::last()
+constexpr StaticArray<T, Size>::reference StaticArray<T, Size>::last()
 {
     return (*this)[Size - 1];
 }
 
 template<typename T, size_t Size>
-constexpr const static_array<T, Size>::value_type* static_array<T, Size>::data() const
+constexpr const StaticArray<T, Size>::value_type* StaticArray<T, Size>::data() const
 {
     return _data;
 }
 
 template<typename T, size_t Size>
-constexpr static_array<T, Size>::value_type* static_array<T, Size>::data()
+constexpr StaticArray<T, Size>::value_type* StaticArray<T, Size>::data()
 {
     return _data;
 }
 
 template<typename T>
-void static_array<T, 0>::fill(const value_type& value)
+void StaticArray<T, 0>::fill(const value_type& value)
 {
-    static_assert(!is_const<T>::value, "cannot fill zero-sized static_array of type 'const T'");
+    static_assert(!is_const<T>::value, "cannot fill zero-sized StaticArray of type 'const T'");
 }
 
 template<typename T>
-void static_array<T, 0>::swap(static_array& other)
+void StaticArray<T, 0>::swap(StaticArray& other)
 {
-    static_assert(!is_const<T>::value, "cannot swap zero-sized static_array of type 'const T'");
+    static_assert(!is_const<T>::value, "cannot swap zero-sized StaticArray of type 'const T'");
 }
 
 template<typename T>
-constexpr static_array<T, 0>::iterator static_array<T, 0>::begin()
-{
-    return iterator(data());
-}
-
-template<typename T>
-constexpr static_array<T, 0>::const_iterator static_array<T, 0>::begin() const
-{
-    return const_iterator(data());
-}
-
-template<typename T>
-constexpr static_array<T, 0>::iterator static_array<T, 0>::end()
+constexpr StaticArray<T, 0>::iterator StaticArray<T, 0>::begin()
 {
     return iterator(data());
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_iterator static_array<T, 0>::end() const
+constexpr StaticArray<T, 0>::const_iterator StaticArray<T, 0>::begin() const
 {
     return const_iterator(data());
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_iterator static_array<T, 0>::cbegin() const
+constexpr StaticArray<T, 0>::iterator StaticArray<T, 0>::end()
+{
+    return iterator(data());
+}
+
+template<typename T>
+constexpr StaticArray<T, 0>::const_iterator StaticArray<T, 0>::end() const
+{
+    return const_iterator(data());
+}
+
+template<typename T>
+constexpr StaticArray<T, 0>::const_iterator StaticArray<T, 0>::cbegin() const
 {
     return begin();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_iterator static_array<T, 0>::cend() const
+constexpr StaticArray<T, 0>::const_iterator StaticArray<T, 0>::cend() const
 {
     return end();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::size_type static_array<T, 0>::size() const
+constexpr StaticArray<T, 0>::size_type StaticArray<T, 0>::size() const
 {
     return 0;
 }
 
 template<typename T>
-constexpr static_array<T, 0>::size_type static_array<T, 0>::max_size() const
+constexpr StaticArray<T, 0>::size_type StaticArray<T, 0>::max_size() const
 {
     return 0;
 }
 
 template<typename T>
-constexpr bool static_array<T, 0>::is_empty() const
+constexpr bool StaticArray<T, 0>::is_empty() const
 {
     return true;
 }
 
 template<typename T>
-constexpr static_array<T, 0>::reference static_array<T, 0>::operator[](size_type index)
+constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::operator[](size_type index)
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>:::operator[] on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_reference static_array<T, 0>::operator[](size_type index) const
+constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::operator[](size_type index) const
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>:::operator[] on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_reference static_array<T, 0>::first() const
+constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::first() const
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>::first() on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::reference static_array<T, 0>::first()
+constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::first()
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>::first() on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::const_reference static_array<T, 0>::last() const
+constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::last() const
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>::data() on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr static_array<T, 0>::reference static_array<T, 0>::last()
+constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::last()
 {
-    NOS_ASSERT(false, "cannot call static_array<T, 0>::data() on a zero-sized static_array");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
     NOS_UNREACHABLE();
 }
 
 template<typename T>
-constexpr const static_array<T, 0>::value_type* static_array<T, 0>::data() const
+constexpr const StaticArray<T, 0>::value_type* StaticArray<T, 0>::data() const
 {
     return nullptr;
 }
 
 template<typename T>
-constexpr static_array<T, 0>::value_type* static_array<T, 0>::data()
+constexpr StaticArray<T, 0>::value_type* StaticArray<T, 0>::data()
 {
     return nullptr;
 }

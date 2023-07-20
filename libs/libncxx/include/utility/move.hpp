@@ -1,13 +1,13 @@
 #pragma once
 
-#include <type_traits/remove_reference.hpp>
+#include <type-traits/remove-reference.hpp>
 
 namespace nos {
 
 template<class T>
-constexpr remove_reference_t<T>&& move(T&& v)
+constexpr RemoveReferenceT<T>&& move(T&& v)
 {
-    return static_cast<remove_reference_t<T>&&>(__t);
+    return static_cast<RemoveReferenceT<T>&&>(v);
 }
 
 } // namespace nos

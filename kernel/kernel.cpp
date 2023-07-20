@@ -3,7 +3,7 @@
 #include <limine.h>
 
 #include <arch/arch.hpp>
-#include <base_types.hpp>
+#include <base-types.hpp>
 #include <boot/loader.hpp>
 #include <lang/cxxabi.hpp>
 

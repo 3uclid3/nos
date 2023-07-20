@@ -8,11 +8,8 @@ namespace nos {
 
 using nullptr_t = decltype(nullptr);
 
-using ::intmax_t;
-using ::intptr_t;
-
-using ::uintmax_t;
-using ::uintptr_t;
+using intptr_t = ::intptr_t;
+using uintptr_t = ::uintptr_t;
 
 using s8_t = ::int8_t;
 using s16_t = ::int16_t;
@@ -37,7 +34,5 @@ enum class byte : u8_t
 enum class alignment_t : size_t
 {
 };
-
-inline constexpr alignment_t default_alignment{NOS_DEFAULT_ALIGNMENT};
 
 } // namespace nos
