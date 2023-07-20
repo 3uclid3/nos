@@ -163,7 +163,7 @@ constexpr Block StackAllocator<TSize, TAlignment>::reallocate(Block block, size_
 
     if (newBlock != nullblk)
     {
-        copy(newBlock, block);
+        copy(newBlock, block, block.size);
 
         return newBlock;
     }

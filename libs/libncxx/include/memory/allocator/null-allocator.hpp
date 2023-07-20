@@ -12,7 +12,7 @@ class NullAllocator
 public:
     static constexpr alignment_t Alignment{64};
 
-    constexpr bool owns(Block block) const;
+    constexpr bool owns(ConstBlock block) const;
 
     constexpr Block allocate(size_t size);
 
@@ -23,7 +23,7 @@ public:
     constexpr Block reallocate(Block block, size_t size);
 };
 
-constexpr bool NullAllocator::owns(Block block) const
+constexpr bool NullAllocator::owns(ConstBlock block) const
 {
     NOS_UNUSED(block);
     return block == nullblk;

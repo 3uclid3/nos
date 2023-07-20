@@ -2,107 +2,102 @@
 
 #include <memory/block.hpp>
 
-namespace nos::memory::allocator {
+namespace nos::memory {
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-class segregator : private SmallAllocator, private LargeAllocator
+template<typename TSmallAllocator, typename TLargeAllocator, size_t TThresholdSize>
+class SegregatorAllocator : private TSmallAllocator, private TLargeAllocator
 {
 public:
-    constexpr bool is_owner(block block) const;
+    using SmallAllocator = TSmallAllocator;
+    using LargeAllocator = TLargeAllocator;
 
-    constexpr block allocate(size_t size);
+    static constexpr size_t ThresholdSize = TThresholdSize;
 
-    constexpr void deallocate(block block);
-    constexpr void deallocate_all();
+    constexpr bool owns(ConstBlock block) const;
 
-    constexpr void expand(block& block, size_t delta_size);
-    constexpr void reallocate(block& block, size_t size);
+    constexpr Block allocate(size_t size);
+
+    constexpr void deallocate(Block block);
+    constexpr void deallocateAll();
+
+    constexpr Block expand(Block block, size_t size);
+    constexpr Block reallocate(Block block, size_t size);
 
 private:
-    constexpr static bool is_small(size_t size);
+    static constexpr bool isSmall(size_t size);
 };
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr bool segregator<SmallAllocator, LargeAllocator, ThresholdSize>::is_owner(block block) const
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr bool SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::owns(ConstBlock block) const
 {
-    return SmallAllocator::is_owner(block) || LargeAllocator::is_owner(block);
+    return SmallAllocator::owns(block) || LargeAllocator::owns(block);
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr block segregator<SmallAllocator, LargeAllocator, ThresholdSize>::allocate(size_t size)
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr Block SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::allocate(size_t size)
 {
-    return is_small(size) ? SmallAllocator::allocate(size) : LargeAllocator::allocate(size);
+    return isSmall(size) ? SmallAllocator::allocate(size) : TLargeAllocator::allocate(size);
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr block segregator<SmallAllocator, LargeAllocator, ThresholdSize>::allocate_all()
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr void SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::deallocate(Block block)
 {
-    return null_block;
+    return isSmall(block.size) ? TSmallAllocator::deallocate(block) : TLargeAllocator::deallocate(block);
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr void segregator<SmallAllocator, LargeAllocator, ThresholdSize>::deallocate(block block)
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr void SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::deallocateAll()
 {
-    return is_small(block.size) ? SmallAllocator::deallocate(block) : LargeAllocator::deallocate(block);
+    SmallAllocator::deallocateAll();
+    LargeAllocator::deallocateAll();
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr void segregator<SmallAllocator, LargeAllocator, ThresholdSize>::deallocate_all()
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr Block SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::expand(Block block, size_t size)
 {
-    SmallAllocator::deallocate_all();
-    LargeAllocator::deallocate_all();
-}
-
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr void segregator<SmallAllocator, LargeAllocator, ThresholdSize>::expand(block& block, size_t delta_size)
-{
-    if (is_small(block.size))
+    if (isSmall(block.size))
     {
-        const auto new_size = block.size;
+        const size_t newSize = block.size + size;
 
-        if (is_small(new_size))
+        if (isSmall(newSize))
         {
-            SmallAllocator::expand(block, size);
+            return SmallAllocator::expand(block, size);
         }
         else
         {
             SmallAllocator::deallocate(block);
 
-            block = LargeAllocator::allocate(new_size);
+            return LargeAllocator::allocate(newSize);
         }
     }
-    else
-    {
-        LargeAllocator::expand(block, size);
-    }
+
+    return LargeAllocator::expand(block, size);
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr void segregator<SmallAllocator, LargeAllocator, ThresholdSize>::reallocate(block& block, size_t size)
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr Block SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::reallocate(Block block, size_t size)
 {
-    if (is_small(block.size))
+    if (isSmall(block.size))
     {
-        if (is_small(size))
+        if (isSmall(size))
         {
-            SmallAllocator::reallocate(block, size);
+            return SmallAllocator::reallocate(block, size);
         }
         else
         {
             SmallAllocator::deallocate(block);
 
-            block = LargeAllocator::allocate(new_size);
+            return LargeAllocator::allocate(size);
         }
     }
-    else
-    {
-        LargeAllocator::reallocate(block, size);
-    }
+
+    return LargeAllocator::reallocate(block, size);
 }
 
-template<typename SmallAllocator, typename LargeAllocator, size_t ThresholdSize>
-constexpr bool segregator<SmallAllocator, LargeAllocator, ThresholdSize>::is_small(size_t size)
+template<typename TSmallAllocator, typename TLargeAllocator, size_t ThresholdSize>
+constexpr bool SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSize>::isSmall(size_t size)
 {
     return size <= Size;
 }
 
-} // namespace nos::memory::allocator
+} // namespace nos::memory

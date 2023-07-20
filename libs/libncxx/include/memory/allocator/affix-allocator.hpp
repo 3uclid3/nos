@@ -1,121 +1,148 @@
 #pragma once
 
 #include <algorithm/max.hpp>
-#include <memory/allocator/utility.hpp>
 #include <memory/block.hpp>
+#include <memory/utility.hpp>
 
-namespace nos::memory::allocator {
+namespace nos::memory {
 
-template<typename Allocator, typename Prefix, typename Suffix = void>
-class affix : private Allocator
+template<typename TAllocator, typename TPrefix, typename TSuffix = void>
+class AffixAllocator : private TAllocator
 {
 public:
-    static constexpr size_t prefix_size = is_same_v<Prefix, void> ? 0 : round_to_aligned(sizeof(Prefix), alignof(Prefix));
-    static constexpr size_t suffix_size = is_same_v<Suffix, void> ? 0 : round_to_aligned(sizeof(Suffix), alignof(Suffix));
+    using AllocatorType = TAllocator;
 
-    constexpr bool is_owner(block block) const;
+    using PrefixType = TPrefix;
+    using SuffixType = TSuffix;
 
-    constexpr block allocate(size_t size);
+    static constexpr alignment_t Alignment = AllocatorType::Alignment;
 
-    constexpr void deallocate(block block);
-    constexpr void deallocate_all();
+    static constexpr size_t PrefixSize = IsSameV<TPrefix, void> ? 0 : roundToAlignment(sizeof(Prefix), alignof(Prefix));
+    static constexpr size_t SuffixSize = IsSameV<TSuffix, void> ? 0 : roundToAlignment(sizeof(Suffix), alignof(Suffix));
 
-    constexpr void expand(block& block, size_t delta_size);
-    constexpr void reallocate(block& block, size_t size);
+    constexpr bool owns(Block block) const;
+
+    constexpr Block allocate(size_t size);
+
+    constexpr void deallocate(Block block);
+    constexpr void deallocateAll();
+
+    constexpr Block expand(Block block, size_t size);
+    constexpr Block reallocate(Block block, size_t size);
 
 private:
-    static constexpr size_t get_affixed_size(size_t size);
+    static constexpr Prefix* toPrefix(Block block);
+    static constexpr Suffix* toSuffix(Block block);
+
+    static constexpr Block addAffixes(Block block);
+    static constexpr Block removeAffixes(Block block);
 };
 
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr bool affix<Allocator, Prefix, Suffix>::is_owner(block block) const
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr bool AffixAllocator<TAllocator, TPrefix, TSuffix>::owns(Block block) const
 {
-    return Allocator::is_owner(block);
+    return AllocatorType::owns(block);
 }
 
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr block affix<Allocator, Prefix, Suffix>::allocate(size_t size)
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::allocate(size_t size)
 {
-    const size_t aligned_size = round_to_aligned(size);
-
-    block block = Allocator::allocate(get_affixed_size(aligned_size));
-
-    if constexpr (!is_same_v<Prefix, void>)
+    if (size == 0)
     {
-        ::new (reinterpret_cast<Prefix*>(block.pointer))();
-
-        block.pointer += prefix_size;
+        return nullblk;
     }
 
-    if constexpr (!is_same_v<Suffix, void>)
+    Block block = Allocator::allocate(PrefixSize + size + SuffixSize);
+
+    if (block == nullblk)
     {
-        ::new (reinterpret_cast<Suffix*>(block.pointer + aligned_size))();
+        return nullblk;
     }
 
-    return {block.pointer, size};
-}
-
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr block affix<Allocator, Prefix, Suffix>::allocate_all()
-{
-    block block = Allocator::allocate_all();
-
-    if constexpr (!is_same_v<Prefix, void>)
+    if constexpr (PrefixSize > 0)
     {
-        ::new (reinterpret_cast<Prefix*>(block.pointer))();
-
-        block.pointer += prefix_size;
+        new (toPrefix(block)) Prefix{};
     }
 
-    if constexpr (!is_same_v<Suffix, void>)
+    if constexpr (SuffixSize > 0)
     {
-        ::new (reinterpret_cast<Suffix*>(block.pointer + block.size - suffix_size))();
+        new (toSuffix(block)) Suffix{};
     }
 
-    return block;
+    return removeAffixes(block);
 }
 
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr void affix<Allocator, Prefix, Suffix>::deallocate(block block)
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr void AffixAllocator<TAllocator, TPrefix, TSuffix>::deallocate(Block block)
 {
-    return Allocator::deallocate(block);
+    AllocatorType::deallocate(block);
 }
 
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr void affix<Allocator, Prefix, Suffix>::deallocate_all()
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr void AffixAllocator<TAllocator, TPrefix, TSuffix>::deallocateAll()
 {
-    return Allocator::deallocate_all();
+    AllocatorType::deallocateAll();
 }
 
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr void affix<Allocator, Prefix, Suffix>::expand(block& block, size_t delta_size)
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::expand(Block block, size_t size)
 {
-    block internal_block{block.pointer - prefix_size};
-    
-    Allocator::expand(block, size);
-
-    // TODO Prefix & Suffix
-}
-
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr void affix<Allocator, Prefix, Suffix>::reallocate(block& block, size_t size)
-{
-}
-
-template<typename Allocator, typename Prefix, typename Suffix>
-constexpr size_t affix<Allocator, Prefix, Suffix>::get_affixed_size(size_t size)
-{
-    if constexpr (!is_same_v<Prefix, void>)
+    if (size == 0)
     {
-        size += round_to_aligned(sizeof(Prefix), alignof(Prefix));
+        return block;
     }
 
-    if constexpr (!is_same_v<Suffix, void>)
+    if (block == nullblk)
     {
-        size += round_to_aligned(sizeof(Suffix), alignof(Suffix));
+        return allocate(size);
     }
 
-    return size;
+    Block expandedBlock = Allocator::expand(addAffixes(block), size);
+
+    if (expandedBlock == nullblk)
+    {
+        return nullblk;
+    }
+
+    if constexpr (SuffixSize > 0)
+    {
+        new (toSuffix(expandedBlock)) Suffix{};
+    }
+
+    return removeAffixes(expandedBlock);
 }
 
-} // namespace nos::memory::allocator
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr void AffixAllocator<TAllocator, TPrefix, TSuffix>::reallocate(Block block, size_t size)
+{
+    NOS_UNUSED(block);
+    NOS_UNUSED(size);
+
+    NOS_ASSERT(false, "To be implemented");
+}
+
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr AffixAllocator<TAllocator, TPrefix, TSuffix>::PrefixType* AffixAllocator<TAllocator, TPrefix, TSuffix>::toPrefix(Block block) const
+{
+    return static_cast<PrefixType*>(block.pointer);
+}
+
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr AffixAllocator<TAllocator, TPrefix, TSuffix>::SuffixType* AffixAllocator<TAllocator, TPrefix, TSuffix>::toSuffix(Block block) const
+{
+    return reinterpret_cast<SuffixType*>(static_cast<u8_t*>(block.pointer) + block.size - SuffixSize);
+}
+
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::addAffixes(Block block)
+{
+    return {static_cast<u8_t*>(block.pointer) - PrefixSize, block.size + PrefixSize + SuffixSize};
+}
+
+template<typename TAllocator, typename TPrefix, typename TSuffix>
+constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::removeAffixes(Block block)
+{
+    return {static_cast<u8_t*>(block.pointer) + PrefixSize, block.size - PrefixSize - SuffixSize};
+}
+
+} // namespace nos::memory
