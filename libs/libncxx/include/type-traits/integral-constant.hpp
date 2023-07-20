@@ -1,3 +1,5 @@
+#pragma once
+
 namespace nos {
 
 template<typename T, T TValue>
