@@ -16,7 +16,6 @@ public:
     constexpr bool is_owner(block block) const;
 
     constexpr block allocate(size_t size);
-    constexpr block allocate_all();
 
     constexpr void deallocate(block block);
     constexpr void deallocate_all();
