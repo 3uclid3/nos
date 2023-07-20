@@ -61,12 +61,12 @@ constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::allocate(size_t si
 
     if constexpr (PrefixSize > 0)
     {
-        new (toPrefix(block)) Prefix{};
+        new (toPrefix(block)) PrefixType{};
     }
 
     if constexpr (SuffixSize > 0)
     {
-        new (toSuffix(block)) Suffix{};
+        new (toSuffix(block)) SuffixType{};
     }
 
     return removeAffixes(block);
@@ -106,7 +106,7 @@ constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::expand(Block block
 
     if constexpr (SuffixSize > 0)
     {
-        new (toSuffix(expandedBlock)) Suffix{};
+        new (toSuffix(expandedBlock)) SuffixType{};
     }
 
     return removeAffixes(expandedBlock);
