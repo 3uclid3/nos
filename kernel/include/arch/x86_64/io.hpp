@@ -5,9 +5,9 @@
 
 namespace nos::arch::x86_64::io {
 
-enum class port : u16_t
+enum class Port : u16_t
 {
-    debug = 0x00E9
+    Debug = 0x00E9
 };
 
 template<typename T>
@@ -48,7 +48,7 @@ static inline u32_t in(u16_t port)
 
 template<typename T>
 requires(SupportedType<T>)
-static inline T in(port port)
+static inline T in(Port port)
 {
     return in<T>(static_cast<u16_t>(port));
 }
@@ -70,7 +70,7 @@ static inline void out(u16_t port, u32_t val)
 
 template<typename T>
 requires(SupportedType<T>)
-static inline void out(port port, T value)
+static inline void out(Port port, T value)
 {
     out(static_cast<u16_t>(port), value);
 }
