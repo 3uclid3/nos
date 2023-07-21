@@ -1,8 +1,8 @@
 #pragma once
 
+#include <container/static-array.hpp>
 #include <memory/block.hpp>
 #include <memory/utility.hpp>
-#include <static-array.hpp>
 
 namespace nos::memory {
 
@@ -93,7 +93,7 @@ constexpr Block StackAllocator<TSize, TAlignment>::expand(Block block, size_t si
     {
         return allocate(size);
     }
-    
+
     if (!isLastAllocatedBlock(block))
     {
         return nullblk;
@@ -111,7 +111,7 @@ constexpr Block StackAllocator<TSize, TAlignment>::expand(Block block, size_t si
     _pointer = endPointer;
 
     block.size += alignedSize;
-    
+
     return block;
 }
 
