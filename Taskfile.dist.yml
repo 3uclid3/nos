@@ -1,0 +1,49 @@
+---
+version: '3'
+
+env:
+  ARCH: x86_64
+  BUILD_DIR: build
+
+dotenv: ['.env']
+
+tasks:
+  setup:kernel:
+    cmds: 
+      - meson setup $BUILD_DIR --buildtype debug --cross-file config/$ARCH/kernel.cross-file
+
+  setup:kernel-release:
+    cmds: 
+      - meson setup $BUILD_DIR --buildtype release --cross-file config/$ARCH/kernel.cross-file
+
+  setup:native:
+    cmds: 
+      - meson setup $BUILD_DIR --buildtype debug --native-file config/native.native-file
+
+  setup:native-release:
+    cmds: 
+      - meson setup $BUILD_DIR --buildtype release --native-file config/native.native-file
+
+  setup:redo:
+    cmds: 
+      - meson setup --wipe $BUILD_DIR
+
+  setup:wipe:
+    cmds: 
+      - rm -r $BUILD_DIR
+
+  compile:
+    cmds: 
+      - cd build && meson compile {{.CLI_ARGS}}
+
+  compile-all:
+    cmds: 
+      - cd build && meson compile
+
+  test:
+    cmds: 
+      - cd build && meson test {{.CLI_ARGS}}
+
+  test-all:
+    cmds: 
+      - cd build && meson test
