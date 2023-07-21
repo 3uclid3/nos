@@ -2,8 +2,9 @@ src = files(
 )
 
 libncxx = static_library(
-    'ncxx', src,
+    'libncxx', src,
     install : false,
+    name_prefix: '',
     include_directories : ['source', 'include'],
     c_args : [
         '-ffreestanding',
