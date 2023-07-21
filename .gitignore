@@ -2,7 +2,7 @@
 !.vscode/launch.json
 
 build/*
-log/*
+logs/*
 
 subprojects/*
 !subprojects/*.wrap
