@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "libc tests",
+            "name": "test libncxx",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceRoot}/build/libs/libc/c_tests",
+            "program": "${workspaceRoot}/build/libs/libncxx/libncxx_tests",
             "args": [],
             "cwd": "${workspaceRoot}"
         },

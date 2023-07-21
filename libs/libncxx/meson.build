@@ -26,7 +26,7 @@ if not meson.is_cross_build()
     )
 
     libncxx_tests = executable(
-        'ncxx_tests', [tests], 
+        'libncxx_tests', [tests], 
         install : false,
         dependencies : [catch2_dep, libncxx_dep],
         include_directories : [
