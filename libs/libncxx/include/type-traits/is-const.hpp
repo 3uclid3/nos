@@ -2,7 +2,7 @@
 
 #include <type-traits/integral-constant.hpp>
 
-namespace nos {
+namespace N {
     
 template<typename T>
 struct IsConst : FalseType
@@ -17,4 +17,4 @@ struct IsConst<const T> : TrueType
 template<typename T>
 static constexpr bool IsConstV = IsConst<T>::Value;
 
-} // namespace nos
+} // namespace N

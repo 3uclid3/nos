@@ -4,7 +4,7 @@
 #include <memory/block.hpp>
 #include <memory/utility.hpp>
 
-namespace nos::memory {
+namespace N::Memory {
 
 template<typename TAllocator, typename TPrefix, typename TSuffix = void>
 class AffixAllocator : private TAllocator
@@ -115,10 +115,10 @@ constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::expand(Block block
 template<typename TAllocator, typename TPrefix, typename TSuffix>
 constexpr void AffixAllocator<TAllocator, TPrefix, TSuffix>::reallocate(Block block, size_t size)
 {
-    NOS_UNUSED(block);
-    NOS_UNUSED(size);
+    N_UNUSED(block);
+    N_UNUSED(size);
 
-    NOS_ASSERT(false, "To be implemented");
+    N_ASSERT(false, "To be implemented");
 }
 
 template<typename TAllocator, typename TPrefix, typename TSuffix>
@@ -145,4 +145,4 @@ constexpr Block AffixAllocator<TAllocator, TPrefix, TSuffix>::removeAffixes(Bloc
     return {static_cast<u8_t*>(block.pointer) + PrefixSize, block.size - PrefixSize - SuffixSize};
 }
 
-} // namespace nos::memory
+} // namespace N::Memory

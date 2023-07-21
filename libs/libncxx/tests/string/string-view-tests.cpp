@@ -2,8 +2,7 @@
 
 #include <string/string-view.hpp>
 
-namespace nos
-{
+namespace N {
 
 TEST_CASE("StringView - ctor")
 {
@@ -26,5 +25,4 @@ TEST_CASE("StringView - ctor")
     }
 }
 
-} // namespace nos
-
+} // namespace N

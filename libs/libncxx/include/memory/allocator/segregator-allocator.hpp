@@ -2,7 +2,7 @@
 
 #include <memory/block.hpp>
 
-namespace nos::memory {
+namespace N::Memory {
 
 template<typename TSmallAllocator, typename TLargeAllocator, size_t TThresholdSize>
 class SegregatorAllocator : private TSmallAllocator, private TLargeAllocator
@@ -100,4 +100,4 @@ constexpr bool SegregatorAllocator<TSmallAllocator, TLargeAllocator, ThresholdSi
     return size <= Size;
 }
 
-} // namespace nos::memory
+} // namespace N::Memory

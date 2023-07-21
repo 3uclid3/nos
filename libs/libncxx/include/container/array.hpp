@@ -4,12 +4,12 @@
 #include <memory/block.hpp>
 #include <type-traits/conditional.hpp>
 
-namespace nos {
+namespace N {
 
 template<class T>
 using ArraySizeTypeT = ConditionalT<sizeof(T) < 4 && sizeof(void*) >= 8, u64_t, u32_t>;
 
-namespace details {
+namespace Details {
     
 // we inherit from our allocator to ensure we're properly aligned even for size 0 allocator class 
 template<typename T, typename TAllocator>
@@ -42,7 +42,7 @@ constexpr auto getArrayOffsetOfFirst()
     return offsetof(AlignmentAndSize, first);
 }
 
-} // namespace details
+} // namespace Details
 
 template<typename T, typename TAllocator>
 class Array : public details::ArrayBase<T, TAllocator>
@@ -138,4 +138,4 @@ constexpr InplaceArray<T, TSize, TAllocator>::InplaceArray()
     Base::_capacity = TSize;
 }
 
-} // namespace nos
+} // namespace N

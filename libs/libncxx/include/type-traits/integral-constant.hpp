@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nos {
+namespace N {
 
 template<typename T, T TValue>
 struct IntegralConstant
@@ -19,4 +19,4 @@ struct FalseType : public IntegralConstant<bool, false>
 struct TrueType : public IntegralConstant<bool, true>
 {};
 
-} // namespace nos
+} // namespace N

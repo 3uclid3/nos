@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-namespace nos {
+namespace N {
 
 using nullptr_t = decltype(nullptr);
 
@@ -35,4 +35,4 @@ enum class alignment_t : size_t
 {
 };
 
-} // namespace nos
+} // namespace N

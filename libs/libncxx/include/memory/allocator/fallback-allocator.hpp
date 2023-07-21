@@ -2,7 +2,7 @@
 
 #include <memory/block.hpp>
 
-namespace nos::memory {
+namespace N::Memory {
 
 template<typename TPrimaryAllocator, typename TFallbackAllocator>
 class FallbackAllocator : private TPrimaryAllocator, private TFallbackAllocator
@@ -117,4 +117,4 @@ constexpr Block FallbackAllocator<TPrimaryAllocator, TFallbackAllocator>::reallo
     return FallbackAllocator::reallocate(block, size);
 }
 
-} // namespace nos::memory
+} // namespace N::Memory
