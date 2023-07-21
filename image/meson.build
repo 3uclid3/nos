@@ -35,25 +35,3 @@ image = custom_target('image',
         'rm', '-rf', image_dir
     ]
 )
-
-extra_qemu_args = []
-if (get_option('gdb'))
-    extra_qemu_args += ['-s', '-S']
-endif
-
-run_image = custom_target('run_image',
-    input : image,
-    output : 'run_image',
-    depends : [image],
-    build_by_default : false, console : true, install : false,
-    command : [
-        'qemu-system-' + arch, 
-        '-M', 'q35',
-        '-m', '2G',
-        '-debugcon', 'stdio',
-        '-D', log_dir / 'qemu-' + arch + '.log',
-        extra_qemu_args,
-        '-cdrom', '@INPUT@',
-        '-boot', 'd'
-    ]
-)
