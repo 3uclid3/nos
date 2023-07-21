@@ -1,6 +1,6 @@
 #include <lang/cxxabi.hpp>
 
-#include <assert.hpp>
+#include <debug/assert.hpp>
 #include <base-types.hpp>
 
 extern "C" {

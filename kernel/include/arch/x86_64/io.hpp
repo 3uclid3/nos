@@ -1,14 +1,20 @@
 #pragma once
 
 #include <base-types.hpp>
-#include <concept/same_as.hpp>
+#include <concept/same-as.hpp>
 
 namespace nos::arch::x86_64::io {
 
-namespace details {
+enum class port : u16_t
+{
+    debug = 0x00E9
+};
 
 template<typename T>
-requires(same_as<T, u8_t>)
+concept SupportedType = SameAs<T, u8_t> || SameAs<T, u16_t> || SameAs<T, u32_t>;
+
+template<typename T>
+requires(SameAs<T, u8_t>)
 static inline u8_t in(u16_t port)
 {
     T data;
@@ -19,7 +25,7 @@ static inline u8_t in(u16_t port)
 }
 
 template<typename T>
-requires(same_as<T, u16_t>)
+requires(SameAs<T, u16_t>)
 static inline u16_t in(u16_t port)
 {
     T data;
@@ -30,7 +36,7 @@ static inline u16_t in(u16_t port)
 }
 
 template<typename T>
-requires(same_as<T, u32_t>)
+requires(SameAs<T, u32_t>)
 static inline u32_t in(u16_t port)
 {
     T data;
@@ -38,6 +44,13 @@ static inline u32_t in(u16_t port)
                  : "=a"(data)
                  : "Nd"(port));
     return data;
+}
+
+template<typename T>
+requires(SupportedType<T>)
+static inline T in(port port)
+{
+    return in<T>(static_cast<u16_t>(port));
 }
 
 static inline void out(u16_t port, u8_t val)
@@ -55,42 +68,11 @@ static inline void out(u16_t port, u32_t val)
     asm volatile("outl %0, %w1" ::"a"(val), "Nd"(port));
 }
 
-} // namespace details
-
 template<typename T>
-concept io_type = same_as<T, u8_t> || same_as<T, u16_t> || same_as<T, u32_t>;
-
-enum class port : u16_t
-{
-    debug = 0x00E9
-};
-
-template<typename T>
-requires(io_type<T>)
-static inline u8_t in(port port)
-{
-    return details::in<T>(static_cast<u16_t>(port));
-}
-
-template<typename T>
-requires(io_type<T>)
-static inline u8_t in(u16_t port)
-{
-    return details::in<T>(port);
-}
-
-template<typename T>
-requires(io_type<T>)
+requires(SupportedType<T>)
 static inline void out(port port, T value)
 {
-    details::out(static_cast<u16_t>(port), value);
-}
-
-template<typename T>
-requires(io_type<T>)
-static inline void out(u16_t port, T value)
-{
-    details::out(port, value);
+    out(static_cast<u16_t>(port), value);
 }
 
 } // namespace nos::arch::x86_64::io

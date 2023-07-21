@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string_view.hpp>
+#include <string/string-view.hpp>
 
 namespace nos::arch {
 
 [[noreturn]] void hcf();
 
-void print(string_view string);
+void print(StringView string);
 void printc(char c);
 
 } // namespace nos::arch

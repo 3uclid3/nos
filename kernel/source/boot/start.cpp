@@ -4,12 +4,12 @@
 
 extern "C" void _start(void)
 {
-    if (!nos::boot::loader::is_ready())
+    if (!nos::boot::loader::isReady())
     {
         nos::arch::hcf();
     }
 
-    nos::kernel kernel;
+    nos::Kernel kernel;
 
     kernel.init();
     kernel.run();

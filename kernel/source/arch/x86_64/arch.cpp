@@ -12,7 +12,7 @@ void hcf()
     }    
 }
 
-void print(string_view string)
+void print(StringView string)
 {
     for (char c : string)
     {

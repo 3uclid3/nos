@@ -4,8 +4,8 @@ struct limine_framebuffer_request;
 
 namespace nos::boot::loader {
 
-[[nodiscard]] bool is_ready();
+[[nodiscard]] bool isReady();
 
-[[nodiscard]] limine_framebuffer_request& get_framebuffer_request();
+[[nodiscard]] limine_framebuffer_request& getFramebufferRequest();
 
 } // namespace nos::boot::loader

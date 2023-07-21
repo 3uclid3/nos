@@ -2,7 +2,7 @@
 
 namespace nos {
 
-class kernel
+class Kernel
 {
 public:
     void init();
