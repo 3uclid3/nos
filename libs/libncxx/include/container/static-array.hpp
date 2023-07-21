@@ -4,7 +4,7 @@
 #include <debug/assert.hpp>
 #include <type-traits/is-const.hpp>
 
-namespace nos {
+namespace N {
 
 template<typename T, size_t Size>
 class StaticArray
@@ -126,7 +126,7 @@ template<typename T, size_t Size>
 void StaticArray<T, Size>::swap(StaticArray& other)
 {
     // static_assert(false, "To be implemented");
-    NOS_UNUSED(other);
+    N_UNUSED(other);
 }
 
 template<typename T, size_t Size>
@@ -183,14 +183,14 @@ constexpr bool StaticArray<T, Size>::is_empty() const
 template<typename T, size_t Size>
 constexpr StaticArray<T, Size>::reference StaticArray<T, Size>::operator[](size_type index)
 {
-    NOS_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
+    N_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
     return _data[index];
 }
 
 template<typename T, size_t Size>
 constexpr StaticArray<T, Size>::const_reference StaticArray<T, Size>::operator[](size_type index) const
 {
-    NOS_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
+    N_ASSERT(index < Size, "out-of-bounds access in StaticArray<T, N>");
     return _data[index];
 }
 
@@ -234,14 +234,14 @@ template<typename T>
 void StaticArray<T, 0>::fill(const ValueType& value)
 {
     static_assert(!IsConstV<T>, "cannot fill zero-sized StaticArray of type 'const T'");
-    NOS_UNUSED(value);
+    N_UNUSED(value);
 }
 
 template<typename T>
 void StaticArray<T, 0>::swap(StaticArray& other)
 {
     static_assert(!IsConstV<T>, "cannot swap zero-sized StaticArray of type 'const T'");
-    NOS_UNUSED(other);
+    N_UNUSED(other);
 }
 
 template<typename T>
@@ -301,45 +301,45 @@ constexpr bool StaticArray<T, 0>::is_empty() const
 template<typename T>
 constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::operator[](size_type index)
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
-    NOS_UNUSED(index);
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
+    N_UNUSED(index);
+    N_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::operator[](size_type index) const
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
-    NOS_UNUSED(index);
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
+    N_UNUSED(index);
+    N_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::first() const
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
+    N_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::first()
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
+    N_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::const_reference StaticArray<T, 0>::last() const
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
+    N_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::reference StaticArray<T, 0>::last()
 {
-    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
-    NOS_UNREACHABLE();
+    N_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
+    N_UNREACHABLE();
 }
 
 template<typename T>
@@ -354,4 +354,4 @@ constexpr StaticArray<T, 0>::ValueType* StaticArray<T, 0>::data()
     return nullptr;
 }
 
-} // namespace nos
+} // namespace N

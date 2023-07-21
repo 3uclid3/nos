@@ -2,8 +2,7 @@
 
 #include <memory/block.hpp>
 
-namespace nos::memory
-{
+namespace N::Memory {
 
 TEST_CASE("Block implicit convert to ConstBlock", "[memory]")
 {
@@ -12,5 +11,4 @@ TEST_CASE("Block implicit convert to ConstBlock", "[memory]")
     CHECK(constBlock == nullblk);
 }
 
-} // namespace nos
-
+} // namespace N::Memory

@@ -2,7 +2,7 @@
 
 #include <memory/allocator/stack-allocator.hpp>
 
-namespace nos::memory {
+namespace N::Memory {
 
 using StackAllocator64 = StackAllocator<64>;
 
@@ -105,4 +105,4 @@ TEST_CASE("StackAllocator::deallocate", "[memory]")
     }
 }
 
-} // namespace nos::memory
+} // namespace N::Memory

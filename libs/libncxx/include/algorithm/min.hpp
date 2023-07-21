@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nos {
+namespace N {
 
 // TODO Compare functor
 
@@ -22,4 +22,4 @@ constexpr T min(T lhs, T rhs, Args... args)
     return min(min(lhs, rhs), args...);
 }
 
-} // namespace nos
+} // namespace N

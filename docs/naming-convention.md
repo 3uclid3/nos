@@ -5,12 +5,11 @@
     - struct
     - enum
     - alias
+    - namespace
  - camelCase 
     - variable
     - function
     - method
- - snake_case
-    - namespace
  - SCREAMING_SNAKE_CASE
     - macro constant
  - kebab-case

@@ -4,9 +4,9 @@
 #include <container/static-array.hpp>
 #include <memory/utility.hpp>
 
-namespace nos {
+namespace N {
 
-class  FakeAllocator
+class FakeAllocator
 {
 public:
     memory::Block allocate(size_t size)
@@ -29,7 +29,7 @@ public:
 
     void deallocate(memory::Block block)
     {
-        NOS_UNUSED(block);
+        N_UNUSED(block);
     }
 
 private:
@@ -58,4 +58,4 @@ TEST_CASE("Array - ctor")
     CHECK_FALSE(array.isAllocated());
 }
 
-} // namespace nos
+} // namespace N

@@ -2,7 +2,7 @@
 
 #include <base-types.hpp>
 
-namespace nos::memory {
+namespace N::Memory {
 
 constexpr size_t roundToAlignment(size_t size, alignment_t align)
 {
@@ -10,4 +10,4 @@ constexpr size_t roundToAlignment(size_t size, alignment_t align)
     return size + ((size % alignAsSizeT) == 0 ? 0 : alignAsSizeT - (size % alignAsSizeT));
 }
 
-} // namespace nos::memory
+} // namespace N::Memory

@@ -4,7 +4,7 @@
 #include <ranges/data.hpp>
 #include <ranges/size.hpp>
 
-namespace nos {
+namespace N {
 
 template<typename Char>
 class BasicStringView
@@ -111,4 +111,4 @@ constexpr auto BasicStringView<Char>::end()
     return _data + _size;
 }
 
-} // namespace nos
+} // namespace N
