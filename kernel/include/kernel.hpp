@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nos {
+namespace NOS {
 
 class Kernel
 {
@@ -9,4 +9,4 @@ public:
     void run();
 };
 
-} // namespace nos
+} // namespace NOS

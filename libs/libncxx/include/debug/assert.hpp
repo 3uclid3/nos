@@ -1,6 +1,6 @@
 #pragma once 
 
-#define N_ASSERT(condition, ...) \
+#define NOS_ASSERT(condition, ...) \
 do { \
  if (!(condition)) __builtin_trap(); \
 } while(false)

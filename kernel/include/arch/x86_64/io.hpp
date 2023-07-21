@@ -3,7 +3,7 @@
 #include <base-types.hpp>
 #include <concept/same-as.hpp>
 
-namespace nos::arch::x86_64::io {
+namespace NOS::Arch::x86_64::IO {
 
 enum class Port : u16_t
 {
@@ -75,4 +75,4 @@ static inline void out(Port port, T value)
     out(static_cast<u16_t>(port), value);
 }
 
-} // namespace nos::arch::x86_64::io
+} // namespace NOS::Arch::x86_64::IO

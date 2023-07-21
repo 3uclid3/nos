@@ -1,6 +1,6 @@
 #pragma once
 
-namespace N {
+namespace NOS {
 
 template<class T>
 struct RemoveReference

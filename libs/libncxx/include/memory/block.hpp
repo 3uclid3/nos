@@ -3,7 +3,7 @@
 #include <algorithm/min.hpp>
 #include <base-types.hpp>
 
-namespace N::Memory {
+namespace NOS::Memory {
 
 struct Block;
 struct ConstBlock;
@@ -85,4 +85,4 @@ inline void set(Block destination, byte value, size_t size)
     __builtin_memset(destination.pointer, static_cast<int>(size), static_cast<unsigned long>(value));
 }
 
-} // namespace N::Memory
+} // namespace NOS::Memory

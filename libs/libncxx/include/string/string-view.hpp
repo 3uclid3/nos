@@ -4,7 +4,7 @@
 #include <ranges/data.hpp>
 #include <ranges/size.hpp>
 
-namespace N {
+namespace NOS {
 
 template<typename Char>
 class BasicStringView
@@ -70,8 +70,8 @@ constexpr BasicStringView<Char>::BasicStringView(It first, End end)
 template<typename Char>
 template<typename Range>
 constexpr BasicStringView<Char>::BasicStringView(Range&& range)
-    : _data(ranges::data(range))
-    , _size(ranges::size(range))
+    : _data(Ranges::data(range))
+    , _size(Ranges::size(range))
 {
 }
 

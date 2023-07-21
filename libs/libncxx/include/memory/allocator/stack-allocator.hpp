@@ -4,7 +4,7 @@
 #include <memory/block.hpp>
 #include <memory/utility.hpp>
 
-namespace N::Memory {
+namespace NOS::Memory {
 
 template<size_t TSize, alignment_t TAlignment = alignment_t{16}>
 class StackAllocator
@@ -177,4 +177,4 @@ constexpr bool StackAllocator<TSize, TAlignment>::isLastAllocatedBlock(ConstBloc
     return _pointer == static_cast<const u8_t*>(block.pointer) + block.size;
 }
 
-} // namespace N::Memory
+} // namespace NOS::Memory

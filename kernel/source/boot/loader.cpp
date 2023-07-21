@@ -2,7 +2,7 @@
 
 #include <limine.h>
 
-namespace nos::boot::loader {
+namespace NOS::Boot::Loader {
 
 namespace {
 
@@ -24,4 +24,4 @@ limine_framebuffer_request& getFramebufferRequest()
     return const_cast<limine_framebuffer_request&>(framebufferRequest);
 }
 
-} // namespace nos::boot::loader
+} // namespace N::boot::loader

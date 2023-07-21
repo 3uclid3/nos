@@ -2,7 +2,7 @@
 
 #include <memory/block.hpp>
 
-namespace N::Memory {
+namespace NOS::Memory {
 
 template<typename TAllocator, size_t TMinimumAllocationSize, size_t TMaximumAllocationSize, size_t TAllocationBatchSize, size_t TMaximumSize>
 class FreeListAllocator : private TAllocator
@@ -109,4 +109,4 @@ constexpr bool FreeListAllocator<Allocator, MinimumAllocationSize, MaximumAlloca
     return size >= MinimumAllocationSize && size <= MaximumAllocationSize;
 }
 
-} // namespace N::Memory
+} // namespace NOS::Memory

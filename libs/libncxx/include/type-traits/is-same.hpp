@@ -2,7 +2,7 @@
 
 #include <type-traits/integral-constant.hpp>
 
-namespace N {
+namespace NOS {
     
 template<typename T0, typename T1>
 struct IsSame : FalseType

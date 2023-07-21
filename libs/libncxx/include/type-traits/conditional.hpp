@@ -1,6 +1,6 @@
 #pragma once
 
-namespace N {
+namespace NOS {
 
 template<bool TCondition, class TTrue, class TFalse>
 struct Conditional

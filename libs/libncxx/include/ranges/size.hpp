@@ -1,6 +1,6 @@
 #pragma once
 
-namespace N::ranges {
+namespace NOS::Ranges {
 
 template<typename Range>
 constexpr auto size(Range&& range);
@@ -11,4 +11,4 @@ constexpr auto size(Range&& range)
     return range.size();
 }
 
-} // namespace N::ranges
+} // namespace NOS::Ranges

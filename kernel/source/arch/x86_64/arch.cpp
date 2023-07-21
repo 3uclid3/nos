@@ -2,14 +2,14 @@
 
 #include <arch/x86_64/io.hpp>
 
-namespace nos::arch {
+namespace NOS::Arch {
 
 void hcf()
 {
     while (true)
     {
         asm volatile("cli; hlt");
-    }    
+    }
 }
 
 void print(StringView string)
@@ -22,7 +22,7 @@ void print(StringView string)
 
 void printc(char c)
 {
-    x86_64::io::out(x86_64::io::port::debug, static_cast<u8_t>(c));
+    x86_64::IO::out(x86_64::IO::Port::Debug, static_cast<u8_t>(c));
 }
 
-} // namespace nos::arch
+} // namespace NOS::Arch

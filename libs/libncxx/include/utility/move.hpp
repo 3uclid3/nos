@@ -2,7 +2,7 @@
 
 #include <type-traits/remove-reference.hpp>
 
-namespace N {
+namespace NOS {
 
 template<class T>
 constexpr RemoveReferenceT<T>&& move(T&& v)

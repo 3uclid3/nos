@@ -2,7 +2,7 @@
 
 #include <type-traits/integral-constant.hpp>
 
-namespace N {
+namespace NOS {
     
 template<typename T>
 struct IsConst : FalseType

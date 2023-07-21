@@ -1,7 +1,7 @@
 #pragma once
 
-namespace nos::lang::cxxabi {
+namespace NOS::Lang::CxxAbi {
 
 void init();
 
-} // namespace nos::lang::cxxabi
+} // namespace NOS::Lang::CxxAbi

@@ -2,7 +2,7 @@
 
 #include <type-traits/is-same.hpp>
 
-namespace N {
+namespace NOS {
 
 namespace Details {
 
@@ -12,6 +12,6 @@ concept SameAs = IsSameV<T0, T1>;
 } // namespace Details
 
 template<typename T0, typename T1>
-concept SameAs = (details::SameAs<T0, T1> && details::SameAs<T1, T0>);
+concept SameAs = (Details::SameAs<T0, T1> && Details::SameAs<T1, T0>);
 
-} // namespace N
+} // namespace NOS
