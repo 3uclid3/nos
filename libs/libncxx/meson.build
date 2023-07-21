@@ -20,6 +20,7 @@ libncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     tests = files(
+        'tests/container/array-tests.cpp',
         'tests/memory/allocator/null-allocator-tests.cpp',
         'tests/memory/allocator/stack-allocator-tests.cpp',
         'tests/type-traits/is-same-tests.cpp',
