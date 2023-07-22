@@ -54,4 +54,4 @@ tasks:
     
   image:run:
     cmds:
-      - qemu-system-$ARCH -M q35 -m 2G -debugcon stdio -D logs/qemu-$ARCH.log -cdrom build/image/nos-$ARCH.iso -boot d
+      - qemu-system-$ARCH -M q35 -m 2G -serial stdio -debugcon file:logs/qemu-debugcon.log -cdrom build/image/nos-$ARCH.iso -boot d

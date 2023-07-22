@@ -3,9 +3,11 @@
 #include <base-types.hpp>
 #include <concept/same-as.hpp>
 
-namespace NOS::Arch::x86_64::IO {
+namespace NOS::Arch::IO {
 
-enum class Port : u16_t
+using PortType = u16_t;
+
+enum class Port : PortType
 {
     Debug = 0x00E9
 };
@@ -13,9 +15,11 @@ enum class Port : u16_t
 template<typename T>
 concept SupportedType = SameAs<T, u8_t> || SameAs<T, u16_t> || SameAs<T, u32_t>;
 
+namespace Details {
+
 template<typename T>
 requires(SameAs<T, u8_t>)
-static inline u8_t in(u16_t port)
+static inline u8_t inImpl(PortType port)
 {
     T data;
     asm volatile("inb %w1, %b0"
@@ -26,7 +30,7 @@ static inline u8_t in(u16_t port)
 
 template<typename T>
 requires(SameAs<T, u16_t>)
-static inline u16_t in(u16_t port)
+static inline u16_t inImpl(PortType port)
 {
     T data;
     asm volatile("inw %w1, %b0"
@@ -37,7 +41,7 @@ static inline u16_t in(u16_t port)
 
 template<typename T>
 requires(SameAs<T, u32_t>)
-static inline u32_t in(u16_t port)
+static inline u32_t inImpl(PortType port)
 {
     T data;
     asm volatile("inl %w1, %b0"
@@ -46,33 +50,74 @@ static inline u32_t in(u16_t port)
     return data;
 }
 
-template<typename T>
-requires(SupportedType<T>)
-static inline T in(Port port)
-{
-    return in<T>(static_cast<u16_t>(port));
-}
-
-static inline void out(u16_t port, u8_t val)
+static inline void outImpl(PortType port, u8_t val)
 {
     asm volatile("outb %b0, %w1" ::"a"(val), "Nd"(port));
 }
 
-static inline void out(u16_t port, u16_t val)
+static inline void outImpl(PortType port, u16_t val)
 {
     asm volatile("outw %w0, %w1" ::"a"(val), "Nd"(port));
 }
 
-static inline void out(u16_t port, u32_t val)
+static inline void outImpl(PortType port, u32_t val)
 {
     asm volatile("outl %0, %w1" ::"a"(val), "Nd"(port));
+}
+
+} // namespace Details
+
+template<typename T>
+requires(SupportedType<T>)
+static inline T in(PortType port)
+{
+    return Details::inImpl<T>(port);
+}
+
+template<typename T>
+requires(SupportedType<T>)
+static inline T in(Port port)
+{
+    return Details::inImpl<T>(static_cast<PortType>(port));
+}
+
+template<typename T>
+requires(SupportedType<T>)
+static inline void out(PortType port, T value)
+{
+    Details::outImpl(static_cast<PortType>(port), value);
 }
 
 template<typename T>
 requires(SupportedType<T>)
 static inline void out(Port port, T value)
 {
-    out(static_cast<u16_t>(port), value);
+    Details::outImpl(static_cast<PortType>(port), value);
 }
 
-} // namespace NOS::Arch::x86_64::IO
+#ifdef NOS_DEBUG
+namespace Debug {
+
+static inline void printc(char c)
+{
+    out<u8_t>(Port::Debug, static_cast<u8_t>(c));
+}
+
+static inline void print(StringView str)
+{
+    for (char c : str)
+    {
+        printc(c);
+    }
+}
+
+static inline void println(StringView str)
+{
+    print(str);
+    printc('\n');
+}
+
+} // namespace Debug
+#endif
+
+} // namespace NOS::Arch::IO

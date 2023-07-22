@@ -10,19 +10,12 @@ void hcf()
     {
         asm volatile("cli; hlt");
     }
+    NOS_UNREACHABLE();
 }
 
-void print(StringView string)
+void pause()
 {
-    for (char c : string)
-    {
-        printc(c);
-    }
-}
-
-void printc(char c)
-{
-    x86_64::IO::out(x86_64::IO::Port::Debug, static_cast<u8_t>(c));
+    asm volatile("pause");
 }
 
 } // namespace NOS::Arch

@@ -12,9 +12,6 @@ namespace NOS {
 void Kernel::init()
 {
     Lang::CxxAbi::init();
-
-    Arch::print("\n");
-    Arch::print("[kernel] intialization completed\n");
 }
 
 void Kernel::run()

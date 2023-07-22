@@ -87,6 +87,9 @@ public:
     constexpr Span(const Span&) = default;
     constexpr Span& operator=(const Span&) = default;
 
+    template<size_t TSize>
+    constexpr Span(ElementType (&array)[TSize]);
+
     template<typename TIt>
     constexpr Span(TIt first, SizeType size);
 
@@ -133,6 +136,13 @@ constexpr Span<T, TExtent>::Iterator Span<T, TExtent>::end()
 {
     return _data + TExtent;
 }
+
+template<typename T>
+template<size_t TSize>
+constexpr Span<T, DynamicExtent>::Span(ElementType(&array)[TSize])
+    : _data{toAddress(array)}
+    , _size{TSize}
+{}
 
 template<typename T>
 template<typename TIt>

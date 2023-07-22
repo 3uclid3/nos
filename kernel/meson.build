@@ -6,6 +6,15 @@ src = files(
     'source/kernel.cpp'
 )
 
+# x86_64 specific files
+if arch == 'x86_64'
+    src += files(
+        'source/arch/x86_64/cpu/cpu.cpp',
+#        'source/arch/x86_64/cpu/gdt.cpp',
+        'source/arch/x86_64/drivers/serial.cpp'
+    )
+endif
+
 linker_file_path = meson.current_source_dir() / 'linker' / arch + '.ld'
 
 c_ccp_args = [

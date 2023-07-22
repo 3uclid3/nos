@@ -6,7 +6,6 @@ namespace NOS::Arch {
 
 [[noreturn]] void hcf();
 
-void print(StringView string);
-void printc(char c);
+void pause();
 
 } // namespace NOS::Arch

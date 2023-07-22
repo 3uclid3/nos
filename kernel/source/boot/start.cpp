@@ -1,18 +1,18 @@
 #include <arch/arch.hpp>
 #include <boot/loader.hpp>
+#include <drivers/serial.hpp>
 #include <kernel.hpp>
+
+namespace NOS {
+
+void start()
+{
+    Serial::earlyInitialize(Serial::Port::COM1);
+}
+
+} // namespace NOS
 
 extern "C" void _start(void)
 {
-    if (!NOS::Boot::Loader::isReady())
-    {
-        NOS::Arch::hcf();
-    }
-
-    NOS::Kernel kernel;
-
-    kernel.init();
-    kernel.run();
-
-    NOS::Arch::hcf();
+    NOS::start();
 }
