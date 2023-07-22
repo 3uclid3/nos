@@ -342,45 +342,45 @@ constexpr bool StaticArray<T, 0>::isEmpty() const
 template<typename T>
 constexpr StaticArray<T, 0>::Reference StaticArray<T, 0>::operator[](SizeType index)
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
     N_UNUSED(index);
-    N_UNREACHABLE();
+    NOS_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::ConstReference StaticArray<T, 0>::operator[](SizeType index) const
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
     N_UNUSED(index);
-    N_UNREACHABLE();
+    NOS_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::ConstReference StaticArray<T, 0>::first() const
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
-    N_UNREACHABLE();
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
+    NOS_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::Reference StaticArray<T, 0>::first()
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
-    N_UNREACHABLE();
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::first() on a zero-sized StaticArray");
+    NOS_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::ConstReference StaticArray<T, 0>::last() const
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
-    N_UNREACHABLE();
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
+    NOS_UNREACHABLE();
 }
 
 template<typename T>
 constexpr StaticArray<T, 0>::Reference StaticArray<T, 0>::last()
 {
-    N_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
-    N_UNREACHABLE();
+    NOS_ASSERT(false, "cannot call StaticArray<T, 0>::data() on a zero-sized StaticArray");
+    NOS_UNREACHABLE();
 }
 
 template<typename T>

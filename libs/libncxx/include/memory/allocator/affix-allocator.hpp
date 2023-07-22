@@ -118,7 +118,7 @@ constexpr void AffixAllocator<TAllocator, TPrefix, TSuffix>::reallocate(Block bl
     N_UNUSED(block);
     N_UNUSED(size);
 
-    N_ASSERT(false, "To be implemented");
+    NOS_ASSERT(false, "To be implemented");
 }
 
 template<typename TAllocator, typename TPrefix, typename TSuffix>
