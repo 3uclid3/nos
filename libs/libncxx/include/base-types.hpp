@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-namespace N {
+namespace NOS {
 
 using nullptr_t = decltype(nullptr);
 

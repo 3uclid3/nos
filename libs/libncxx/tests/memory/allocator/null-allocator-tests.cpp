@@ -2,7 +2,7 @@
 
 #include <memory/allocator/null-allocator.hpp>
 
-namespace N::Memory {
+namespace NOS::Memory {
 
 TEST_CASE("NullAllocator::allocate returns nullblk", "[memory]")
 {
@@ -29,4 +29,4 @@ TEST_CASE("NullAllocator::owns", "[memory]")
     }
 }
 
-} // namespace N::Memory
+} // namespace NOS::Memory

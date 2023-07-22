@@ -2,14 +2,14 @@
 
 #include <type-traits/integral-constant.hpp>
 
-namespace N {
-    
+namespace NOS {
+
 template<typename T0, typename T1>
 struct IsSame : FalseType
 {
 };
 
-template<typename T>
+template<typename T> 
 struct IsSame<T, T> : TrueType
 {
 };
@@ -17,4 +17,4 @@ struct IsSame<T, T> : TrueType
 template<typename T0, typename T1>
 static constexpr bool IsSameV = IsSame<T0, T1>::Value;
 
-} // namespace N
+} // namespace NOS

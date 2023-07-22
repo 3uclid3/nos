@@ -47,3 +47,11 @@ tasks:
   test-all:
     cmds: 
       - cd build && meson test
+
+  image:build:
+    cmds: 
+      - cd build && meson compile image
+    
+  image:run:
+    cmds:
+      - qemu-system-$ARCH -M q35 -m 2G -serial stdio -debugcon file:logs/qemu-debugcon.log -cdrom build/image/nos-$ARCH.iso -boot d

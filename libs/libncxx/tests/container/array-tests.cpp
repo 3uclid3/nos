@@ -4,7 +4,7 @@
 #include <container/static-array.hpp>
 #include <memory/utility.hpp>
 
-namespace N {
+namespace NOS {
 
 class FakeAllocator
 {
@@ -58,4 +58,4 @@ TEST_CASE("Array - ctor")
     CHECK_FALSE(array.isAllocated());
 }
 
-} // namespace N
+} // namespace NOS

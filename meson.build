@@ -23,11 +23,13 @@ c = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 ld = cxx.get_linker_id()
 arch = host_machine.cpu_family()
+buildtype = get_option('buildtype')
 
 config_dir = meson.source_root() / 'config'
 log_dir = meson.source_root() / 'log'
 sysroot_dir = meson.source_root() / 'sysroot'
 
+# arch
 supported_archs = [
 #    'aarch64',
     'x86_64'
@@ -36,6 +38,17 @@ supported_archs = [
 if arch not in supported_archs
     error('Unknown architecture ' + arch)
 endif
+
+# buildtype
+if buildtype == 'debug'
+    buildtype_args = ['-DNOS_DEBUG']
+elif buildtype == 'release'
+    buildtype_args = ['-DNOS_RELEASE']
+else
+    error('Unknown buildtype ' + arch)
+endif
+
+add_project_arguments(buildtype_args, language: ['c', 'cpp'])
 
 
 # ----------------------------------------

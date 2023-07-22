@@ -3,7 +3,7 @@
 #include <debug/assert.hpp>
 #include <memory/block.hpp>
 
-namespace N::Memory {
+namespace NOS::Memory {
 
 struct Block;
 
@@ -38,14 +38,14 @@ constexpr Block NullAllocator::allocate(size_t size)
 constexpr void NullAllocator::deallocate(Block block)
 {
     N_UNUSED(block);
-    N_ASSERT(block == nullblk);
+    NOS_ASSERT(block == nullblk);
 }
 
 constexpr Block NullAllocator::expand(Block block, size_t size)
 {
     N_UNUSED(block);
     N_UNUSED(size);
-    N_ASSERT(block == nullblk);
+    NOS_ASSERT(block == nullblk);
     return nullblk;
 }
 
@@ -53,8 +53,8 @@ constexpr Block NullAllocator::reallocate(Block block, size_t size)
 {
     N_UNUSED(block);
     N_UNUSED(size);
-    N_ASSERT(block == nullblk);
+    NOS_ASSERT(block == nullblk);
     return nullblk;
 }
 
-} // namespace N::Memory
+} // namespace NOS::Memory

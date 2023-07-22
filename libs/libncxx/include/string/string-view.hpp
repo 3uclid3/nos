@@ -1,23 +1,27 @@
 #pragma once
 
 #include <base-types.hpp>
+#include <debug/assert.hpp>
 #include <ranges/data.hpp>
 #include <ranges/size.hpp>
 
-namespace N {
+namespace NOS {
 
-template<typename Char>
+template<typename TChar>
 class BasicStringView
 {
 public:
+    using CharType = TChar;
+    using SizeType = size_t;
+
     constexpr BasicStringView() = default;
     constexpr BasicStringView(const BasicStringView&) = default;
     constexpr BasicStringView(BasicStringView&&) = default;
 
     constexpr BasicStringView(nullptr_t) = delete;
 
-    constexpr BasicStringView(const Char* str, size_t size);
-    constexpr BasicStringView(const Char* cstr);
+    constexpr BasicStringView(const CharType* str, SizeType size);
+    constexpr BasicStringView(const CharType* cstr);
 
     template<typename It, typename End>
     constexpr BasicStringView(It first, End end);
@@ -28,9 +32,11 @@ public:
     constexpr BasicStringView& operator=(const BasicStringView&) = default;
     constexpr BasicStringView& operator=(BasicStringView&&) = default;
 
-    constexpr size_t size() const;
+    constexpr CharType operator[](SizeType index) const;
 
-    constexpr const Char* data() const;
+    constexpr SizeType size() const;
+
+    constexpr const CharType* data() const;
 
     constexpr auto begin() const;
     constexpr auto end() const;
@@ -39,76 +45,83 @@ public:
     constexpr auto end();
 
 private:
-    const Char* _data{nullptr};
-    size_t _size{0};
+    const CharType* _data{nullptr};
+    SizeType _size{0};
 };
 
 using StringView = BasicStringView<char>;
 
-template<typename Char>
-constexpr BasicStringView<Char>::BasicStringView(const Char* str, size_t size)
+template<typename CharType>
+constexpr BasicStringView<CharType>::BasicStringView(const CharType* str, SizeType size)
     : _data(str)
     , _size(size)
 {
 }
 
-template<typename Char>
-constexpr BasicStringView<Char>::BasicStringView(const Char* cstr)
+template<typename CharType>
+constexpr BasicStringView<CharType>::BasicStringView(const CharType* cstr)
     : _data(cstr)
 {
     while (*cstr++ != '\0') ++_size;
 }
 
-template<typename Char>
+template<typename CharType>
 template<typename It, typename End>
-constexpr BasicStringView<Char>::BasicStringView(It first, End end)
+constexpr BasicStringView<CharType>::BasicStringView(It first, End end)
     : _data(first)
     , _size(end - first)
 {
 }
 
-template<typename Char>
+template<typename CharType>
 template<typename Range>
-constexpr BasicStringView<Char>::BasicStringView(Range&& range)
-    : _data(ranges::data(range))
-    , _size(ranges::size(range))
+constexpr BasicStringView<CharType>::BasicStringView(Range&& range)
+    : _data(Ranges::data(range))
+    , _size(Ranges::size(range))
 {
 }
 
-template<typename Char>
-constexpr size_t BasicStringView<Char>::size() const
+template<typename CharType>
+constexpr CharType BasicStringView<CharType>::operator[](SizeType index) const
+{
+    NOS_ASSERT(index < _size);
+    return _data[index];
+}
+
+template<typename CharType>
+constexpr BasicStringView<CharType>::SizeType BasicStringView<CharType>::size() const
 {
     return _size;
 }
 
-template<typename Char>
-constexpr const Char* BasicStringView<Char>::data() const
+template<typename CharType>
+constexpr const CharType* BasicStringView<CharType>::data() const
 {
     return _data;
 }
 
-template<typename Char>
-constexpr auto BasicStringView<Char>::begin() const
+template<typename CharType>
+constexpr auto BasicStringView<CharType>::begin() const
 {
     return _data;
 }
 
-template<typename Char>
-constexpr auto BasicStringView<Char>::end() const
+template<typename CharType>
+constexpr auto BasicStringView<CharType>::end() const
 {
     return _data + _size;
 }
 
-template<typename Char>
-constexpr auto BasicStringView<Char>::begin()
+template<typename CharType>
+constexpr auto BasicStringView<CharType>::begin()
 {
     return _data;
 }
 
-template<typename Char>
-constexpr auto BasicStringView<Char>::end()
+template<typename CharType>
+constexpr auto BasicStringView<CharType>::end()
 {
     return _data + _size;
 }
 
-} // namespace N
+} // namespace NOS

@@ -2,4 +2,5 @@
 
 #define N_UNUSED(var) (void)var
 
-#define N_UNREACHABLE __builtin_unreachable
+#define NOS_PACKED __attribute__((packed))
+#define NOS_UNREACHABLE __builtin_unreachable
