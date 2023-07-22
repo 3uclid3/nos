@@ -1,6 +1,7 @@
 #pragma once
 
 #include <base-types.hpp>
+#include <debug/assert.hpp>
 #include <memory/pointer-traits.hpp>
 #include <type-traits/remove-const-volatile.hpp>
 
@@ -50,6 +51,9 @@ public:
     constexpr Span(const Span&) = default;
     constexpr Span& operator=(const Span&) = default;
 
+    constexpr ConstReference operator[](SizeType index) const;
+    constexpr Reference operator[](SizeType index);
+
     constexpr ConstIterator begin() const;
     constexpr ConstIterator end() const;
 
@@ -96,6 +100,9 @@ public:
     template<typename TIt, typename TEnd>
     constexpr Span(TIt first, TEnd last);
 
+    constexpr ConstReference operator[](SizeType index) const;
+    constexpr Reference operator[](SizeType index);
+
     constexpr ConstIterator begin() const;
     constexpr ConstIterator end() const;
 
@@ -112,6 +119,20 @@ template<size_t TSize>
 requires(TSize == 0)
 constexpr Span<T, TExtent>::Span()
 {}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::ConstReference Span<T, TExtent>::operator[](SizeType index) const
+{
+    NOS_ASSERT(index < TExtent);
+    return _data[index];
+}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::Reference Span<T, TExtent>::operator[](SizeType index)
+{
+    NOS_ASSERT(index < TExtent);
+    return _data[index];
+}
 
 template<typename T, size_t TExtent>
 constexpr Span<T, TExtent>::ConstIterator Span<T, TExtent>::begin() const
@@ -139,7 +160,7 @@ constexpr Span<T, TExtent>::Iterator Span<T, TExtent>::end()
 
 template<typename T>
 template<size_t TSize>
-constexpr Span<T, DynamicExtent>::Span(ElementType(&array)[TSize])
+constexpr Span<T, DynamicExtent>::Span(ElementType (&array)[TSize])
     : _data{toAddress(array)}
     , _size{TSize}
 {}
@@ -157,6 +178,20 @@ constexpr Span<T, DynamicExtent>::Span(TIt first, TEnd last)
     : _data(toAddress(first))
     , _size(last - first)
 {}
+
+template<typename T>
+constexpr Span<T, DynamicExtent>::ConstReference Span<T, DynamicExtent>::operator[](SizeType index) const
+{
+    NOS_ASSERT(index < _size);
+    return _data[index];
+}
+
+template<typename T>
+constexpr Span<T, DynamicExtent>::Reference Span<T, DynamicExtent>::operator[](SizeType index)
+{
+    NOS_ASSERT(index < _size);
+    return _data[index];
+}
 
 template<typename T>
 constexpr Span<T, DynamicExtent>::ConstIterator Span<T, DynamicExtent>::begin() const

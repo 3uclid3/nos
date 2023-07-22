@@ -12,6 +12,8 @@ void start()
 
     Log::printc('\n');
     Log::info("Early initialization completed successfully");
+
+    Log::info("Some {}", "test");
 }
 
 } // namespace NOS
