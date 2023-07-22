@@ -17,4 +17,4 @@ struct Conditional<false, TTrue, TFalse>
 template<bool TCondition, class TTrue, class TFalse>
 using ConditionalT = typename Conditional<TCondition, TTrue, TFalse>::Type;
 
-} // namespace N
+} // namespace NOS

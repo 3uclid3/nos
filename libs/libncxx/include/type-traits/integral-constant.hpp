@@ -19,4 +19,4 @@ struct FalseType : public IntegralConstant<bool, false>
 struct TrueType : public IntegralConstant<bool, true>
 {};
 
-} // namespace N
+} // namespace NOS

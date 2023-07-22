@@ -21,6 +21,6 @@ struct RemoveReference<T&&>
 };
 
 template<typename T>
-using RemoveReferenceT = RemoveReference<T>::Type;
+using RemoveReferenceT = typename RemoveReference<T>::Type;
 
-} // namespace N
+} // namespace NOS
