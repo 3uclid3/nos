@@ -8,8 +8,8 @@ on:
       - main
 
 jobs:
-  kernel-build:
-    name: Build
+  kernel:
+    name: Kernel
     runs-on: ubuntu-22.04
     container: i73v/nos-build-machine:latest
 
