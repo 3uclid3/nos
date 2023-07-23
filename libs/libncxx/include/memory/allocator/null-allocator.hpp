@@ -1,6 +1,7 @@
 #pragma once
 
 #include <debug/assert.hpp>
+#include <def.hpp>
 #include <memory/block.hpp>
 
 namespace NOS::Memory {

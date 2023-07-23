@@ -275,14 +275,14 @@ template<typename T>
 void StaticArray<T, 0>::fill(const ValueType& value)
 {
     static_assert(!IsConstV<T>, "cannot fill zero-sized StaticArray of type 'const T'");
-    N_UNUSED(value);
+    NOS_UNUSED(value);
 }
 
 template<typename T>
 void StaticArray<T, 0>::swap(StaticArray& other)
 {
     static_assert(!IsConstV<T>, "cannot swap zero-sized StaticArray of type 'const T'");
-    N_UNUSED(other);
+    NOS_UNUSED(other);
 }
 
 template<typename T>
@@ -343,7 +343,7 @@ template<typename T>
 constexpr StaticArray<T, 0>::Reference StaticArray<T, 0>::operator[](SizeType index)
 {
     NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
-    N_UNUSED(index);
+    NOS_UNUSED(index);
     NOS_UNREACHABLE();
 }
 
@@ -351,7 +351,7 @@ template<typename T>
 constexpr StaticArray<T, 0>::ConstReference StaticArray<T, 0>::operator[](SizeType index) const
 {
     NOS_ASSERT(false, "cannot call StaticArray<T, 0>:::operator[] on a zero-sized StaticArray");
-    N_UNUSED(index);
+    NOS_UNUSED(index);
     NOS_UNREACHABLE();
 }
 
