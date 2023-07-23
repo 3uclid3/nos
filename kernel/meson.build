@@ -1,22 +1,12 @@
-src = files(
-    'source/arch' / arch / 'arch.cpp',
-    'source/boot/loader.cpp',
-    'source/boot/start.cpp',
-    'source/lang/cxxabi.cpp',
-    'source/utility/log.cpp',
-    'source/kernel.cpp'
+src_files = files(
+    './arch' / arch / 'arch.cpp',
+    './boot/loader.cpp',
+    './boot/start.cpp',
+    './lang/cxxabi.cpp',
+    './kernel.cpp'
 )
 
-# x86_64 specific files
-if arch == 'x86_64'
-    src += files(
-        'source/arch/x86_64/cpu/cpu.cpp',
-#        'source/arch/x86_64/cpu/gdt.cpp',
-        'source/arch/x86_64/drivers/serial.cpp'
-    )
-endif
-
-linker_file_path = meson.current_source_dir() / 'linker' / arch + '.ld'
+linker_file_path = meson.current_source_dir() / 'arch' / arch / 'linker.ld'
 
 c_ccp_args = [
     '-ffreestanding',
@@ -35,9 +25,8 @@ c_ccp_args = [
 ]
 
 kernel_elf = executable(
-    'kernel.elf', src,
+    'kernel.elf', src_files,
     install : false, pie : true,
-    include_directories : ['include'],
     dependencies : [
         limine_dep,
         libncxx_dep

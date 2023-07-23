@@ -1,12 +1,12 @@
 #pragma once
 
-namespace NOS {
+namespace nos {
 
-class Kernel
+class kernel
 {
 public:
     void init();
     void run();
 };
 
-} // namespace NOS
+} // namespace nos
