@@ -1,5 +1,5 @@
 ---
-name: native
+name: Native Unit Tests
 
 on:
   push:
