@@ -9,7 +9,7 @@ on:
 
 jobs:
   kernel-build:
-    name: build
+    name: Build
     runs-on: ubuntu-22.04
     container: i73v/nos-build-machine:latest
 
