@@ -1,5 +1,6 @@
 #pragma once
 
+#include <base-types.hpp>
 #include <type-traits/integral-constant.hpp>
 
 namespace NOS {

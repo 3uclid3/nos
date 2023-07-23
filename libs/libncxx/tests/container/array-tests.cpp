@@ -9,25 +9,25 @@ namespace NOS {
 class FakeAllocator
 {
 public:
-    memory::Block allocate(size_t size)
+    Memory::Block allocate(size_t size)
     {
-        size = memory::roundToAlignment(size, alignment_t{alignof(u8_t)});
+        size = Memory::roundToAlignment(size, alignment_t{alignof(u8_t)});
 
         void* newPointer = static_cast<byte*>(_pointer) + size;
 
         if (newPointer > _buffer.end())
         {
-            return memory::nullblk;
+            return Memory::nullblk;
         }
 
-        memory::Block block{_pointer, size};
+        Memory::Block block{_pointer, size};
 
         _pointer = newPointer;
 
         return block;
     }
 
-    void deallocate(memory::Block block)
+    void deallocate(Memory::Block block)
     {
         N_UNUSED(block);
     }
@@ -52,7 +52,7 @@ TEST_CASE("Array - ctor")
 
     InplaceArray<Struct, 32, FakeAllocator> array;
 
-    auto size = sizeof(details::ArrayBase<Struct, FakeAllocator>);
+    auto size = sizeof(Details::ArrayBase<Struct, FakeAllocator>);
     (void)size;
 
     CHECK_FALSE(array.isAllocated());

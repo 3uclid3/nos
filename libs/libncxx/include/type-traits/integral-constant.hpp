@@ -13,10 +13,14 @@ struct IntegralConstant
     constexpr ValueType operator()() const noexcept { return Value; }
 };
 
-struct FalseType : public IntegralConstant<bool, false>
+template<bool TValue>
+struct BoolConstant : public IntegralConstant<bool, TValue>
 {};
 
-struct TrueType : public IntegralConstant<bool, true>
+struct FalseType : public BoolConstant<false>
+{};
+
+struct TrueType : public BoolConstant<true>
 {};
 
 } // namespace NOS

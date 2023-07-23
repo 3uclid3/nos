@@ -26,11 +26,10 @@ public:
     template<typename It, typename End>
     constexpr BasicStringView(It first, End end);
 
-    template<typename Range>
-    constexpr BasicStringView(Range&& range);
-
     constexpr BasicStringView& operator=(const BasicStringView&) = default;
     constexpr BasicStringView& operator=(BasicStringView&&) = default;
+
+    constexpr bool operator==(const BasicStringView& other) const;
 
     constexpr CharType operator[](SizeType index) const;
 
@@ -74,11 +73,22 @@ constexpr BasicStringView<CharType>::BasicStringView(It first, End end)
 }
 
 template<typename CharType>
-template<typename Range>
-constexpr BasicStringView<CharType>::BasicStringView(Range&& range)
-    : _data(Ranges::data(range))
-    , _size(Ranges::size(range))
+constexpr bool BasicStringView<CharType>::operator==(const BasicStringView& other) const
 {
+    if (size() != other.size())
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < size(); ++i)
+    {
+        if (_data[i] != other._data[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 template<typename CharType>
