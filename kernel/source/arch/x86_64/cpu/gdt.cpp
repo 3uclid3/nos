@@ -10,7 +10,6 @@ namespace {
 
 // static TSS tss;
 
-
 struct NOS_PACKED Entry
 {
     u16_t limit;

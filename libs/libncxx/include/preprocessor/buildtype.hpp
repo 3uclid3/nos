@@ -19,7 +19,7 @@
 #endif
 
 #ifndef NOS_DEBUG_ONLY
-#define NOS_DEBUG_ONLY(...) 
+#define NOS_DEBUG_ONLY(...)
 #endif
 
 #ifndef NOS_IF_RELEASE

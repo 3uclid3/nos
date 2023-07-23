@@ -8,4 +8,4 @@ namespace NOS::Boot::Loader {
 
 [[nodiscard]] limine_framebuffer_request& getFramebufferRequest();
 
-} // namespace N::boot::loader
+} // namespace NOS::Boot::Loader

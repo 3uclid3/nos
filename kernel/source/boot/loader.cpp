@@ -15,8 +15,7 @@ volatile limine_framebuffer_request framebufferRequest = {
 
 bool isReady()
 {
-    return framebufferRequest.response != nullptr && 
-           framebufferRequest.response->framebuffer_count > 0;
+    return framebufferRequest.response != nullptr && framebufferRequest.response->framebuffer_count > 0;
 }
 
 limine_framebuffer_request& getFramebufferRequest()
@@ -24,4 +23,4 @@ limine_framebuffer_request& getFramebufferRequest()
     return const_cast<limine_framebuffer_request&>(framebufferRequest);
 }
 
-} // namespace N::boot::loader
+} // namespace NOS::Boot::Loader

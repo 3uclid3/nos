@@ -9,7 +9,7 @@ namespace NOS::Serial {
 
 void print(StringView str)
 {
-    for(char c : str)
+    for (char c : str)
     {
         Arch::IO::out(Arch::IO::Port::Debug, static_cast<u8_t>(c));
     }
@@ -18,7 +18,7 @@ void print(StringView str)
 void println(StringView str)
 {
     print(str);
-        
+
     Arch::IO::out(Arch::IO::Port::Debug, static_cast<u8_t>('\n'));
 }
 

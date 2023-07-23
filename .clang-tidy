@@ -1,0 +1,18 @@
+---
+Checks: '
+    bugprone=*,
+    clang-diagnostic-*,
+    clang-analyzer-*,
+    cppcoreguidelines-*,
+    modernize-*,
+    performance-*,
+    zircon-*,
+    
+    -clang-diagnostic-unused-command-line-argument,
+    -modernize-use-trailing-return-type
+'
+
+WarningsAsErrors: 'true'
+HeaderFilterRegex: ''
+
+FormatStyle: file

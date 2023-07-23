@@ -192,7 +192,6 @@ TEST_CASE("formatTo - hex presentation", "[String]")
     }
 }
 
-
 TEST_CASE("formatTo - position", "[String]")
 {
     Out out;

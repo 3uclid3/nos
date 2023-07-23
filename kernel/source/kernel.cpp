@@ -26,4 +26,4 @@ void Kernel::run()
     }
 }
 
-} // namespace N
+} // namespace NOS

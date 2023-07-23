@@ -9,7 +9,7 @@ struct IsSame : FalseType
 {
 };
 
-template<typename T> 
+template<typename T>
 struct IsSame<T, T> : TrueType
 {
 };
