@@ -29,7 +29,7 @@ public:
 
     void deallocate(Memory::Block block)
     {
-        N_UNUSED(block);
+        NOS_UNUSED(block);
     }
 
 private:
