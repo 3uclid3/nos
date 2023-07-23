@@ -57,8 +57,14 @@ public:
     constexpr ConstIterator begin() const;
     constexpr ConstIterator end() const;
 
+    constexpr ConstIterator cbegin() const;
+    constexpr ConstIterator cend() const;
+
     constexpr Iterator begin();
     constexpr Iterator end();
+
+    constexpr ConstPointer data() const;
+    constexpr Pointer data();
 
 private:
     Pointer _data{nullptr};
@@ -106,8 +112,14 @@ public:
     constexpr ConstIterator begin() const;
     constexpr ConstIterator end() const;
 
+    constexpr ConstIterator cbegin() const;
+    constexpr ConstIterator cend() const;
+
     constexpr Iterator begin();
     constexpr Iterator end();
+
+    constexpr ConstPointer data() const;
+    constexpr Pointer data();
 
 private:
     Pointer _data{nullptr};
@@ -144,6 +156,30 @@ template<typename T, size_t TExtent>
 constexpr Span<T, TExtent>::ConstIterator Span<T, TExtent>::end() const
 {
     return _data + TExtent;
+}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::ConstIterator Span<T, TExtent>::cbegin() const
+{
+    return begin();
+}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::ConstIterator Span<T, TExtent>::cend() const
+{
+    return end();
+}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::ConstPointer Span<T, TExtent>::data() const
+{
+    return _data;
+}
+
+template<typename T, size_t TExtent>
+constexpr Span<T, TExtent>::Pointer Span<T, TExtent>::data()
+{
+    return _data;
 }
 
 template<typename T, size_t TExtent>
@@ -206,6 +242,18 @@ constexpr Span<T, DynamicExtent>::ConstIterator Span<T, DynamicExtent>::end() co
 }
 
 template<typename T>
+constexpr Span<T, DynamicExtent>::ConstIterator Span<T, DynamicExtent>::cbegin() const
+{
+    return begin();
+}
+
+template<typename T>
+constexpr Span<T, DynamicExtent>::ConstIterator Span<T, DynamicExtent>::cend() const
+{
+    return end();
+}
+
+template<typename T>
 constexpr Span<T, DynamicExtent>::Iterator Span<T, DynamicExtent>::begin()
 {
     return _data;
@@ -215,6 +263,18 @@ template<typename T>
 constexpr Span<T, DynamicExtent>::Iterator Span<T, DynamicExtent>::end()
 {
     return _data + _size;
+}
+
+template<typename T>
+constexpr Span<T, DynamicExtent>::ConstPointer Span<T, DynamicExtent>::data() const
+{
+    return _data;
+}
+
+template<typename T>
+constexpr Span<T, DynamicExtent>::Pointer Span<T, DynamicExtent>::data()
+{
+    return _data;
 }
 
 } // namespace NOS
