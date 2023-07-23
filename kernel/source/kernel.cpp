@@ -7,19 +7,16 @@
 #include <boot/loader.hpp>
 #include <lang/cxxabi.hpp>
 
-namespace nos {
+namespace NOS {
 
-void kernel::init()
+void Kernel::init()
 {
-    lang::cxxabi::init();
-
-    arch::print("\n");
-    arch::print("[kernel] intialization completed\n");
+    Lang::CxxAbi::init();
 }
 
-void kernel::run()
+void Kernel::run()
 {
-    limine_framebuffer* framebuffer = boot::loader::get_framebuffer_request().response->framebuffers[0];
+    limine_framebuffer* framebuffer = Boot::Loader::getFramebufferRequest().response->framebuffers[0];
 
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
     for (size_t i = 0; i < 500; i++)
@@ -29,4 +26,4 @@ void kernel::run()
     }
 }
 
-} // namespace nos
+} // namespace N
