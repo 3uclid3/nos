@@ -20,5 +20,5 @@ jobs:
 
       - name: Compile
         run: |
-          task compile -- kernel
+          task compile -- kernel.elf
 
