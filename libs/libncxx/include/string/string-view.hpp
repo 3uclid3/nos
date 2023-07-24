@@ -1,7 +1,6 @@
 #pragma once
 
 #include <base-types.hpp>
-#include <debug/assert.hpp>
 #include <ranges/data.hpp>
 #include <ranges/size.hpp>
 
@@ -34,6 +33,7 @@ public:
     constexpr CharType operator[](SizeType index) const;
 
     constexpr SizeType size() const;
+    constexpr bool isEmpty() const;
 
     constexpr const CharType* data() const;
 
@@ -94,7 +94,6 @@ constexpr bool BasicStringView<CharType>::operator==(const BasicStringView& othe
 template<typename CharType>
 constexpr CharType BasicStringView<CharType>::operator[](SizeType index) const
 {
-    NOS_ASSERT(index < _size);
     return _data[index];
 }
 
@@ -102,6 +101,12 @@ template<typename CharType>
 constexpr BasicStringView<CharType>::SizeType BasicStringView<CharType>::size() const
 {
     return _size;
+}
+
+template<typename CharType>
+constexpr bool BasicStringView<CharType>::isEmpty() const
+{
+    return _size <= 0;
 }
 
 template<typename CharType>

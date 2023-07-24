@@ -1,12 +1,7 @@
 #pragma once
 
-namespace NOS {
+namespace NOS::Kernel {
 
-class Kernel
-{
-public:
-    void init();
-    void run();
-};
+void main();
 
-} // namespace NOS
+} // namespace NOS::Kernel

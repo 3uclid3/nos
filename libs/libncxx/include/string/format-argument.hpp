@@ -96,7 +96,7 @@ private:
 template<typename... TArguments>
 auto makeFormatArguments(const TArguments&... rawArguments)
 {
-    if constexpr(sizeof...(TArguments) > 0)
+    if constexpr (sizeof...(TArguments) > 0)
     {
         return toStaticArray<FormatArgument>({rawArguments...});
     }

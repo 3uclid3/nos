@@ -1,4 +1,5 @@
 src = files(
+#    'source/debug/assert.cpp'
 )
 
 libncxx = static_library(
@@ -20,6 +21,7 @@ libncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     tests = files(
+        'tests/debug/assert.cpp',
         'tests/container/array-tests.cpp',
         'tests/memory/allocator/null-allocator-tests.cpp',
         'tests/memory/allocator/stack-allocator-tests.cpp',

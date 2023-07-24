@@ -13,6 +13,15 @@ void hcf()
     NOS_UNREACHABLE();
 }
 
+void halt()
+{
+    while (true)
+    {
+        asm volatile("hlt");
+    }
+    NOS_UNREACHABLE();
+}
+
 void pause()
 {
     asm volatile("pause");

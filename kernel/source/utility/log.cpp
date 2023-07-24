@@ -4,7 +4,14 @@
 #include <drivers/serial.hpp>
 #include <string/format-to.hpp>
 
-namespace NOS::Log::Details {
+namespace NOS::Log {
+
+void newLine()
+{
+    Serial::write(Serial::Port::COM1, '\n');
+}
+
+namespace Details {
 
 struct SerialOutput
 {
@@ -46,4 +53,5 @@ void errorImpl(StringView fmt, Span<FormatArgument> arguments)
     output.write('\n');
 }
 
-} // namespace NOS::Log::Details
+} // namespace Details
+} // namespace NOS::Log

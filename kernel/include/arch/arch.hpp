@@ -5,6 +5,7 @@
 namespace NOS::Arch {
 
 [[noreturn]] void hcf();
+[[noreturn]] void halt();
 
 void pause();
 

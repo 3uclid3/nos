@@ -6,6 +6,8 @@
 
 namespace NOS::Log {
 
+void newLine();
+
 template<typename... TArguments>
 void info(StringView fmt, const TArguments&... rawArguments);
 

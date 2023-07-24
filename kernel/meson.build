@@ -2,9 +2,11 @@ src = files(
     'source/arch' / arch / 'arch.cpp',
     'source/boot/loader.cpp',
     'source/boot/start.cpp',
+    'source/debug/assert.cpp',
     'source/lang/cxxabi.cpp',
     'source/utility/cstring.cpp',
     'source/utility/log.cpp',
+    'source/utility/panic.cpp',
     'source/kernel.cpp'
 )
 
