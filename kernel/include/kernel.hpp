@@ -2,6 +2,7 @@
 
 namespace NOS::Kernel {
 
-void main();
+void initialize();
+void run();
 
 } // namespace NOS::Kernel
