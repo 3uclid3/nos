@@ -1,6 +1,7 @@
 #pragma once
 
 #include <base-types.hpp>
+#include <container/static-array.hpp>
 #include <debug/assert.hpp>
 #include <memory/pointer-traits.hpp>
 #include <type-traits/remove-const-volatile.hpp>
@@ -100,6 +101,12 @@ public:
     template<size_t TSize>
     constexpr Span(ElementType (&array)[TSize]);
 
+    template<typename OtherElementType, size_t TSize>
+    constexpr Span(StaticArray<OtherElementType, TSize>& staticArray);
+
+    template<typename OtherElementType, size_t TSize>
+    constexpr Span(const StaticArray<OtherElementType, TSize>& staticArray);
+
     template<typename TIt>
     constexpr Span(TIt first, SizeType size);
 
@@ -197,15 +204,31 @@ constexpr Span<T, TExtent>::Iterator Span<T, TExtent>::end()
 template<typename T>
 template<size_t TSize>
 constexpr Span<T, DynamicExtent>::Span(ElementType (&array)[TSize])
-    : _data{toAddress(array)}
-    , _size{TSize}
+    : _data(toAddress(array))
+    , _size(TSize)
 {}
+
+template<typename T>
+template<typename OtherElementType, size_t TSize>
+constexpr Span<T, DynamicExtent>::Span(StaticArray<OtherElementType, TSize>& staticArray)
+    : _data(staticArray.data())
+    , _size(TSize)
+{
+}
+
+template<typename T>
+template<typename OtherElementType, size_t TSize>
+constexpr Span<T, DynamicExtent>::Span(const StaticArray<OtherElementType, TSize>& staticArray)
+    : _data(staticArray.data())
+    , _size(TSize)
+{
+}
 
 template<typename T>
 template<typename TIt>
 constexpr Span<T, DynamicExtent>::Span(TIt first, SizeType size)
-    : _data{toAddress(first)}
-    , _size{size}
+    : _data(toAddress(first))
+    , _size(size)
 {}
 
 template<typename T>

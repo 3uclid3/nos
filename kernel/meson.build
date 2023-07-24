@@ -3,6 +3,7 @@ src = files(
     'source/boot/loader.cpp',
     'source/boot/start.cpp',
     'source/lang/cxxabi.cpp',
+    'source/utility/cstring.cpp',
     'source/utility/log.cpp',
     'source/kernel.cpp'
 )

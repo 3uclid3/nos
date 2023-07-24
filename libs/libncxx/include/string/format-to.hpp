@@ -4,6 +4,7 @@
 
 #include <base-types.hpp>
 #include <container/span.hpp>
+#include <container/static-array.hpp>
 #include <string/format-argument.hpp>
 #include <string/format-specification.hpp>
 #include <string/string-view.hpp>
@@ -19,7 +20,7 @@ void formatTo(TOut& out, StringView fmt, Span<FormatArgument> arguments);
 template<typename TOut, typename... TArguments>
 void formatTo(TOut& out, StringView fmt, TArguments... rawArguments)
 {
-    FormatArgument arguments[] = {rawArguments...};
+    StaticArray arguments = makeFormatArguments(rawArguments...);
     formatTo(out, fmt, Span<FormatArgument>(arguments));
 }
 

@@ -5,6 +5,11 @@
 
 namespace NOS {
 
+class FormatArgument;
+
+template<typename... TArguments>
+auto makeFormatArguments(const TArguments&... rawArguments);
+
 class FormatArgument
 {
 public:
@@ -87,6 +92,19 @@ private:
     Type _type;
     Data _data;
 };
+
+template<typename... TArguments>
+auto makeFormatArguments(const TArguments&... rawArguments)
+{
+    if constexpr(sizeof...(TArguments) > 0)
+    {
+        return toStaticArray<FormatArgument>({rawArguments...});
+    }
+    else
+    {
+        return StaticArray<FormatArgument, 0>{};
+    }
+}
 
 constexpr FormatArgument::FormatArgument(bool v)
     : _type(Type::Bool)

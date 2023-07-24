@@ -15,7 +15,7 @@ const StringView toStringView(Integral auto value, Span<char> buffer, int base =
 
     if (base < 2 || base > 36)
     {
-        return {};
+        return StringView{};
     }
 
     StringView entries = upperCase ? UpperCasesEntries : LowerCasesEntries;

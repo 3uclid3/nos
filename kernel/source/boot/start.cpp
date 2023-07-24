@@ -10,10 +10,7 @@ void start()
 {
     Serial::earlyInitialize(Serial::Port::COM1);
 
-    Log::printc('\n');
     Log::info("Early initialization completed successfully");
-
-    Log::info("Some {}", "test");
 }
 
 } // namespace NOS
