@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <container/static-array.hpp>
-#include <string/format.hpp>
+#include <string/format-to.hpp>
 #include <string/string-view.hpp>
 
 namespace NOS {

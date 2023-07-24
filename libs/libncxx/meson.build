@@ -24,7 +24,7 @@ if not meson.is_cross_build()
         'tests/memory/allocator/null-allocator-tests.cpp',
         'tests/memory/allocator/stack-allocator-tests.cpp',
         'tests/type-traits/is-same-tests.cpp',
-        'tests/string/format-tests.cpp',
+        'tests/string/format-to-tests.cpp',
         'tests/string/string-view-tests.cpp',
         'tests/string/to-string-view-tests.cpp'
     )
