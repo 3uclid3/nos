@@ -5,7 +5,10 @@ on:
   push:
   pull_request:
     branches:
-     - main
+      - main
+  schedule:
+    # At 03:00 on Sunday
+    - cron: '0 3 * * 0'
 
 jobs:
   analyze:
@@ -27,7 +30,7 @@ jobs:
 
       - name: Setup Kernel
         run: |
-          task kernel:setup BUILD_TYPE=debug
+          task setup-kernel-only BUILD_TYPE=debug
 
       - name: Compile Kernel
         run: |

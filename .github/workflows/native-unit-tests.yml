@@ -24,12 +24,12 @@ jobs:
 
       - name: Setup
         run: |
-          task native:setup BUILD_TYPE=${{ matrix.build-type }}
+          task setup-native-only BUILD_TYPE=${{ matrix.build-type }}
 
-      - name: Compile - libncxx
+      - name: Compile - ncxx
         run: |
-          task native:compile BUILD_TYPE=${{ matrix.build-type }} -- libncxx
+          task native:compile BUILD_TYPE=${{ matrix.build-type }} -- ncxx
 
-      - name: Test - libncxx
+      - name: Test - ncxx
         run: |
-          task native:test BUILD_TYPE=${{ matrix.build-type }} -- libncxx
+          task native:test BUILD_TYPE=${{ matrix.build-type }} -- ncxx

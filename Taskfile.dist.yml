@@ -6,13 +6,29 @@ env:
   BUILD_TYPE: '{{.BUILD_TYPE | default "debug"}}'
   BUILD_DIR: 'build'
 
-dotenv: ['.env']
+dotenv: [ '.env' ]
 
 tasks:
-  kernel:setup:
-    cmds: 
+  # Setup and clean up tasks
+  setup:
+    cmds:
+      - task: setup-kernel-only
+      - task: setup-native-only
+
+  setup-kernel-only:
+    cmds:
       - meson setup $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE --buildtype $BUILD_TYPE --cross-file config/$ARCH/kernel.cross-file
 
+  setup-native-only:
+    cmds:
+      - meson setup $BUILD_DIR/native/$BUILD_TYPE --buildtype $BUILD_TYPE --native-file config/native.native-file
+
+  # Clean up tasks
+  clear:
+    cmds:
+      - rm -r $BUILD_DIR
+
+  # Kernel tasks
   kernel:compile:
     cmds:
       - cd $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE && meson compile kernel.elf
@@ -25,10 +41,7 @@ tasks:
     cmds:
       - qemu-system-$ARCH -M q35 -m 2G -serial stdio -debugcon file:logs/qemu-debugcon.log -cdrom $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE/image/nos-$ARCH.iso -boot d
 
-  native:setup:
-    cmds: 
-      - meson setup $BUILD_DIR/native/$BUILD_TYPE --buildtype $BUILD_TYPE --native-file config/native.native-file
-
+  # Native tasks
   native:compile:
     cmds:
       - cd $BUILD_DIR/native/$BUILD_TYPE && meson compile {{.CLI_ARGS}}
@@ -36,7 +49,3 @@ tasks:
   native:test:
     cmds:
       - cd $BUILD_DIR/native/$BUILD_TYPE && meson test {{.CLI_ARGS}}
-
-  clear:
-    cmds:
-      - rm -r $BUILD_DIR

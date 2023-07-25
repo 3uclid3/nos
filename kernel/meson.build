@@ -1,21 +1,21 @@
 src = files(
-    'source/arch' / arch / 'arch.cpp',
-    'source/debug/assert.cpp',
-    'source/lang/cxxabi.cpp',
-    'source/lang/ubsan.cpp',
-    'source/utility/cstring.cpp',
-    'source/utility/log.cpp',
-    'source/utility/panic.cpp',
-    'source/kernel.cpp',
-    'source/start.cpp',
+    'kernel/arch' / arch / 'arch.cpp',
+    'kernel/debug/assert.cpp',
+    'kernel/lang/cxxabi.cpp',
+    'kernel/lang/ubsan.cpp',
+    'kernel/utility/cstring.cpp',
+    'kernel/utility/log.cpp',
+    'kernel/utility/panic.cpp',
+    'kernel/kernel.cpp',
+    'kernel/start.cpp',
 )
 
 # x86_64 specific files
 if arch == 'x86_64'
     src += files(
-        'source/arch/x86_64/cpu/cpu.cpp',
-#        'source/arch/x86_64/cpu/gdt.cpp',
-        'source/arch/x86_64/drivers/serial.cpp'
+        'kernel/arch/x86_64/cpu/cpu.cpp',
+#        'kernel/arch/x86_64/cpu/gdt.cpp',
+        'kernel/arch/x86_64/drivers/serial.cpp'
     )
 endif
 
@@ -39,10 +39,10 @@ endif
 kernel = executable(
     'kernel.elf', src,
     install : false, pie : true,
-    include_directories : ['include'],
+    include_directories : ['.'],
     dependencies : [
         limine_dep,
-        libncxx_dep
+        ncxx_dep
     ],
     c_args : [
         c_ccp_args

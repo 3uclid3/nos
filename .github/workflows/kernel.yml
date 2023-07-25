@@ -24,7 +24,7 @@ jobs:
 
       - name: Setup
         run: |
-          task kernel:setup BUILD_TYPE=${{ matrix.build-type }}
+          task setup-kernel-only BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Compile
         run: |

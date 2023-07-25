@@ -124,6 +124,10 @@ add_project_arguments(
     language: ['c', 'cpp']
 )
 
+if arch == 'x86_64'
+    add_project_arguments(['-DNOS_ARCH_X86_64'], language: ['c', 'cpp'])
+endif
+
 if meson.is_cross_build()
     add_project_arguments(
         [
@@ -153,7 +157,7 @@ if get_option('libs_ubsan')
     libs_c_ccp_args += '-fsanitize=undefined'
 endif
 
-subdir('libs/libncxx')
+subdir('libs/ncxx')
 
 
 # ----------------------------------------

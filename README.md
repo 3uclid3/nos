@@ -12,6 +12,10 @@ chmod +x llvm.sh
 sudo ./llvm.sh 16 all
 ```
 
+## Project Structure
+
+[Canonical Project Structure](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1204r0.html)
+
 ## Resources 
 
  - [OS Dev](https://wiki.osdev.org/)
