@@ -6,10 +6,7 @@ project('nos', ['c', 'cpp'],
         'cpp_std=c++20',
         
         'cpp_eh=none',
-        'cpp_rtti=false',
-
-#        'werror=true',
-#        'warning_level=2'
+        'cpp_rtti=false'
     ]
 )
 
@@ -109,6 +106,24 @@ if cxx.get_id() == 'gcc'
             '-Wuseless-cast', # warn if you perform a cast to the same type
         ],
         language: ['cpp']
+    )
+endif
+
+
+# ----------------------------------------
+# Cross Build
+
+if meson.is_cross_build()
+    add_project_arguments(
+        [
+            '-ffreestanding',
+            '-fno-stack-protector',
+            '-fno-stack-check',
+            '-fno-omit-frame-pointer',
+            '-fno-lto',
+            '-fno-pic'
+        ],
+        language: ['c', 'cpp']
     )
 endif
 

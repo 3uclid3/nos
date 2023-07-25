@@ -1,5 +1,5 @@
 src = files(
-#    'source/debug/assert.cpp'
+    'source/string/format.cpp'
 )
 
 libncxx = static_library(

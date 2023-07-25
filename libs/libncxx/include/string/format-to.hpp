@@ -12,13 +12,13 @@
 namespace NOS {
 
 template<typename TOut, typename... TArguments>
-void formatTo(TOut& out, StringView fmt, TArguments... rawArguments);
+void formatTo(TOut& out, StringView fmt, const TArguments&... rawArguments);
 
 template<typename TOut>
 void formatTo(TOut& out, StringView fmt, Span<FormatArgument> arguments);
 
 template<typename TOut, typename... TArguments>
-void formatTo(TOut& out, StringView fmt, TArguments... rawArguments)
+void formatTo(TOut& out, StringView fmt, const TArguments&... rawArguments)
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
     formatTo(out, fmt, Span<FormatArgument>(arguments));

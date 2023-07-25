@@ -21,14 +21,8 @@ endif
 linker_file_path = meson.current_source_dir() / 'linker' / arch + '.ld'
 
 c_ccp_args = [
-    '-ffreestanding',
-    '-fno-stack-protector',
-    '-fno-stack-check',
-    '-fno-lto',
-#        '-fPIC',
     '-m64',
     '-march=x86-64',
-#        '-mabi=sysv',
     '-mno-80387',
     '-mno-mmx',
     '-mno-sse',
@@ -53,10 +47,8 @@ kernel_elf = executable(
         '-MP'
     ],
     link_args : [
-#        '-Xlinker', '-m elf_x86_64',
         '-nostdlib',
         '-static',
-        '-Xlinker', '-pie',
         '-Xlinker', '--no-dynamic-linker',
         '-z', 'text',
         '-z', 'max-page-size=0x1000',
