@@ -111,16 +111,22 @@ endif
 
 
 # ----------------------------------------
-# Cross Build
+# Compilation arguments
+
+add_project_arguments(
+    [
+        '-ffreestanding',
+        '-fno-stack-protector',
+        '-fno-stack-check',
+        '-fno-omit-frame-pointer',
+        '-fno-lto'
+    ],
+    language: ['c', 'cpp']
+)
 
 if meson.is_cross_build()
     add_project_arguments(
         [
-            '-ffreestanding',
-            '-fno-stack-protector',
-            '-fno-stack-check',
-            '-fno-omit-frame-pointer',
-            '-fno-lto',
             '-fno-pic'
         ],
         language: ['c', 'cpp']
@@ -142,6 +148,11 @@ endif
 # ----------------------------------------
 # libs
 
+libs_c_ccp_args = []
+if get_option('libs_ubsan')
+    libs_c_ccp_args += '-fsanitize=undefined'
+endif
+
 subdir('libs/libncxx')
 
 
@@ -149,10 +160,6 @@ subdir('libs/libncxx')
 # Kernel
 
 subdir('kernel')
-
-
-# ----------------------------------------
-# User
 
 
 # ----------------------------------------

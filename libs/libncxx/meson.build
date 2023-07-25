@@ -7,10 +7,8 @@ libncxx = static_library(
     install : false,
     name_prefix: '',
     include_directories : ['source', 'include'],
-    c_args : [
-        '-ffreestanding',
-        '-std=gnu11'
-    ],
+    c_args : [libs_c_ccp_args],
+    cpp_args : [libs_c_ccp_args],
 )
 
 libncxx_dep  = declare_dependency(

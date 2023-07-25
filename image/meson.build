@@ -7,15 +7,15 @@ image_files = [
 ]
 
 image = custom_target('image',
-    input : [kernel_elf],
+    input : [kernel],
     output : project_name + '-' + arch + '.iso',
     build_by_default : true, console : true, install : false,
-    depends : [kernel_elf],
+    depends : [kernel],
     command : [
         'rm', '-rf', image_dir, '&&',
         'mkdir', '-p', image_dir, '&&',
         'mkdir', '-p', image_dir / 'EFI/BOOT', '&&',
-        'cp', '@INPUT0@', image_dir / kernel_elf.name(), '&&',
+        'cp', '@INPUT0@', image_dir / kernel.name(), '&&',
         'cp', image_files, image_dir, '&&',
         'cp', limine_dir / 'BOOTAA64.EFI', image_dir / 'EFI/BOOT/BOOTAA64.EFI', '&&',
         'cp', limine_dir / 'BOOTIA32.EFI', image_dir / 'EFI/BOOT/BOOTIA32.EFI', '&&',

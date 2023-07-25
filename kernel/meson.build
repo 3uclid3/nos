@@ -2,6 +2,7 @@ src = files(
     'source/arch' / arch / 'arch.cpp',
     'source/debug/assert.cpp',
     'source/lang/cxxabi.cpp',
+    'source/lang/ubsan.cpp',
     'source/utility/cstring.cpp',
     'source/utility/log.cpp',
     'source/utility/panic.cpp',
@@ -30,7 +31,11 @@ c_ccp_args = [
     '-mno-red-zone'
 ]
 
-kernel_elf = executable(
+if get_option('kernel_ubsan')
+    c_ccp_args += '-fsanitize=undefined'
+endif
+
+kernel = executable(
     'kernel.elf', src,
     install : false, pie : true,
     include_directories : ['include'],
@@ -39,8 +44,7 @@ kernel_elf = executable(
         libncxx_dep
     ],
     c_args : [
-        c_ccp_args,
-        '-std=gnu11'
+        c_ccp_args
     ],
     cpp_args : [
         c_ccp_args,

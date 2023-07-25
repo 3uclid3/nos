@@ -1,2 +1,3 @@
 
-option('gdb', type : 'boolean', value : false, description : 'Add -s -S to qemu. Enables \'qemu_debug\'')
+option('kernel_ubsan', type : 'boolean', value : true, description : 'Enable undefined behavior sanitizer in kernel')
+option('libs_ubsan', type : 'boolean', value : true, description : 'Enable undefined behavior sanitizer in libs')
