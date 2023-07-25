@@ -29,4 +29,3 @@ jobs:
       - name: Compile
         run: |
           task kernel:compile BUILD_TYPE=${{ matrix.build-type }}
-

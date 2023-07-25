@@ -23,6 +23,7 @@ linker_file_path = meson.current_source_dir() / 'linker' / arch + '.ld'
 
 c_ccp_args = [
     '-m64',
+    '-mcmodel=large',
     '-march=x86-64',
     '-mno-80387',
     '-mno-mmx',
