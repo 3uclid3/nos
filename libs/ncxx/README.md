@@ -1,3 +1,3 @@
-# libncxx
+# ncxx
 
 C++ non-standard library.

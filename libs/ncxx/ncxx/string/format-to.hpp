@@ -8,6 +8,7 @@
 #include <ncxx/string/format-argument.hpp>
 #include <ncxx/string/format-specification.hpp>
 #include <ncxx/string/string-view.hpp>
+#include <ncxx/utility/is-digit.hpp>
 
 namespace NOS {
 
