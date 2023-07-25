@@ -3,10 +3,11 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"DavidAnson.vscode-markdownlint",
+				"davidanson.vscode-markdownlint",
 				"doinkythederp.nasm-language-support",
 				"eamodio.gitlens",
 				"github.vscode-github-actions",
+				"github.vscode-pull-request-github",
 				"mesonbuild.mesonbuild",
 				"ms-vscode.cpptools",
 				"redhat.vscode-yaml"
