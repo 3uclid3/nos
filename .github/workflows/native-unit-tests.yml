@@ -13,18 +13,23 @@ jobs:
     runs-on: ubuntu-22.04
     container: i73v/nos-build-machine:latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [debug, release]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup
         run: |
-          task setup:native
+          task native:setup BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Compile - libncxx
         run: |
-          task compile -- libncxx
+          task compile BUILD_TYPE=${{ matrix.build-type }} -- libncxx
 
       - name: Test - libncxx
         run: |
-          task test -- libncxx
+          task test BUILD_TYPE=${{ matrix.build-type }} -- libncxx

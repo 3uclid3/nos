@@ -13,15 +13,20 @@ jobs:
     runs-on: ubuntu-22.04
     container: i73v/nos-build-machine:latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [debug, release]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup
         run: |
-          task setup:kernel
+          task kernel:setup BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Compile
         run: |
-          task compile -- kernel.elf
+          task kernel:compile BUILD_TYPE=${{ matrix.build-type }}
 
