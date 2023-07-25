@@ -20,4 +20,4 @@ void run()
 {
 }
 
-} // namespace NOS
+} // namespace NOS::Kernel

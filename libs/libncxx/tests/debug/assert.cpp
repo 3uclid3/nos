@@ -29,4 +29,4 @@ void triggerFailure(StringView condition, StringView message, SourceLocation loc
     FAIL(string.c_str());
 }
 
-} // namespace NOS::Assert
+} // namespace NOS::Debug::Assert

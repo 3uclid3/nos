@@ -11,4 +11,4 @@ TEST_CASE("formatTo - bool", "[String]")
     CHECK(format("{} {}", "Hello", "World") == "Hello World");
 }
 
-}
+} // namespace NOS
