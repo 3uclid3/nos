@@ -1,0 +1,16 @@
+{
+	"image": "i73v/nos-build-machine:latest",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"DavidAnson.vscode-markdownlint",
+				"doinkythederp.nasm-language-support",
+				"eamodio.gitlens",
+				"github.vscode-github-actions",
+				"mesonbuild.mesonbuild",
+				"ms-vscode.cpptools",
+				"redhat.vscode-yaml"
+			]
+		}
+	}
+}
