@@ -1,8 +1,8 @@
 #pragma once
 
 #include <ncxx/debug/assert.hpp>
-#include <ncxx/def.hpp>
 #include <ncxx/memory/block.hpp>
+#include <ncxx/preprocessor/unused.hpp>
 
 namespace NOS::Memory {
 

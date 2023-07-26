@@ -2,13 +2,13 @@
 
 #include <ncxx/string/to-string-view.hpp>
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/container/span.hpp>
 #include <ncxx/container/static-array.hpp>
 #include <ncxx/string/format-argument.hpp>
 #include <ncxx/string/format-specification.hpp>
+#include <ncxx/string/is-digit.hpp>
 #include <ncxx/string/string-view.hpp>
-#include <ncxx/utility/is-digit.hpp>
 
 namespace NOS {
 

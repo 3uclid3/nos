@@ -3,8 +3,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <ncxx/def.hpp>
-
 namespace NOS {
 
 using nullptr_t = decltype(nullptr);
@@ -28,9 +26,8 @@ using f128_t = long double;
 
 using size_t = ::size_t;
 
-enum class byte : u8_t
+enum class byte_t : u8_t
 {
-    zero = 0x00
 };
 
 enum class alignment_t : size_t

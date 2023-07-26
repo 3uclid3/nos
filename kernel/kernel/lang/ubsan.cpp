@@ -1,6 +1,6 @@
 #include <kernel/arch/arch.hpp>
 #include <kernel/utility/log.hpp>
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/preprocessor/unused.hpp>
 
 namespace NOS::UBSan {

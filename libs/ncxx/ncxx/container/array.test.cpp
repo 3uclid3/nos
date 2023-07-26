@@ -13,7 +13,7 @@ public:
     {
         size = Memory::roundToAlignment(size, alignment_t{alignof(u8_t)});
 
-        void* newPointer = static_cast<byte*>(_pointer) + size;
+        void* newPointer = static_cast<byte_t*>(_pointer) + size;
 
         if (newPointer > _buffer.end())
         {
@@ -51,9 +51,6 @@ TEST_CASE("Array - ctor")
     };
 
     InplaceArray<Struct, 32, FakeAllocator> array;
-
-    auto size = sizeof(Details::ArrayBase<Struct, FakeAllocator>);
-    (void)size;
 
     CHECK_FALSE(array.isAllocated());
 }

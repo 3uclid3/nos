@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/container/static-array.hpp>
 #include <ncxx/debug/assert.hpp>
 #include <ncxx/memory/pointer-traits.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ncxx/algorithm/min.hpp>
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 
 namespace NOS::Memory {
 
@@ -37,8 +37,8 @@ void copy(Block destination, ConstBlock source, size_t size);
 void move(Block destination, ConstBlock source);
 void move(Block destination, ConstBlock source, size_t size);
 
-void set(Block destination, byte value);
-void set(Block destination, byte value, size_t size);
+void set(Block destination, byte_t value);
+void set(Block destination, byte_t value, size_t size);
 
 constexpr Block::operator ConstBlock() const
 {
@@ -75,12 +75,12 @@ inline void move(Block destination, ConstBlock source, size_t size)
     __builtin_memmove(destination.pointer, source.pointer, size);
 }
 
-inline void set(Block destination, byte value)
+inline void set(Block destination, byte_t value)
 {
     set(destination, value, destination.size);
 }
 
-inline void set(Block destination, byte value, size_t size)
+inline void set(Block destination, byte_t value, size_t size)
 {
     __builtin_memset(destination.pointer, static_cast<int>(size), static_cast<unsigned long>(value));
 }

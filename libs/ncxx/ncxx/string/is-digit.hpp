@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 
 namespace NOS {
 

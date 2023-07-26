@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/ranges/data.hpp>
 #include <ncxx/ranges/size.hpp>
 

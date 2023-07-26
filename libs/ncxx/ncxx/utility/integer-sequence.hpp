@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/type-trait/is-integral.hpp>
 
 #if !__has_builtin(__make_integer_seq)

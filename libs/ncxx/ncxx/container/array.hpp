@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/memory/block.hpp>
 #include <ncxx/type-trait/conditional.hpp>
 
@@ -31,8 +31,8 @@ protected:
 template<typename T, typename TAllocator>
 struct ArrayAlignmentAndSize
 {
-    alignas(ArrayBase<T, TAllocator>) byte base[sizeof(ArrayBase<T, TAllocator>)];
-    alignas(T) byte first[sizeof(T)];
+    alignas(ArrayBase<T, TAllocator>) byte_t base[sizeof(ArrayBase<T, TAllocator>)];
+    alignas(T) byte_t first[sizeof(T)];
 };
 
 template<typename T, typename TAllocator>
@@ -73,7 +73,7 @@ public:
     constexpr InplaceArray();
 
 private:
-    alignas(T) byte _inplace[TSize * sizeof(T)];
+    alignas(T) byte_t _inplace[TSize * sizeof(T)];
 };
 
 template<typename T, typename TAllocator>
@@ -100,7 +100,7 @@ constexpr void* Array<T, TAllocator>::getAddressOfFirst() const
     /// Find the address of the first element. For this pointer math to be valid
     /// with small-size of 0 for T with lots of alignment, it's important that
     /// ArrayStorage is properly-aligned even for small-size of 0.
-    return const_cast<void*>(reinterpret_cast<const void*>(reinterpret_cast<const byte*>(this) + Details::getArrayOffsetOfFirst<T, TAllocator>()));
+    return const_cast<void*>(reinterpret_cast<const void*>(reinterpret_cast<const byte_t*>(this) + Details::getArrayOffsetOfFirst<T, TAllocator>()));
 }
 
 template<typename T, typename TAllocator>

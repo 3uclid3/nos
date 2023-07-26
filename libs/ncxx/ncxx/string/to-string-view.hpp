@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/concept/integral.hpp>
 #include <ncxx/container/span.hpp>
 #include <ncxx/string/string-view.hpp>

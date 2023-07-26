@@ -1,6 +1,7 @@
 #include <kernel/arch/arch.hpp>
 
 #include <kernel/arch/x86_64/io.hpp>
+#include <ncxx/preprocessor/unreachable.hpp>
 
 namespace NOS::Arch {
 

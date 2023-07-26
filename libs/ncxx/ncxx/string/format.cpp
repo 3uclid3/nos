@@ -1,6 +1,6 @@
 #include <ncxx/string/format.hpp>
 
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/container/static-array.hpp>
 #include <ncxx/string/format-to.hpp>
 #include <ncxx/utility/as-const.hpp>

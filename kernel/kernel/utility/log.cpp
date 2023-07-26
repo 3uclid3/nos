@@ -1,7 +1,7 @@
 #include <kernel/utility/log.hpp>
 
 #include <kernel/drivers/serial.hpp>
-#include <ncxx/base-types.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/string/format-to.hpp>
 
 namespace NOS::Log {
