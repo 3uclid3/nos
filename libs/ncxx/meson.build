@@ -50,6 +50,8 @@ if not meson.is_cross_build()
         'ncxx/type-list/type-list-size.test.cpp',
         'ncxx/type-list/types-contains.test.cpp',
         'ncxx/type-list/types-size.test.cpp',
+        'ncxx/type-trait/type-for-bits.test.cpp',
+        'ncxx/type-trait/type-for-bytes.test.cpp',
         'ncxx/utility/on-scope-exit.test.cpp',
         'ncxx/basic-types.test.cpp'
     )
