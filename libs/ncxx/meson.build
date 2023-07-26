@@ -18,8 +18,9 @@ ncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     test = files(
-        'ncxx/debug/assert.test-helper.cpp',
         'ncxx/container/array.test.cpp',
+        'ncxx/debug/assert.test-helper.cpp',
+        'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
         'ncxx/type-trait/is-same.test.cpp',
