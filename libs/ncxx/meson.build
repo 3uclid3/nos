@@ -27,6 +27,7 @@ if not meson.is_cross_build()
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',
         'ncxx/string/to-string-view.test.cpp',
+        'ncxx/utility/on-scope-exit.test.cpp',
         'ncxx/basic-types.test.cpp'
     )
 
