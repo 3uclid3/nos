@@ -95,11 +95,11 @@ TEST_CASE("formatTo - s32_t", "[String]")
 {
     Out out;
 
-    formatTo(out, "Format a s32 '{}'", s32_t{-42});
+    formatTo(out, "Format a s32_t '{}'", s32_t{-42});
 
     StringView sv = out.view();
 
-    CHECK(sv == "Format a s32 '-42'");
+    CHECK(sv == "Format a s32_t '-42'");
 }
 
 TEST_CASE("formatTo - u32_t", "[String]")

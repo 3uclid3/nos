@@ -43,7 +43,7 @@ TEST_CASE("toStringView", "[String]")
             CHECK(result == "1010");
         }
 
-        SECTION("s32")
+        SECTION("s32_t")
         {
             auto result = toStringView(s32_t{0b01010}, buffer, 2);
             CHECK(result == "1010");
@@ -94,7 +94,7 @@ TEST_CASE("toStringView", "[String]")
             CHECK(result == "42");
         }
 
-        SECTION("s32")
+        SECTION("s32_t")
         {
             auto result = toStringView(s32_t{-42}, buffer, 10);
             CHECK(result == "-42");
@@ -147,7 +147,7 @@ TEST_CASE("toStringView", "[String]")
                 CHECK(result == "fefefefe");
             }
 
-            SECTION("s32")
+            SECTION("s32_t")
             {
                 auto result = toStringView(s32_t{0x2e2e2e2e}, buffer, 16);
                 CHECK(result == "2e2e2e2e");
@@ -198,7 +198,7 @@ TEST_CASE("toStringView", "[String]")
                 CHECK(result == "FEFEFEFE");
             }
 
-            SECTION("s32")
+            SECTION("s32_t")
             {
                 auto result = toStringView(s32_t{0x2E2E2E2E}, buffer, 16, true);
                 CHECK(result == "2E2E2E2E");

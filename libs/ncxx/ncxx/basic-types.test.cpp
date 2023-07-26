@@ -18,4 +18,4 @@ static_assert(sizeof(f32_t) == 4);
 static_assert(sizeof(f64_t) == 8);
 static_assert(sizeof(f128_t) == 16);
 
-} // namespace ASS
+} // namespace NOS

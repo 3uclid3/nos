@@ -1,7 +1,7 @@
 #include <kernel/lang/cxxabi.hpp>
 
-#include <ncxx/debug/assert.hpp>
 #include <ncxx/basic-types.hpp>
+#include <ncxx/debug/assert.hpp>
 
 extern "C" {
 

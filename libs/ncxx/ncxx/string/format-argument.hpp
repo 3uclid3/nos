@@ -78,7 +78,7 @@ private:
 
         s8_t s8;
         s16_t s16;
-        s32_t s32;
+        s32_t s32_t;
         s64_t s64;
 
         u8_t u8;
@@ -133,7 +133,7 @@ constexpr FormatArgument::FormatArgument(s16_t v)
 constexpr FormatArgument::FormatArgument(s32_t v)
     : _type(Type::S32)
 {
-    _data.s32 = v;
+    _data.s32_t = v;
 }
 
 constexpr FormatArgument::FormatArgument(s64_t v)
@@ -209,7 +209,7 @@ constexpr s16_t FormatArgument::asS16() const
 constexpr s32_t FormatArgument::asS32() const
 {
     NOS_ASSERT(_type == Type::S32);
-    return _data.s32;
+    return _data.s32_t;
 }
 
 constexpr s64_t FormatArgument::asS64() const

@@ -34,4 +34,10 @@ enum class alignment_t : size_t
 {
 };
 
+enum class Signed
+{
+    Yes,
+    No
+};
+
 } // namespace NOS
