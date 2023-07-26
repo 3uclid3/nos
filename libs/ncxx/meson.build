@@ -53,7 +53,8 @@ if not meson.is_cross_build()
         'ncxx/type-trait/is-array.test.cpp',
         'ncxx/type-trait/is-static-array.test.cpp',
         'ncxx/type-trait/type-for-bits.test.cpp',
-        'ncxx/type-trait/type-for-bytes.test.cpp',
+        'ncxx/type-trait/type-full-name.test.cpp',
+        'ncxx/type-trait/type-name.test.cpp',
         'ncxx/utility/on-scope-exit.test.cpp',
         'ncxx/basic-types.test.cpp'
     )

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ncxx/algorithm/min.hpp>
 #include <ncxx/basic-types.hpp>
 #include <ncxx/ranges/data.hpp>
 #include <ncxx/ranges/size.hpp>
@@ -12,6 +13,8 @@ class BasicStringView
 public:
     using CharType = TChar;
     using SizeType = size_t;
+
+    static constexpr SizeType NPOS{static_cast<SizeType>(-1)};
 
     constexpr BasicStringView() = default;
     constexpr BasicStringView(const BasicStringView&) = default;
@@ -42,6 +45,10 @@ public:
 
     constexpr auto begin();
     constexpr auto end();
+
+    constexpr SizeType findLastOf(CharType ch) const;
+
+    constexpr BasicStringView substr(SizeType offset, SizeType size = NPOS) const;
 
 private:
     const CharType* _data{nullptr};
@@ -137,6 +144,30 @@ template<typename CharType>
 constexpr auto BasicStringView<CharType>::end()
 {
     return _data + _size;
+}
+
+template<typename CharType>
+constexpr BasicStringView<CharType>::SizeType BasicStringView<CharType>::findLastOf(CharType ch) const
+{
+    if (!isEmpty())
+    {
+        for (SizeType i = size() - 1; i--;)
+        {
+            if (_data[i] == ch)
+            {
+                return i;
+            }
+        }
+    }
+
+    return NPOS;
+}
+
+template<typename CharType>
+constexpr BasicStringView<CharType> BasicStringView<CharType>::substr(SizeType offset, SizeType size) const
+{
+    size = min(size, _size - offset);
+    return size == 0 ? BasicStringView<CharType>{} : BasicStringView<CharType>{_data + offset, size};
 }
 
 } // namespace NOS
