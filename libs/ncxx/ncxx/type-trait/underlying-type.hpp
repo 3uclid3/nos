@@ -1,7 +1,6 @@
 #pragma once
 
-#include <base-types.hpp>
-#include <ncxx/type-trait/integral-constant.hpp>
+#include <ncxx/basic-types.hpp>
 #include <ncxx/type-trait/is-enum.hpp>
 
 namespace NOS {

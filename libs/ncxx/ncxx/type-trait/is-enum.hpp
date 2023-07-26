@@ -5,7 +5,7 @@
 namespace NOS {
 
 template<class T>
-struct IsEnum : public IntegralConstant<bool, __is_enum(T)>
+struct IsEnum : public BoolConstant<__is_enum(T)>
 {};
 
 template<class T>
