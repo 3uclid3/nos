@@ -26,7 +26,8 @@ if not meson.is_cross_build()
         'ncxx/type-trait/is-same.test.cpp',
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',
-        'ncxx/string/to-string-view.test.cpp'
+        'ncxx/string/to-string-view.test.cpp',
+        'ncxx/basic-types.test.cpp'
     )
 
     ncxx_test = executable(
