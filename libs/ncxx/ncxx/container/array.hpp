@@ -42,9 +42,11 @@ constexpr auto getArrayOffsetOfFirst()
     return offsetof(AlignmentAndSize, first);
 }
 
+struct DefaultAllocator{};
+
 } // namespace Details
 
-template<typename T, typename TAllocator>
+template<typename T, typename TAllocator = Details::DefaultAllocator>
 class Array : public Details::ArrayBase<T, TAllocator>
 {
     using Base = Details::ArrayBase<T, TAllocator>;
