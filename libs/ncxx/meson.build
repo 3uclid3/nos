@@ -23,6 +23,7 @@ if not meson.is_cross_build()
         'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
+        'ncxx/memory/tagged-ptr.test.cpp',
         'ncxx/type-trait/is-same.test.cpp',
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',
