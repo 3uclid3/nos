@@ -18,13 +18,14 @@ ncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     test = files(
+        'ncxx/algorithm/find-if.test.cpp',
         'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
         'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
         'ncxx/memory/tagged-ptr.test.cpp',
-        'ncxx/type-trait/is-same.test.cpp',
+        'ncxx/range/find-if.test.cpp',
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',
         'ncxx/string/to-string-view.test.cpp',
@@ -52,6 +53,7 @@ if not meson.is_cross_build()
         'ncxx/type-list/types-contains.test.cpp',
         'ncxx/type-list/types-size.test.cpp',
         'ncxx/type-trait/is-array.test.cpp',
+        'ncxx/type-trait/is-same.test.cpp',
         'ncxx/type-trait/is-static-array.test.cpp',
         'ncxx/type-trait/is-enum-class.test.cpp',
         'ncxx/type-trait/type-for-bits.test.cpp',

@@ -2,8 +2,8 @@
 
 #include <ncxx/algorithm/min.hpp>
 #include <ncxx/basic-types.hpp>
-#include <ncxx/ranges/data.hpp>
-#include <ncxx/ranges/size.hpp>
+#include <ncxx/range/data.hpp>
+#include <ncxx/range/size.hpp>
 
 namespace NOS {
 
