@@ -18,6 +18,7 @@ ncxx_dep  = declare_dependency(
 
 if not meson.is_cross_build()
     test = files(
+        'ncxx/algorithm/find.test.cpp',
         'ncxx/algorithm/find-if.test.cpp',
         'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
@@ -25,6 +26,7 @@ if not meson.is_cross_build()
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
         'ncxx/memory/tagged-ptr.test.cpp',
+        'ncxx/range/find.test.cpp',
         'ncxx/range/find-if.test.cpp',
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',

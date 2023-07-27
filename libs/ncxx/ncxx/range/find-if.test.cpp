@@ -5,7 +5,7 @@
 
 namespace NOS::Range {
 
-TEST_CASE("findIf", "[Range]")
+TEST_CASE("findIf", "[range]")
 {
     auto isEven = [](int v) { return (v % 2) == 0; };
     auto isOdd = [](int v) { return (v % 2) != 0; };
