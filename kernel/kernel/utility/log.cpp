@@ -8,7 +8,7 @@ namespace NOS::Log {
 
 void newLine()
 {
-    Serial::write(Serial::Port::COM1, '\n');
+    Serial::write(Serial::Ports[0], '\n');
 }
 
 namespace Details {
@@ -25,7 +25,7 @@ struct SerialOutput
 
     void write(char c)
     {
-        Serial::write(Serial::Port::COM1, c);
+        Serial::write(Serial::Ports[0], c);
     }
 };
 

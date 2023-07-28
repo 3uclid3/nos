@@ -1,6 +1,6 @@
 #include <kernel/utility/panic.hpp>
 
-#include <kernel/arch/arch.hpp>
+#include <kernel/arch/interrupt.hpp>
 #include <kernel/utility/log.hpp>
 
 namespace NOS {
@@ -16,7 +16,7 @@ void panic(StringView message, SourceLocation location)
     Log::error("Function: {}", location.functionName());
     Log::error("System halted");
 
-    Arch::hcf();
+    Interrupt::hcf();
 }
 
 } // namespace NOS

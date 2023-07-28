@@ -1,4 +1,4 @@
-#include <kernel/arch/arch.hpp>
+#include <kernel/arch/interrupt.hpp>
 #include <kernel/utility/log.hpp>
 #include <ncxx/basic-types.hpp>
 #include <ncxx/preprocessor/unused.hpp>
@@ -108,7 +108,7 @@ struct AlignmentAssumptionData
 static void print(StringView message, SourceLocation location)
 {
     Log::warn("Ubsan: {} at file {}, line {}, column {}", message, location.fileName, location.line, location.column);
-    Arch::halt();
+    Interrupt::hcf();
 }
 
 } // namespace NOS::UBSan

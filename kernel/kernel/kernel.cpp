@@ -8,7 +8,7 @@ namespace NOS::Kernel {
 
 void initialize()
 {
-    Serial::earlyInitialize(Serial::Port::COM1); // Required for Log
+    Serial::initializePorts({Serial::Ports[0]});
 
     Log::info("Kernel initialization");
 

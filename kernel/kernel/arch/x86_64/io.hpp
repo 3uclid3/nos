@@ -3,7 +3,7 @@
 #include <ncxx/basic-types.hpp>
 #include <ncxx/concept/same-as.hpp>
 
-namespace NOS::Arch::IO {
+namespace NOS::X86_64::IO {
 
 using PortType = u16_t;
 
@@ -14,6 +14,22 @@ enum class Port : PortType
 
 template<typename T>
 concept SupportedType = SameAs<T, u8_t> || SameAs<T, u16_t> || SameAs<T, u32_t>;
+
+template<typename T>
+requires(SupportedType<T>)
+static inline T in(PortType port);
+
+template<typename T>
+requires(SupportedType<T>)
+static inline T in(Port port);
+
+template<typename T>
+requires(SupportedType<T>)
+static inline void out(PortType port, T value);
+
+template<typename T>
+requires(SupportedType<T>)
+static inline void out(Port port, T value);
 
 namespace Details {
 
@@ -120,4 +136,4 @@ static inline void println(StringView str)
 } // namespace Debug
 #endif
 
-} // namespace NOS::Arch::IO
+} // namespace NOS::X86_64::IO

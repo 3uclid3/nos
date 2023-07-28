@@ -1,5 +1,4 @@
 src = files(
-    'kernel/arch' / arch / 'arch.cpp',
     'kernel/debug/assert.cpp',
     'kernel/lang/cxxabi.cpp',
     'kernel/lang/ubsan.cpp',
@@ -13,7 +12,6 @@ src = files(
 # x86_64 specific files
 if arch == 'x86_64'
     src += files(
-        'kernel/arch/x86_64/cpu/cpu.cpp',
 #        'kernel/arch/x86_64/cpu/gdt.cpp',
         'kernel/arch/x86_64/drivers/serial.cpp'
     )

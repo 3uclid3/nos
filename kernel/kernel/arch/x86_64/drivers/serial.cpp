@@ -1,97 +1,75 @@
-#include <kernel/drivers/serial.hpp>
+#include <kernel/arch/x86_64/drivers/serial.hpp>
 
-#include <kernel/arch/arch.hpp>
+#include <kernel/arch/x86_64/cpu.hpp>
 #include <kernel/arch/x86_64/io.hpp>
-#include <kernel/config.hpp>
-#include <ncxx/debug/assert.hpp>
 
-namespace NOS::Serial {
+namespace NOS::X86_64::Serial {
 
-void print(StringView str)
+bool initializePorts(InitializerList<Port> ports)
 {
-    for (char c : str)
-    {
-        Arch::IO::out(Arch::IO::Port::Debug, static_cast<u8_t>(c));
-    }
-}
-
-void println(StringView str)
-{
-    print(str);
-
-    Arch::IO::out(Arch::IO::Port::Debug, static_cast<u8_t>('\n'));
-}
-
-void earlyInitialize(Span<Port> ports)
-{
-    auto initializePort = [](Port port) {
-        u16_t p = static_cast<u16_t>(port);
-
-        Arch::IO::out<u8_t>(p + 1U, 0x00); // Disable all interrupts
-        Arch::IO::out<u8_t>(p + 3U, 0x80); // Enable DLAB (set baud rate divisor)
-        Arch::IO::out<u8_t>(p + 0U, 0x03); // Set divisor to 3 (lo byte) 38400 baud
-        Arch::IO::out<u8_t>(p + 1U, 0x00); //                  (hi byte)
-        Arch::IO::out<u8_t>(p + 3U, 0x03); // 8 bits, no parity, one stop bit
-        Arch::IO::out<u8_t>(p + 2U, 0xC7); // Enable FIFO, clear them, with 14-byte threshold
-        Arch::IO::out<u8_t>(p + 4U, 0x0B); // IRQs enabled, RTS/DSR set
-
-#if NOS_ENABLE_SERIAL_PORT_TESTING
-        Arch::IO::out<u8_t>(p + 4U, 0x1E); // Set in loopback mode, test the serial chip
-        Arch::IO::out<u8_t>(p + 0U, 0xAE); // Test serial chip (send byte 0xAE and check if serial returns same byte)
-
-        // Check if serial is faulty (i.e: not same byte as sent)
-        if (Arch::IO::in<u8_t>(p + 0U) != 0xAE)
-        {
-            Arch::IO::Debug::println("Serial: Port is faulty");
-            return;
-        }
-
-        // If serial is not faulty set it in normal operation mode
-        // (not-loopback with IRQs enabled and OUT#1 and OUT#2 bits enabled)
-        Arch::IO::out<u8_t>(p + 4U, 0x0F);
-#endif
-    };
-
+    bool valid = true;
     for (Port port : ports)
     {
-        initializePort(port);
+        if (initializePort(port))
+        {
+            valid = false;
+        }
     }
+    return valid;
 }
 
-void initialize()
+bool initializePort(u16_t port)
 {
+    IO::out<u8_t>(port + 1U, 0x00); // Disable all interrupts
+    IO::out<u8_t>(port + 3U, 0x80); // Enable DLAB (set baud rate divisor)
+    IO::out<u8_t>(port + 0U, 0x03); // Set divisor to 3 (lo byte) 38400 baud
+    IO::out<u8_t>(port + 1U, 0x00); //                  (hi byte)
+    IO::out<u8_t>(port + 3U, 0x03); // 8 bits, no parity, one stop bit
+    IO::out<u8_t>(port + 2U, 0xC7); // Enable FIFO, clear them, with 14-byte threshold
+    IO::out<u8_t>(port + 4U, 0x0B); // IRQs enabled, RTS/DSR set
+
+    IO::out<u8_t>(port + 4U, 0x1E); // Set in loopback mode, test the serial chip
+    IO::out<u8_t>(port + 0U, 0xAE); // Test serial chip (send byte 0xAE and check if serial returns same byte)
+
+    // Check if serial is faulty (i.e: not same byte as sent)
+    if (IO::in<u8_t>(port + 0U) != 0xAE)
+    {
+        return false;
+    }
+
+    // If serial is not faulty set it in normal operation mode
+    // (not-loopback with IRQs enabled and OUT#1 and OUT#2 bits enabled)
+    IO::out<u8_t>(port + 4U, 0x0F);
+
+    return true;
 }
 
-void write(Port port, char c)
+void write(u16_t port, char c)
 {
-    uint16_t rawPort = static_cast<u16_t>(port);
-
-    auto isEmpty = [](u16_t p) -> bool {
-        return (Arch::IO::in<u8_t>(p + 5) & 1 << 5);
+    auto isEmpty = [port]() -> bool {
+        return (IO::in<u8_t>(port + 5) & 1 << 5);
     };
 
-    while (!isEmpty(rawPort))
+    while (!isEmpty())
     {
-        Arch::pause();
+        CPU::pause();
     }
 
-    Arch::IO::out(rawPort, static_cast<uint8_t>(c));
+    IO::out(port, static_cast<u8_t>(c));
 }
 
-char read(Port port)
+char read(u16_t port)
 {
-    uint16_t rawPort = static_cast<u16_t>(port);
-
-    auto hasReceived = [](u16_t p) {
-        return Arch::IO::in<u8_t>(p + 5) & 1 << 0;
+    auto hasReceived = [port]() {
+        return IO::in<u8_t>(port + 5) & 1 << 0;
     };
 
-    while (!hasReceived(rawPort))
+    while (!hasReceived())
     {
-        Arch::pause();
+        CPU::pause();
     }
 
-    return static_cast<char>(Arch::IO::in<u8_t>(rawPort));
+    return static_cast<char>(IO::in<u8_t>(port));
 }
 
-} // namespace NOS::Serial
+} // namespace NOS::Arch::X86_64::Serial
