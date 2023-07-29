@@ -14,7 +14,9 @@ src = files(
 if arch == 'x86_64'
     src += files(
         'kernel/arch/x86_64/drivers/serial.cpp',
-        'kernel/arch/x86_64/gdt.cpp'
+        'kernel/arch/x86_64/gdt.cpp',
+        'kernel/arch/x86_64/idt.cpp',
+        'kernel/arch/x86_64/idt.S'
     )
 endif
 

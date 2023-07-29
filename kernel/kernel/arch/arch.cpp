@@ -2,9 +2,11 @@
 
 #include <kernel/config.hpp>
 
+#include <kernel/utility/log.hpp>
+
 #if NOS_ARCH_X86_64
-#include "kernel/utility/log.hpp"
 #include <kernel/arch/x86_64/gdt.hpp>
+#include <kernel/arch/x86_64/idt.hpp>
 #endif
 
 namespace NOS::Arch {
@@ -16,6 +18,7 @@ void initialize()
 
 #if NOS_ARCH_X86_64
     X86_64::GDT::initialize();
+    X86_64::IDT::initialize();
 #endif
 }
 

@@ -1,5 +1,6 @@
 #include <kernel/arch/x86_64/gdt.hpp>
 
+#include <kernel/utility/log.hpp>
 #include <ncxx/basic-types.hpp>
 #include <ncxx/preprocessor/packed.hpp>
 
@@ -83,6 +84,8 @@ GDTR gdtr{
 
 void initialize()
 {
+    Log::info("gdt: initialization");
+
     asm volatile(
         "lgdt %[gdtr]\n\t"
         "mov %[dsel], %%ds \n\t"

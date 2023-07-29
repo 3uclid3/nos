@@ -107,7 +107,7 @@ struct AlignmentAssumptionData
 
 static void print(StringView message, SourceLocation location)
 {
-    Log::warn("Ubsan: {} at file {}, line {}, column {}", message, location.fileName, location.line, location.column);
+    Log::error("Ubsan: {} at file {}, line {}, column {}", message, location.fileName, location.line, location.column);
     Interrupt::hcf();
 }
 
