@@ -1,5 +1,6 @@
 #include <kernel/lang/cxxabi.hpp>
 
+#include "kernel/utility/log.hpp"
 #include <ncxx/basic-types.hpp>
 #include <ncxx/debug/assert.hpp>
 
@@ -81,8 +82,10 @@ namespace NOS::Lang::CxxAbi {
 extern "C" void (*__init_array_start[])();
 extern "C" void (*__init_array_end[])();
 
-void init()
+void initialize()
 {
+    Log::info("cxxabi: initialization of {} global objects", __init_array_end - __init_array_start);
+
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {
         (*ctor)();

@@ -4,6 +4,7 @@
 #include <kernel/drivers/serial.hpp>
 #include <kernel/lang/cxxabi.hpp>
 #include <kernel/utility/log.hpp>
+#include <ncxx/utility/on-scope-exit.hpp>
 
 namespace NOS::Kernel {
 
@@ -11,15 +12,17 @@ void initialize()
 {
     Serial::initializePorts({Serial::Ports[0]});
 
-    Log::info("Kernel initialization");
+    Log::info("kernel: initialization");
 
-    Log::info("\t - cxxabi");
-    Lang::CxxAbi::init();
+    {
+        Log::ScopeIndent indent{1};
 
-    Log::info("\t - arch");
-    Arch::initialize();
+        Lang::CxxAbi::initialize();
 
-    Log::info("Kernel completed");
+        Arch::initialize();
+    }
+
+    Log::info("kernel: initialization completed");
 }
 
 void run()

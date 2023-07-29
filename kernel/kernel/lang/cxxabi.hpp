@@ -2,6 +2,6 @@
 
 namespace NOS::Lang::CxxAbi {
 
-void init();
+void initialize();
 
 } // namespace NOS::Lang::CxxAbi
