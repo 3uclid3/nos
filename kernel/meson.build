@@ -14,9 +14,11 @@ src = files(
 if arch == 'x86_64'
     src += files(
         'kernel/arch/x86_64/drivers/serial.cpp',
-        'kernel/arch/x86_64/gdt.cpp',
-        'kernel/arch/x86_64/idt.cpp',
-        'kernel/arch/x86_64/idt.S'
+        'kernel/arch/x86_64/arch.cpp',
+        'kernel/arch/x86_64/global-descriptor-table.cpp',
+        'kernel/arch/x86_64/interrupt-descriptor-table.cpp',
+        'kernel/arch/x86_64/interrupt-descriptor-table.S',
+        'kernel/arch/x86_64/task-state-segment.cpp'
     )
 endif
 

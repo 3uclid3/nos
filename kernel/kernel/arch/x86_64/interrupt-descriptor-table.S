@@ -1,4 +1,4 @@
-.include "kernel/arch/x86_64/cpu-registers-push-pop.inc"
+.include "kernel/arch/x86_64/cpu-registers.inc"
 
 .extern NOS_interruptHandler
 NOS_InterruptCommonStub:

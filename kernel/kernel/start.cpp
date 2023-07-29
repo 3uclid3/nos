@@ -2,6 +2,8 @@
 
 extern "C" void _start(void)
 {
-    NOS::Kernel::initialize();
-    NOS::Kernel::run();
+    NOS::Kernel kernel;
+
+    kernel.initialize();
+    kernel.run();
 }

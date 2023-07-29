@@ -1,7 +1,12 @@
 #pragma once
 
-namespace NOS::Arch {
+#include <kernel/config.hpp>
+#include NOS_INCLUDE_KERNEL_ARCH_FILE(arch.hpp)
 
-void initialize();
+namespace NOS {
 
-} // namespace NOS::Arch
+class Arch : public NOS_KERNEL_ARCH_TYPE(Arch)
+{
+};
+
+} // namespace NOS

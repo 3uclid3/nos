@@ -6,9 +6,9 @@
 #include <kernel/lang/cxxabi.hpp>
 #include <kernel/utility/log.hpp>
 
-namespace NOS::Kernel {
+namespace NOS {
 
-void initialize()
+void Kernel::initialize()
 {
     Serial::initializePorts({Serial::Ports[0]});
 
@@ -19,15 +19,15 @@ void initialize()
 
         Lang::CxxAbi::initialize();
 
-        Arch::initialize();
+        _arch.initialize();
     }
 
     Log::info("kernel: initialization completed");
 }
 
-void run()
+void Kernel::run()
 {
     Interrupt::halt();
 }
 
-} // namespace NOS::Kernel
+} // namespace NOS

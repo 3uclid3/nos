@@ -1,8 +1,17 @@
 #pragma once
 
-namespace NOS::Kernel {
+#include <kernel/arch/arch.hpp>
 
-void initialize();
-void run();
+namespace NOS {
 
-} // namespace NOS::Kernel
+class Kernel
+{
+public:
+    void initialize();
+    void run();
+
+private:
+    Arch _arch;
+};
+
+} // namespace NOS
