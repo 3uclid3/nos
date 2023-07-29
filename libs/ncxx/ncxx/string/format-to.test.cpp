@@ -203,4 +203,15 @@ TEST_CASE("formatTo - position", "[String]")
     CHECK(sv == "Format at 1: 22; at 2 24; at 0 42");
 }
 
+TEST_CASE("formatTo - finishing with {:PRESENTATION}", "[String]")
+{
+    Out out;
+
+    formatTo(out, "0x{:x}", 0xfefefefe);
+
+    StringView sv = out.view();
+
+    CHECK(sv == "0xfefefefe");
+}
+
 } // namespace NOS

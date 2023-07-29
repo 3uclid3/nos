@@ -173,7 +173,7 @@ void formatTo(TOut& out, StringView fmt, Span<FormatArgument> arguments)
                 }
 
                 ++i;
-                NOS_ASSERT(i != last, "Invalid format");
+                NOS_ASSERT(i <= last, "Invalid format");
             }
 
             // we should be at the end, otherwise the format is invalid

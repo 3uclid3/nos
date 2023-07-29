@@ -166,7 +166,7 @@ void __ubsan_handle_type_mismatch_v1(NOS::UBSan::TypeMismatchData* data, NOS::ui
     {
         print("use of nullptr", data->location);
     }
-    else if (ptr & ((1 << data->alignment) - 1))
+    else if (ptr & (data->alignment - 1))
     {
         print("unaligned access", data->location);
     }
