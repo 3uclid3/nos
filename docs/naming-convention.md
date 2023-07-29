@@ -6,12 +6,14 @@
     - enum
     - alias
     - namespace
+    - constant
  - camelCase 
     - variable
+    - static variable
     - function
     - method
  - SCREAMING_SNAKE_CASE
-    - macro constant
+    - macro
  - kebab-case
     - file
     - folder
