@@ -1,5 +1,5 @@
 ---
-name: Codacy
+name: Codacy Coverage
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
       - main
 
 jobs:
-  codacy:
-    name: Codacy
+  codacy-coverage:
+    name: Codacy Coverage
     runs-on: ubuntu-22.04
     container: i73v/nos-build-machine:latest
 
