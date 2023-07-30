@@ -17,11 +17,11 @@ tasks:
 
   setup-kernel-only:
     cmds:
-      - meson setup $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE --buildtype $BUILD_TYPE --cross-file config/$ARCH/kernel.cross-file
+      - meson setup $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE --buildtype $BUILD_TYPE --cross-file config/$ARCH/kernel.cross-file {{.CLI_ARGS}}
 
   setup-native-only:
     cmds:
-      - meson setup $BUILD_DIR/native/$BUILD_TYPE --buildtype $BUILD_TYPE --native-file config/native.native-file
+      - meson setup $BUILD_DIR/native/$BUILD_TYPE --buildtype $BUILD_TYPE --native-file config/native.native-file {{.CLI_ARGS}}
 
   # Clean up tasks
   clear:
@@ -57,3 +57,7 @@ tasks:
   native:clang-format:
     cmds:
       - ninja -C $BUILD_DIR/native/$BUILD_TYPE clang-format
+
+  native:generate-coverage:
+    cmds:
+      - cd $BUILD_DIR/native/$BUILD_TYPE && ninja coverage-xml
