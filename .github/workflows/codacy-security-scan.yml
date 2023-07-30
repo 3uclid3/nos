@@ -1,4 +1,4 @@
-name: Codacy Analysis
+name: Codacy Security Scan
 
 on:
   push:
@@ -12,11 +12,11 @@ permissions:
   contents: read
 
 jobs:
-  codacy-analysis:
+  codacy-security-scan:
     permissions:
       contents: read
       security-events: write
-    name: Codacy Analysis
+    name: Codacy Security Scan
     runs-on: ubuntu-22.04
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -31,7 +31,6 @@ jobs:
           verbose: true
           output: results.sarif
           format: sarif
-          upload: true
           # Adjust severity of non-security issues
           gh-code-scanning-compat: true
           # Force 0 exit code to allow SARIF file generation
