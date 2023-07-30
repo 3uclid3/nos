@@ -4,7 +4,7 @@ project('nos', ['c', 'cpp'],
     default_options : [
         'c_std=c17',
         'cpp_std=c++20',
-        
+
         'cpp_eh=none',
         'cpp_rtti=false'
     ]

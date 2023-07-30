@@ -1,0 +1,41 @@
+---
+name: Codacy Coverage
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  codacy-coverage:
+    name: Codacy Coverage
+    runs-on: ubuntu-22.04
+    container: i73v/nos-build-machine:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup
+        run: |
+          task setup-native-only BUILD_TYPE=debug -- -Db_coverage=true
+
+      - name: Compile - ncxx
+        run: |
+          task native:compile BUILD_TYPE=debug -- ncxx
+
+      - name: Test - ncxx
+        run: |
+          task native:test BUILD_TYPE=debug -- ncxx
+
+      - name: Generate XML coverage report
+        run: |
+          task native:generate-coverage BUILD_TYPE=debug
+
+      - name: Upload coverage reports to Codacy
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_TOKEN }}
+          coverage-reports: ./build/native/debug/meson-logs/coverage.xml
+
