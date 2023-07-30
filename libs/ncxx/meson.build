@@ -28,6 +28,7 @@ if not meson.is_cross_build()
         'ncxx/algorithm/none-of.test.cpp',
         'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
+        'ncxx/functional/function.test.cpp',
         'ncxx/functional/reference-wrapper.test.cpp',
         'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',

@@ -20,4 +20,15 @@ TEST_CASE("UniquePtr object delete on exit scope", "[memory]")
     CHECK(dtorCalled);
 }
 
+TEST_CASE("UniquePtr::release will release ownership of the object", "[memory]")
+{
+    UniquePtr<u32_t> ptr{new u32_t()};
+
+    u32_t* val = ptr.release();
+
+    CHECK_FALSE(ptr);
+
+    delete val;
+}
+
 } // namespace NOS

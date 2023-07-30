@@ -2,6 +2,9 @@
 
 #include <ncxx/basic-types.hpp>
 #include <ncxx/type-trait/add-lvalue-reference.hpp>
+#include <ncxx/type-trait/is-base-of.hpp>
+#include <ncxx/type-trait/is-same.hpp>
+#include <ncxx/utility/forward.hpp>
 
 namespace NOS {
 
@@ -26,6 +29,9 @@ public:
 
     explicit UniquePtr(T* pointer);
 
+    template<typename U, typename TUDeleter>
+    UniquePtr(UniquePtr<U, TUDeleter>&& other);
+
     UniquePtr(UniquePtr&& other);
     UniquePtr& operator=(UniquePtr&& other);
 
@@ -38,7 +44,7 @@ public:
     [[nodiscard]] T* get() const;
     [[nodiscard]] T* release();
 
-    operator bool();
+    [[nodiscard]] operator bool() const;
 
     [[nodiscard]] AddLValueReferenceT<T> operator*() const;
     [[nodiscard]] T* operator->() const;
@@ -46,6 +52,11 @@ public:
 private:
     T* _pointer{nullptr};
 };
+template<class T, class... TArguments>
+inline constexpr UniquePtr<T> makeUnique(TArguments&&... args)
+{
+    return UniquePtr<T>(new T(forward<TArguments>(args)...));
+}
 
 template<typename T, typename TDeleter>
 class UniquePtr<T[], TDeleter>
@@ -61,12 +72,18 @@ UniquePtr<T, TDeleter>::UniquePtr(T* pointer)
     : _pointer(pointer)
 {
 }
+template<typename T, typename TDeleter>
+template<typename U, typename TUDeleter>
+UniquePtr<T, TDeleter>::UniquePtr(UniquePtr<U, TUDeleter>&& other)
+    : _pointer(other.release())
+{
+
+}
 
 template<typename T, typename TDeleter>
 UniquePtr<T, TDeleter>::UniquePtr(UniquePtr&& other)
-    : _pointer(other._pointer)
+    : _pointer(other.release())
 {
-    other._pointer = nullptr;
 }
 
 template<typename T, typename TDeleter>
@@ -92,11 +109,13 @@ T* UniquePtr<T, TDeleter>::get() const
 template<typename T, typename TDeleter>
 T* UniquePtr<T, TDeleter>::release()
 {
-    return _pointer;
+    T* pointer = _pointer;
+    _pointer = nullptr;
+    return pointer;
 }
 
 template<typename T, typename TDeleter>
-UniquePtr<T, TDeleter>::operator bool()
+UniquePtr<T, TDeleter>::operator bool() const
 {
     return _pointer != nullptr;
 }
