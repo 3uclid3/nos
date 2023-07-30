@@ -29,9 +29,12 @@ jobs:
         run: |
           task native:test BUILD_TYPE=debug -- ncxx
 
+      - name: Generate XML coverage report
+        run: |
+          task native:generate-coverage BUILD_TYPE=debug
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./build/native/debug/meson-logs/
           flags: unit-tests, native

@@ -49,3 +49,7 @@ tasks:
   native:test:
     cmds:
       - cd $BUILD_DIR/native/$BUILD_TYPE && meson test {{.CLI_ARGS}}
+
+  native:generate-coverage:
+    cmds:
+      - cd &BUILD_DIR/native/&BUILD_TYPE && ninja coverage-xml
