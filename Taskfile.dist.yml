@@ -52,4 +52,4 @@ tasks:
 
   native:generate-coverage:
     cmds:
-      - cd &BUILD_DIR/native/&BUILD_TYPE && ninja coverage-xml
+      - cd $BUILD_DIR/native/$BUILD_TYPE && ninja coverage-xml
