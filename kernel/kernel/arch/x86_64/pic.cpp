@@ -8,7 +8,7 @@ namespace NOS::X86_64 {
 
 void PIC::initialize()
 {
-    Log::info("pic: Initialization");
+    Log::info("pic: initialization");
     Log::ScopeIndent scopeIndent{1};
 
     // restore mask on exit
@@ -22,23 +22,33 @@ void PIC::initialize()
 
     Log::info("control word 1");
     IO::out<u8_t>(MasterPort, ICW1::Initialize | ICW1::ICW4);
+    IO::wait();
     IO::out<u8_t>(SlavePort, ICW1::Initialize | ICW1::ICW4);
+    IO::wait();
 
     Log::info("control word 1");
     IO::out<u8_t>(MasterDataPort, 0x20);
+    IO::wait();
     IO::out<u8_t>(SlaveDataPort, 0x28);
+    IO::wait();
 
     Log::info("control word 3");
     IO::out<u8_t>(MasterDataPort, 0x04);
+    IO::wait();
     IO::out<u8_t>(SlaveDataPort, 0x02);
+    IO::wait();
 
     Log::info("control word 4");
     IO::out<u8_t>(MasterDataPort, ICW4::Mode8086);
+    IO::wait();
     IO::out<u8_t>(SlaveDataPort, ICW4::Mode8086);
+    IO::wait();
 }
 
 void PIC::disable()
 {
+    Log::info("pic: disable");
+
     IO::out<u8_t>(SlaveDataPort, 0xFF);
     IO::out<u8_t>(MasterDataPort, 0xFF);
 }
