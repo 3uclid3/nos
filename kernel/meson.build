@@ -19,6 +19,7 @@ if arch == 'x86_64'
         'kernel/arch/x86_64/gdt.cpp',
         'kernel/arch/x86_64/idt.cpp',
         'kernel/arch/x86_64/idt.S',
+        'kernel/arch/x86_64/isr.cpp',
         'kernel/arch/x86_64/pic.cpp',
         'kernel/arch/x86_64/tss.cpp'
     )

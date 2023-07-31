@@ -38,6 +38,8 @@ public:
     using SizeType = size_t;
     using DifferenceType = ptrdiff_t;
 
+    static constexpr SizeType MaximumSize{TSize};
+
 public:
     void fill(const ValueType& value);
     void swap(StaticArray& other);
@@ -55,7 +57,7 @@ public:
 public:
     constexpr SizeType size() const;
 
-    constexpr SizeType maxSize() const;
+    constexpr SizeType maximumSize() const;
     constexpr bool isEmpty() const;
 
 public:
@@ -93,6 +95,8 @@ public:
     using SizeType = size_t;
     using difference_type = ptrdiff_t;
 
+    static constexpr SizeType MaximumSize{0};
+
 public:
     void fill(const ValueType& value);
     void swap(StaticArray& other);
@@ -110,7 +114,7 @@ public:
 public:
     constexpr SizeType size() const;
 
-    constexpr SizeType maxSize() const;
+    constexpr SizeType maximumSize() const;
     constexpr bool isEmpty() const;
 
 public:
@@ -211,7 +215,7 @@ constexpr StaticArray<T, TSize>::SizeType StaticArray<T, TSize>::size() const
 }
 
 template<typename T, size_t TSize>
-constexpr StaticArray<T, TSize>::SizeType StaticArray<T, TSize>::maxSize() const
+constexpr StaticArray<T, TSize>::SizeType StaticArray<T, TSize>::maximumSize() const
 {
     return TSize;
 }
@@ -329,7 +333,7 @@ constexpr StaticArray<T, 0>::SizeType StaticArray<T, 0>::size() const
 }
 
 template<typename T>
-constexpr StaticArray<T, 0>::SizeType StaticArray<T, 0>::maxSize() const
+constexpr StaticArray<T, 0>::SizeType StaticArray<T, 0>::maximumSize() const
 {
     return 0;
 }
