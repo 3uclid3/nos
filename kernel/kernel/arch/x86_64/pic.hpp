@@ -29,12 +29,11 @@ public:
 
     struct ICW4
     {
-        static constexpr u8_t Mode8086 = 0x1;     /* 8086/88 (MCS-80/85) mode */
-        static constexpr u8_t AutoEOI = 0x2;      /* Auto (normal) EOI */
-        static constexpr u8_t MasterBuffer = 0x4; /* Buffered mode/master */
-        static constexpr u8_t SlaveBuffer = 0x0;  /* Buffered mode/slave */
-        static constexpr u8_t Buffered = 0x8;     /* Buffered mode/slave */
-        static constexpr u8_t SFNM = 0x10;        /* Special fully nested (not) */
+        static constexpr u8_t Mode8086 = 0x01;     /* 8086/88 (MCS-80/85) mode */
+        static constexpr u8_t Auto = 0x02;         /* Auto (normal) EOI */
+        static constexpr u8_t MasterBuffer = 0x0C; /* Buffered mode/master */
+        static constexpr u8_t SlaveBuffer = 0x08;  /* Buffered mode/slave */
+        static constexpr u8_t SFNM = 0x10;         /* Special fully nested (not) */
     };
 
 public:
