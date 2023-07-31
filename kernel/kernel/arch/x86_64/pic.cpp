@@ -26,7 +26,7 @@ void PIC::initialize()
     IO::out<u8_t>(SlavePort, ICW1::Initialize | ICW1::ICW4);
     IO::wait();
 
-    Log::info("control word 1");
+    Log::info("control word 2");
     IO::out<u8_t>(MasterDataPort, 0x20);
     IO::wait();
     IO::out<u8_t>(SlaveDataPort, 0x28);
@@ -90,6 +90,29 @@ void PIC::eoi(u64_t interrupt)
     }
 
     IO::out<u8_t>(MasterDataPort, Command::EOI);
+}
+
+namespace {
+
+u16_t read(u8_t ocw3)
+{
+    /* OCW3 to PIC CMD to get the register values.  PIC2 is chained, and
+     * represents IRQs 8-15.  PIC1 is IRQs 0-7, with 2 being the chain */
+    IO::out<u8_t>(PIC::MasterPort, ocw3);
+    IO::out<u8_t>(PIC::SlavePort, ocw3);
+    return static_cast<u16_t>((IO::in<u8_t>(PIC::SlavePort) << 8) | IO::in<u8_t>(PIC::MasterPort));
+}
+
+} // namespace
+
+u16_t PIC::readIRR()
+{
+    return read(Command::ReadIRR);
+}
+
+u16_t PIC::readISR()
+{
+    return read(Command::ReadISR);
 }
 
 } // namespace NOS::X86_64
