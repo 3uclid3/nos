@@ -23,6 +23,7 @@ if not meson.is_cross_build()
         'ncxx/algorithm/all-of.test.cpp',
         'ncxx/algorithm/any.test.cpp',
         'ncxx/algorithm/any-of.test.cpp',
+        'ncxx/algorithm/clamp.test.cpp',
         'ncxx/algorithm/find.test.cpp',
         'ncxx/algorithm/find-if.test.cpp',
         'ncxx/algorithm/none.test.cpp',
