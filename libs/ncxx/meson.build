@@ -8,6 +8,7 @@ ncxx = static_library(
     include_directories : ['.'],
     c_args : [libs_c_ccp_args],
     cpp_args : [libs_c_ccp_args],
+    link_args: [libs_link_args]
 )
 
 ncxx_dep  = declare_dependency(
@@ -85,7 +86,10 @@ if not meson.is_cross_build()
     ncxx_test = executable(
         'ncxx.test', [test],
         install : false,
-        dependencies : [catch2_dep, ncxx_dep]
+        dependencies : [catch2_dep, ncxx_dep],
+        c_args : [libs_c_ccp_args],
+        cpp_args : [libs_c_ccp_args],
+        link_args: [libs_link_args]
     )
 
     test('ncxx', ncxx_test)

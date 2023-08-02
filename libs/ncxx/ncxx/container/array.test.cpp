@@ -1,58 +1,59 @@
-#include <catch2/catch_test_macros.hpp>
-
 #include <ncxx/container/array.hpp>
-#include <ncxx/container/static-array.hpp>
-#include <ncxx/memory/utility.hpp>
+
+#include <catch2/catch_test_macros.hpp>
+#include <ncxx/memory/allocator/stack-allocator.hpp>
+#include <ncxx/test/asan.hpp>
 
 namespace NOS {
 
-class FakeAllocator
+TEST_CASE("Capacity", "[Array]")
 {
-public:
-    Memory::Block allocate(size_t size)
+    using TestArray = Array<int>;
+    SECTION("default ctor")
     {
-        size = Memory::roundToAlignment(size, alignment_t{alignof(u8_t)});
-
-        void* newPointer = static_cast<byte_t*>(_pointer) + size;
-
-        if (newPointer > _buffer.end())
-        {
-            return Memory::nullblk;
-        }
-
-        Memory::Block block{_pointer, size};
-
-        _pointer = newPointer;
-
-        return block;
+        TestArray a;
+        CHECK(a.capacity() == 0);
+        CHECK(Test::isContiguousContainerASanCorrect(a));
     }
 
-    void deallocate(Memory::Block block)
+    SECTION("ctor with initial size")
     {
-        NOS_UNUSED(block);
+        TestArray a(100);
+        CHECK(a.capacity() == 100);
+
+        a.append(TestArray::ValueType{});
+
+        CHECK(a.capacity() > 101);
+        CHECK(Test::isContiguousContainerASanCorrect(a));
     }
+}
 
-private:
-    static StaticArray<u8_t, 256> _buffer;
-    static void* _pointer;
-};
-
-StaticArray<u8_t, 256> FakeAllocator::_buffer{};
-void* FakeAllocator::_pointer{FakeAllocator::_buffer.data()};
-
-TEST_CASE("Array - ctor")
+TEST_CASE("isEmpty", "[Array]")
 {
-    struct Struct
-    {
-        u64_t v0;
-        u64_t v1;
-        u64_t v2;
-        u64_t v3;
-    };
+    using TestArray = Array<int>;
 
-    InplaceArray<Struct, 32, FakeAllocator> array;
+    TestArray a;
+    CHECK(a.isEmpty());
 
-    CHECK_FALSE(array.isAllocated());
+    a.append(TestArray::ValueType{});
+
+    CHECK_FALSE(a.isEmpty());
+
+    a.clear();
+
+    CHECK(a.isEmpty());
+}
+
+TEST_CASE("reserve", "[Array]")
+{
+    using TestArray = Array<int>;
+
+    TestArray a;
+
+    a.reserve(10);
+
+    CHECK(a.capacity() >= 10);
+    CHECK(Test::isContiguousContainerASanCorrect(a));
 }
 
 } // namespace NOS

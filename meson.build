@@ -153,9 +153,22 @@ endif
 # libs
 
 libs_c_ccp_args = []
-if get_option('libs_ubsan')
-    libs_c_ccp_args += '-fsanitize=undefined'
+libs_link_args = []
+libs_sanitizers = []
+
+if get_option('libs_asan')
+    libs_sanitizers += ['address']
 endif
+if get_option('libs_ubsan')
+    libs_sanitizers += ['undefined']
+endif
+
+if libs_sanitizers.length() > 0
+    libs_sanitizers = '-fsanitize=' + ','.join(libs_sanitizers)
+    libs_c_ccp_args += libs_sanitizers
+    libs_link_args += libs_sanitizers
+endif
+
 
 subdir('libs/ncxx')
 
