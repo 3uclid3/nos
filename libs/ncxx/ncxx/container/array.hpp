@@ -1,12 +1,14 @@
 #pragma once
 
+#include <ncxx/algorithm/clamp.hpp>
 #include <ncxx/basic-types.hpp>
-#include <ncxx/memory/block.hpp>
+#include <ncxx/container/details/array-base-type.hpp>
+#include <ncxx/container/details/array-param-type.hpp>
+#include <ncxx/container/details/array-size-type.hpp>
+#include <ncxx/debug/assert.hpp>
+#include <ncxx/iterator/reverse-iterator.hpp>
 #include <ncxx/type-trait/conditional.hpp>
 #include <ncxx/type-trait/integral-constant.hpp>
-#include <ncxx/type-trait/is-trivially-copy-constructible.hpp>
-#include <ncxx/type-trait/is-trivially-destructible>
-#include <ncxx/type-trait/is-trivially-move-constructible.hpp>
 #include <ncxx/utility/initializer-list.hpp>
 
 #pragma clang diagnostic push
@@ -14,131 +16,68 @@
 
 namespace NOS {
 
-template<class T>
-using ArraySizeTypeT = ConditionalT<sizeof(T) < 4 && sizeof(void*) >= 8, u64_t, u32_t>;
-
 namespace Details {
-
-// we inherit from our allocator to ensure we're properly aligned even for size 0 allocator class
-template<typename T, typename TAllocator, typename TSize>
-class ArrayBase : private TAllocator
-{
-public:
-    using AllocatorType = TAllocator;
-    using SizeType = TSize;
-    using ValueType = T;
-
-protected:
-    void* _pointer{nullptr};
-    SizeType _size{0};
-    SizeType _capacity{0};
-};
-
-/// Helper to figure out the offset of the first element
-template<typename T, typename TSize, typename TAllocator>
-constexpr auto getArrayOffsetOfFirst()
-{
-    struct Array
-    {
-        using ArrayType = ArrayBase<T, TAllocator, TSize>;
-
-        alignas(ArrayType) byte_t base[sizeof(ArrayType)];
-        alignas(T) byte_t first[sizeof(T)];
-    };
-
-    return offsetof(Array, first);
-}
-
-// Base class for trivial T's
-template<typename T, typename TAllocator, typename TSize>
-class TrivialArrayBase : public ArrayBase<T, TAllocator, TSize>
-{
-};
-
-// Base class for non-trivial T's
-template<typename T, typename TAllocator, typename TSize>
-class ObjectArrayBase : public ArrayBase<T, TAllocator, TSize>
-{
-public:
-    constexpr void prepend(T&& value);
-    constexpr void append(T&& value);
-
-protected:
-    static void destroyRange(T* begin, T* end);
-
-    template<typename TItBegin, typename TItEnd>
-    static void uninitializeCopy(TItBegin begin, TItEnd end);
-
-    template<typename TItBegin, typename TItEnd>
-    static void uninitializeMove(TItBegin begin, TItEnd end);
-
-    void grow(size_t minimumSize = 0);
-};
-
-// Does T requires a TrivialArrayBase class
-template<typename T>
-constexpr bool IsTrivialArrayV = IsTriviallyCopyConstructibleV<T> && // not standard
-                                 IsTriviallyMoveConstructibleV<T> && // but POD can't know
-                                 IsTriviallyDestructibleV<T>;
-
-template<typename T>
-constexpr bool IsArrayParamByValueV = sizeof(T) <= 2 * sizeof(void*);
-
-template<typename T>
-using ArrayParamType = ConditionalT<IsArrayParamByValueV<T>, T, const T&>;
-
-template<typename T, typename TAllocator, typename TSize>
-using TypeArrayBaseT = ConditionalT<IsTrivialArrayV<T>, TrivialArrayBase<T, TAllocator, TSize>, ObjectArrayBase<T, TAllocator, TSize>>;
 
 struct DefaultAllocator
 {};
 
 } // namespace Details
 
-template<typename T, typename TAllocator = Details::DefaultAllocator, typename TSize = ArraySizeTypeT<T>>
-class Array : public Details::TypeArrayBaseT<T, TAllocator, TSize>
+template<typename T, typename TAllocator = Details::DefaultAllocator, typename TSize = Details::ArraySizeTypeT<T>>
+class Array : public Details::ArrayBaseTypeT<T, TAllocator, TSize>
 {
-    using Base = Details::TypeArrayBaseT<T, TAllocator, TSize>;
+    using Base = Details::ArrayBaseTypeT<T, TAllocator, TSize>;
 
 public:
     using typename Base::AllocatorType;
 
     using ValueType = T;
-    using ValueParamType = Details::ArrayParamType<T>;
+    using ValueParamType = Details::ArrayParamTypeT<T>;
 
-    using Pointer = T*;
     using ConstPointer = const T*;
+    using Pointer = T*;
 
-    using Reference = T&;
     using ConstReference = const T&;
-
-    class Iterator
-    {
-    public:
-        Iterator() = default;
-        Iterator(Pointer) {}
-    };
+    using Reference = T&;
 
     class ConstIterator
     {
     public:
-        ConstIterator() = default;
-        ConstIterator(ConstPointer) {}
+        constexpr ConstIterator() = default;
+        constexpr ConstIterator(ConstPointer pointer);
+
+        constexpr bool operator==(const ConstIterator& other) const = default;
+
+        constexpr ConstReference operator*() const;
+        constexpr ConstPointer operator->() const;
+
+        constexpr ConstIterator& operator++();
+        constexpr ConstIterator operator++(int);
+
+    private:
+        ConstPointer _pointer{};
     };
 
-    class ReverseIterator
+    class Iterator
     {
     public:
-        ReverseIterator() = default;
-        ReverseIterator(Pointer) {}
+        constexpr Iterator() = default;
+        constexpr Iterator(Pointer pointer);
+
+        constexpr bool operator==(const Iterator& other) const = default;
+
+        constexpr Reference operator*() const;
+        constexpr Pointer operator->() const;
+
+        constexpr Iterator& operator++();
+        constexpr Iterator operator++(int);
+
+    private:
+        Pointer _pointer{};
     };
 
-    class ConstReverseIterator
-    {
-    public:
-        ConstReverseIterator() = default;
-        ConstReverseIterator(ConstPointer) {}
-    };
+    using ConstReverseIterator = NOS::ReverseIterator<ConstIterator>;
+    using ReverseIterator = NOS::ReverseIterator<Iterator>;
 
 public:
     constexpr Array() = default;
@@ -152,6 +91,9 @@ public:
 
     constexpr Array(const Array& other);
     constexpr Array(Array&& other);
+
+public:
+    constexpr bool operator==(const Array& other) const;
 
 public:
     constexpr ConstReference operator[](size_t index) const;
@@ -199,7 +141,6 @@ public:
     constexpr Reference emplace(TArgs&&... args);
 
     constexpr void prepend(ValueParamType value);
-
     constexpr void append(ValueParamType value);
 
     constexpr void insert(ConstIterator before, ValueParamType value);
@@ -226,43 +167,87 @@ public:
     constexpr void resize(size_t size);
     constexpr void resize(size_t size, ConstReference value);
     constexpr void clear();
-
-public:
-    constexpr bool isInplaceArray() const;
-
-protected:
-    constexpr void* getAddressOfFirst() const;
-
-private:
-    constexpr void copyFrom(const Array& other);
-    constexpr void moveFrom(Array&& other);
 };
 
-template<typename T, ArraySizeTypeT<T> TSize, typename TAllocator>
-class EmbeddedArray : public Array<T, TAllocator>
-{
-    using Base = Array<T, TAllocator>;
-
-public:
-    constexpr EmbeddedArray();
-
-private:
-    alignas(T) byte_t _inplace[TSize * sizeof(T)];
-};
+// template<typename T, ArraySizeTypeT<T> TSize, typename TAllocator>
+// class EmbeddedArray : public Array<T, TAllocator>
+//{
+//     using Base = Array<T, TAllocator>;
+//
+// public:
+//     constexpr EmbeddedArray();
+//
+// private:
+//     alignas(T) byte_t _inplace[TSize * sizeof(T)];
+// };
 
 // ---------------------------------------------------------------------------------------------
 
-namespace Details {
 template<typename T, typename TAllocator, typename TSize>
-constexpr void ObjectArrayBase<T, TAllocator, TSize>::prepend(T&& value)
+constexpr Array<T, TAllocator, TSize>::ConstIterator::ConstIterator(ConstPointer pointer)
+    : _pointer(pointer)
 {
 }
 
 template<typename T, typename TAllocator, typename TSize>
-constexpr void ObjectArrayBase<T, TAllocator, TSize>::append(T&& value)
+constexpr Array<T, TAllocator, TSize>::ConstReference Array<T, TAllocator, TSize>::ConstIterator::operator*() const
+{
+    return *_pointer;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::ConstPointer Array<T, TAllocator, TSize>::ConstIterator::operator->() const
+{
+    return _pointer;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::ConstIterator& Array<T, TAllocator, TSize>::ConstIterator::operator++()
+{
+    ++_pointer;
+    return *this;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::ConstIterator Array<T, TAllocator, TSize>::ConstIterator::operator++(int)
+{
+    auto it = *this;
+    ++_pointer;
+    return it;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::Iterator::Iterator(Pointer pointer)
+    : _pointer(pointer)
 {
 }
-} // namespace Details
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::Reference Array<T, TAllocator, TSize>::Iterator::operator*() const
+{
+    return *_pointer;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::Pointer Array<T, TAllocator, TSize>::Iterator::operator->() const
+{
+    return _pointer;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::Iterator& Array<T, TAllocator, TSize>::Iterator::operator++()
+{
+    ++_pointer;
+    return *this;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr Array<T, TAllocator, TSize>::Iterator Array<T, TAllocator, TSize>::Iterator::operator++(int)
+{
+    auto it = *this;
+    ++_pointer;
+    return it;
+}
 
 template<typename T, typename TAllocator, typename TSize>
 constexpr Array<T, TAllocator, TSize>::Array(size_t initialSize)
@@ -302,57 +287,9 @@ constexpr Array<T, TAllocator, TSize>::Array(Array&& other)
 }
 
 template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::ConstReference Array<T, TAllocator, TSize>::operator[](size_t index) const
+constexpr bool Array<T, TAllocator, TSize>::operator==(const Array& other) const
 {
-    NOS_ASSERT(index < size());
-
-    return *data()[index];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::Reference Array<T, TAllocator, TSize>::operator[](size_t index)
-{
-    NOS_ASSERT(index < size());
-
-    return *data()[index];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::ConstReference Array<T, TAllocator, TSize>::first() const
-{
-    return (*this)[0];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::Reference Array<T, TAllocator, TSize>::first()
-{
-    return (*this)[0];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::ConstReference Array<T, TAllocator, TSize>::last() const
-{
-    NOS_ASSERT(!isEmpty());
-    return (*this)[size() - 1];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::Reference Array<T, TAllocator, TSize>::last()
-{
-    NOS_ASSERT(!isEmpty());
-    return (*this)[size() - 1];
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::ConstPointer Array<T, TAllocator, TSize>::data() const
-{
-    return reinterpret_cast<ConstPointer>(Base::_pointer);
-}
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr Array<T, TAllocator, TSize>::Pointer Array<T, TAllocator, TSize>::data()
-{
-    return reinterpret_cast<Pointer>(Base::_pointer);
+    return false;
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -455,7 +392,10 @@ constexpr size_t Array<T, TAllocator, TSize>::capacity() const
 template<typename T, typename TAllocator, typename TSize>
 constexpr void Array<T, TAllocator, TSize>::reserve(size_t size)
 {
-    // growIfNecessary(size);
+    if (size > capacity())
+    {
+        //        grow(size);
+    }
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -473,6 +413,7 @@ template<typename T, typename TAllocator, typename TSize>
 constexpr void Array<T, TAllocator, TSize>::append(ValueParamType value)
 {
 }
+
 template<typename T, typename TAllocator, typename TSize>
 constexpr void Array<T, TAllocator, TSize>::insert(ConstIterator before, ValueParamType value)
 {
@@ -554,33 +495,6 @@ constexpr void Array<T, TAllocator, TSize>::clear()
 {
 }
 
-template<typename T, typename TAllocator, typename TSize>
-constexpr bool Array<T, TAllocator, TSize>::isInplaceArray() const
-{
-    return Base::_pointer != getAddressOfFirst();
-}
-
-// template<typename T, typename TAllocator>
-// constexpr void Array<T, TAllocator>::add(const T& value)
-//{
-//     const auto newSize = Base::_size + 1;
-//
-//     growIfNecessary(newSize);
-//
-//     Base::_pointer[Base::_size] = value;
-//
-//     Base::_size = newSize;
-// }
-
-template<typename T, typename TAllocator, typename TSize>
-constexpr void* Array<T, TAllocator, TSize>::getAddressOfFirst() const
-{
-    /// Find the address of the first element. For this pointer math to be valid
-    /// with small-size of 0 for T with lots of alignment, it's important that
-    /// ArrayStorage is properly-aligned even for small-size of 0.
-    return const_cast<void*>(reinterpret_cast<const void*>(reinterpret_cast<const byte_t*>(this) + Details::getArrayOffsetOfFirst<T, TSize, TAllocator>()));
-}
-
 /*
 template<typename T, typename TAllocator>
 constexpr void Array<T, TAllocator>::growIfNecessary(size_t requiredSize)
@@ -610,13 +524,6 @@ constexpr void Array<T, TAllocator>::growIfNecessary(size_t requiredSize)
     Base::_capacity = block.size;
 }
 */
-template<typename T, ArraySizeTypeT<T> TSize, typename TAllocator>
-constexpr EmbeddedArray<T, TSize, TAllocator>::EmbeddedArray()
-{
-    Base::_pointer = _inplace;
-    Base::_capacity = TSize;
-}
-
 } // namespace NOS
 
 #pragma clang diagnostic pop

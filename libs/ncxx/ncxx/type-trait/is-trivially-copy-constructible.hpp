@@ -7,7 +7,7 @@
 namespace NOS {
 
 template<typename T>
-struct IsTriviallyCopyConstructible : BoolConstant<IsTriviallyConstructibleV<T, AddLValueReferenceT<const T>>>
+struct IsTriviallyCopyConstructible : BoolConstant<IsTriviallyConstructibleV<T, AddLValueReferenceT<AddConstT<T>>>>
 {};
 
 template<typename T>

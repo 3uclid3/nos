@@ -5,11 +5,10 @@
 #if __has_feature(address_sanitizer)
 extern "C" int __sanitizer_verify_contiguous_container(const void* beg, const void* mid, const void* end);
 
-namespace NOS::Test {
+namespace NOS::ASan {
 
 template<typename T>
-requires(IsArrayV<T>)
-constexpr bool isContiguousContainerASanCorrect(const T& c)
+constexpr bool verifyContiguousContainer(const T& c)
 {
     if (c.data() == nullptr)
     {
@@ -22,7 +21,7 @@ constexpr bool isContiguousContainerASanCorrect(const T& c)
            != 0;
 }
 
-} // namespace NOS::Test
+} // namespace NOS::ASan
 #else
 
 #error fuck

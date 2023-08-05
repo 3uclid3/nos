@@ -1,4 +1,5 @@
 src = files(
+    'ncxx/container/details/array-data.cpp',
     'ncxx/string/format.cpp'
 )
 
@@ -28,7 +29,10 @@ if not meson.is_cross_build()
         'ncxx/algorithm/find-if.test.cpp',
         'ncxx/algorithm/none.test.cpp',
         'ncxx/algorithm/none-of.test.cpp',
-        'ncxx/container/array.test.cpp',
+        'ncxx/container/details/array-base.test.cpp',
+        'ncxx/container/details/array-object.test.cpp',
+        'ncxx/container/details/array-trivial.test.cpp',
+#        'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
         'ncxx/functional/function.test.cpp',
         'ncxx/functional/reference-wrapper.test.cpp',
@@ -71,7 +75,11 @@ if not meson.is_cross_build()
         'ncxx/type-list/type-list-size.test.cpp',
         'ncxx/type-list/types-contains.test.cpp',
         'ncxx/type-list/types-size.test.cpp',
+        'ncxx/type-trait/add-const.test.cpp',
+        'ncxx/type-trait/add-lvalue-reference.test.cpp',
+        'ncxx/type-trait/add-rvalue-reference.test.cpp',
         'ncxx/type-trait/is-array.test.cpp',
+        'ncxx/type-trait/is-copy-constructible.test.cpp',
         'ncxx/type-trait/is-same.test.cpp',
         'ncxx/type-trait/is-static-array.test.cpp',
         'ncxx/type-trait/is-enum-class.test.cpp',
