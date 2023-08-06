@@ -11,6 +11,7 @@ template<typename T, typename TAllocator, typename TSize>
 class ArrayTrivial : public ArrayBase<T, TAllocator, TSize>
 {
     using Base = ArrayBase<T, TAllocator, TSize>;
+    using typename Base::DataSizeType;
 
 public:
     using typename Base::AllocatorType;
@@ -25,9 +26,13 @@ public:
     using typename Base::ConstReference;
     using typename Base::Reference;
 
+    using typename Base::ConstIterator;
+    using typename Base::Iterator;
+
 public:
     constexpr ArrayTrivial() = default;
     constexpr ArrayTrivial(size_t initialSize);
+    constexpr ~ArrayTrivial();
 
 public:
     using Base::capacity;
@@ -36,6 +41,12 @@ public:
 
     using Base::first;
     using Base::last;
+
+    using Base::begin;
+    using Base::end;
+
+    using Base::cbegin;
+    using Base::cend;
 
 public:
     constexpr Reference emplaceFirst(ValueParamType value);
@@ -47,6 +58,9 @@ public:
     constexpr void removeAt(size_t index);
     constexpr void removeAtSwapLast(size_t index);
 
+    constexpr void removeIt(ConstIterator it);
+    constexpr void removeItSwapLast(ConstIterator it);
+
     constexpr void removeOne(ValueParamType value);
     constexpr void removeOneSwapLast(ValueParamType value);
 
@@ -56,10 +70,13 @@ public:
     constexpr void removeLast();
 
     constexpr size_t indexOf(ValueParamType value) const;
+    constexpr size_t indexOf(ConstIterator it) const;
 
+    constexpr void reserve(size_t size);
     constexpr void resize(size_t size);
     constexpr void resize(size_t size, ValueParamType value);
     constexpr void clear();
+    constexpr void free();
 
 protected:
     constexpr void grow(size_t size, size_t offset = 0);
@@ -70,7 +87,13 @@ constexpr ArrayTrivial<T, TAllocator, TSize>::ArrayTrivial(size_t initialSize)
 {
     grow(initialSize);
 
-    Base::_size = initialSize;
+    Base::_size = static_cast<DataSizeType>(initialSize);
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr ArrayTrivial<T, TAllocator, TSize>::~ArrayTrivial()
+{
+    free();
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -127,6 +150,18 @@ constexpr void ArrayTrivial<T, TAllocator, TSize>::removeAtSwapLast(size_t index
     NOS_ASSERT(index < size());
     swap((*this)[index], last());
     removeLast();
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr void ArrayTrivial<T, TAllocator, TSize>::removeIt(ConstIterator it)
+{
+    return removeAt(indexOf(it));
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr void ArrayTrivial<T, TAllocator, TSize>::removeItSwapLast(ConstIterator it)
+{
+    return removeAtSwapLast(indexOf(it));
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -188,11 +223,24 @@ constexpr size_t ArrayTrivial<T, TAllocator, TSize>::indexOf(ValueParamType valu
 }
 
 template<typename T, typename TAllocator, typename TSize>
+constexpr size_t ArrayTrivial<T, TAllocator, TSize>::indexOf(ConstIterator it) const
+{
+    NOS_ASSERT(Base::isValidIterator(it));
+    return size() - static_cast<size_t>(end() - it);
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr void ArrayTrivial<T, TAllocator, TSize>::reserve(size_t size)
+{
+    grow(size);
+}
+
+template<typename T, typename TAllocator, typename TSize>
 constexpr void ArrayTrivial<T, TAllocator, TSize>::resize(size_t size)
 {
     grow(size);
 
-    Base::_size = size;
+    Base::_size = static_cast<DataSizeType>(size);
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -212,6 +260,17 @@ template<typename T, typename TAllocator, typename TSize>
 constexpr void ArrayTrivial<T, TAllocator, TSize>::clear()
 {
     Base::_size = 0;
+}
+
+template<typename T, typename TAllocator, typename TSize>
+constexpr void ArrayTrivial<T, TAllocator, TSize>::free()
+{
+    clear();
+
+    Memory::Block block{.pointer = Base::_buffer, .size = capacity() * sizeof(T)};
+    AllocatorType::deallocate(block);
+
+    Base::_capacity = 0;
 }
 
 template<typename T, typename TAllocator, typename TSize>
@@ -242,7 +301,7 @@ constexpr void ArrayTrivial<T, TAllocator, TSize>::grow(size_t minCapacity, size
     }
 
     Base::_buffer = newBlock.pointer;
-    Base::_capacity = newBlock.size / sizeof(T);
+    Base::_capacity = static_cast<DataSizeType>(newBlock.size / sizeof(T));
 }
 
 } // namespace NOS::Details

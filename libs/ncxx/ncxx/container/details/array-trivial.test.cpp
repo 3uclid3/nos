@@ -5,7 +5,9 @@
 
 namespace NOS::Details {
 
-using TestArray = ArrayTrivial<int, Memory::StackAllocator<8096, alignOf<int>()>, size_t>;
+static constexpr size_t StackBufferSize = 8192;
+
+using TestArray = ArrayTrivial<int, Memory::StackAllocator<StackBufferSize, alignOf<int>()>, size_t>;
 
 TEST_CASE("prepend", "[Array], [ArrayTrivial]")
 {
@@ -56,6 +58,25 @@ TEST_CASE("removeAt", "[Array], [ArrayTrivial]")
     CHECK(array[2] == 3);
 
     array.removeAt(2);
+    CHECK(array.size() == 7);
+    CHECK(array[2] == 4);
+}
+
+TEST_CASE("removeIt", "[Array], [ArrayTrivial]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i] = static_cast<int>(i);
+
+    array.removeIt(array.begin() + 5);
+    CHECK(array.size() == 9);
+    CHECK(array[5] == 6);
+
+    array.removeIt(array.begin() + 2);
+    CHECK(array.size() == 8);
+    CHECK(array[2] == 3);
+
+    array.removeIt(array.begin() + 2);
     CHECK(array.size() == 7);
     CHECK(array[2] == 4);
 }

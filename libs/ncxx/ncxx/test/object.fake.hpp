@@ -23,6 +23,11 @@ struct Object
         ctorMove = true;
     }
 
+    ~Object()
+    {
+        ++dtorCount;
+    }
+
     constexpr Object& operator=(const Object& other)
     {
         value = other.value;
@@ -37,12 +42,19 @@ struct Object
         return *this;
     }
 
+    bool operator==(const Object& other) const
+    {
+        return value == other.value;
+    }
+
     int value{-1};
-    bool ctorInt{false};
-    bool ctorCopy{false};
-    bool ctorMove{false};
-    bool operatorCopy{false};
-    bool operatorMove{false};
+    bool ctorInt : 1 {false};
+    bool ctorCopy : 1 {false};
+    bool ctorMove : 1 {false};
+    bool operatorCopy : 1 {false};
+    bool operatorMove : 1 {false};
+
+    inline static int dtorCount = 0;
 };
 
 struct CopyOnlyObject
@@ -60,6 +72,11 @@ struct CopyOnlyObject
         ctorCopy = true;
     }
 
+    ~CopyOnlyObject()
+    {
+        ++dtorCount;
+    }
+
     constexpr CopyOnlyObject(CopyOnlyObject&& other) = delete;
 
     constexpr CopyOnlyObject& operator=(const CopyOnlyObject& other)
@@ -72,9 +89,11 @@ struct CopyOnlyObject
     constexpr CopyOnlyObject& operator=(CopyOnlyObject&& other) = delete;
 
     int value{-1};
-    bool ctorInt{false};
-    bool ctorCopy{false};
-    bool operatorCopy{false};
+    bool ctorInt : 1 {false};
+    bool ctorCopy : 1 {false};
+    bool operatorCopy : 1 {false};
+
+    inline static int dtorCount = 0;
 };
 
 struct MoveOnlyObject
@@ -94,6 +113,11 @@ struct MoveOnlyObject
         ctorMove = true;
     }
 
+    ~MoveOnlyObject()
+    {
+        ++dtorCount;
+    }
+
     constexpr MoveOnlyObject& operator=(const MoveOnlyObject& other) = delete;
 
     constexpr MoveOnlyObject& operator=(MoveOnlyObject&& other)
@@ -104,9 +128,16 @@ struct MoveOnlyObject
     }
 
     int value{-1};
-    bool ctorInt{false};
-    bool ctorMove{false};
-    bool operatorMove{false};
+    bool ctorInt : 1 {false};
+    bool ctorMove : 1 {false};
+    bool operatorMove : 1 {false};
+
+    inline static int dtorCount = 0;
+};
+
+struct TrivialObject
+{
+    int value{0};
 };
 
 } // namespace NOS::Fake

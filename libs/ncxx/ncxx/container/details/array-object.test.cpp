@@ -140,4 +140,143 @@ TEST_CASE("emplaceLast", "[Array], [ArrayObject]")
     checkEmplaceLast<Fake::MoveOnlyObject>();
 }
 
+using TestArray = ArrayObject<Fake::Object, Memory::StackAllocator<StackBufferSize, alignOf<Fake::Object>()>, size_t>;
+
+TEST_CASE("removeAt", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i].value = static_cast<int>(i);
+
+    array.removeAt(5);
+    CHECK(array.size() == 9);
+    CHECK(array[5].value == 6);
+
+    array.removeAt(2);
+    CHECK(array.size() == 8);
+    CHECK(array[2].value == 3);
+
+    array.removeAt(2);
+    CHECK(array.size() == 7);
+    CHECK(array[2].value == 4);
+}
+
+TEST_CASE("removeAtSwapLast", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i].value = static_cast<int>(i);
+
+    Fake::Object::dtorCount = 0;
+
+    array.removeAtSwapLast(5);
+    CHECK(Fake::Object::dtorCount == 2);
+    CHECK(array.size() == 9);
+    CHECK(array[5].value == 9);
+
+    array.removeAtSwapLast(2);
+    CHECK(Fake::Object::dtorCount == 4);
+    CHECK(array.size() == 8);
+    CHECK(array[2].value == 8);
+
+    array.removeAtSwapLast(2);
+    CHECK(Fake::Object::dtorCount == 6);
+    CHECK(array.size() == 7);
+    CHECK(array[2].value == 7);
+}
+
+TEST_CASE("removeOne", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i].value = static_cast<int>(i);
+
+    array.removeOne(Fake::Object{5});
+    CHECK(array.size() == 9);
+    CHECK(array[5].value == 6);
+
+    array.removeOne(Fake::Object{2});
+    CHECK(array.size() == 8);
+    CHECK(array[2].value == 3);
+
+    array.removeOne(Fake::Object{2});
+    CHECK(array.size() == 8);
+    CHECK(array[2].value == 3);
+}
+
+TEST_CASE("removeOneSwapLast", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i].value = static_cast<int>(i);
+
+    Fake::Object::dtorCount = 0;
+
+    // 3 dtor for tmp in swap
+
+    array.removeOneSwapLast(Fake::Object(5));
+    CHECK(Fake::Object::dtorCount == 3);
+    CHECK(array.size() == 9);
+    CHECK(array[5].value == 9);
+
+    array.removeOneSwapLast(Fake::Object(2));
+    CHECK(Fake::Object::dtorCount == 6);
+    CHECK(array.size() == 8);
+    CHECK(array[2].value == 8);
+
+    array.removeOneSwapLast(Fake::Object(3));
+    CHECK(Fake::Object::dtorCount == 9);
+    CHECK(array.size() == 7);
+    CHECK(array[3].value == 7);
+
+    array.removeOneSwapLast(Fake::Object(3));
+    CHECK(Fake::Object::dtorCount == 10);
+    CHECK(array.size() == 7);
+}
+
+TEST_CASE("removeFirstSwapLast", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+    REQUIRE(array.size() == 10);
+    for (size_t i = 0; i < array.size(); ++i) array[i].value = static_cast<int>(i);
+
+    Fake::Object::dtorCount = 0;
+
+    // 2 dtor for tmp in swap
+
+    array.removeFirstSwapLast();
+    CHECK(Fake::Object::dtorCount == 2);
+    CHECK(array.size() == 9);
+    CHECK(array.first().value == 9);
+
+    array.removeFirstSwapLast();
+    CHECK(Fake::Object::dtorCount == 4);
+    CHECK(array.size() == 8);
+    CHECK(array.first().value == 8);
+
+    array.removeFirstSwapLast();
+    CHECK(Fake::Object::dtorCount == 6);
+    CHECK(array.size() == 7);
+    CHECK(array.first().value == 7);
+}
+
+TEST_CASE("removeLast", "[Array], [ArrayObject]")
+{
+    TestArray array{10};
+
+    Fake::Object::dtorCount = 0;
+
+    array.removeLast();
+    CHECK(Fake::Object::dtorCount == 1);
+    CHECK(array.size() == 9);
+
+    array.removeLast();
+    CHECK(Fake::Object::dtorCount == 2);
+    CHECK(array.size() == 8);
+
+    array.removeLast();
+    CHECK(Fake::Object::dtorCount == 3);
+    CHECK(array.size() == 7);
+}
+
 } // namespace NOS::Details

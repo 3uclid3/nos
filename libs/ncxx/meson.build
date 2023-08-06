@@ -32,7 +32,7 @@ if not meson.is_cross_build()
         'ncxx/container/details/array-base.test.cpp',
         'ncxx/container/details/array-object.test.cpp',
         'ncxx/container/details/array-trivial.test.cpp',
-#        'ncxx/container/array.test.cpp',
+        'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
         'ncxx/functional/function.test.cpp',
         'ncxx/functional/reference-wrapper.test.cpp',
