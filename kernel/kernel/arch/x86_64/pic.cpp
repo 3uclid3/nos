@@ -94,7 +94,7 @@ void PIC::eoi(u64_t interrupt)
 
 namespace {
 
-u16_t read(u8_t ocw3)
+[[maybe_unused]] u16_t read(u8_t ocw3)
 {
     /* OCW3 to PIC CMD to get the register values.  PIC2 is chained, and
      * represents IRQs 8-15.  PIC1 is IRQs 0-7, with 2 being the chain */
@@ -105,14 +105,14 @@ u16_t read(u8_t ocw3)
 
 } // namespace
 
-u16_t PIC::readIRR()
-{
-    return read(Command::ReadIRR);
-}
-
-u16_t PIC::readISR()
-{
-    return read(Command::ReadISR);
-}
+// u16_t PIC::readIRR()
+//{
+//     return read(Command::ReadIRR);
+// }
+//
+// u16_t PIC::readISR()
+//{
+//     return read(Command::ReadISR);
+// }
 
 } // namespace NOS::X86_64

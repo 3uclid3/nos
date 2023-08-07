@@ -2,7 +2,6 @@
 
 #include <ncxx/basic-types.hpp>
 
-/*
 namespace std {
 
 template<class T>
@@ -36,9 +35,8 @@ private:
 };
 
 } // namespace std
-*/
 
-#include <utility>
+// #include <utility>
 
 namespace NOS {
 

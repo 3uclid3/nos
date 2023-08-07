@@ -156,7 +156,7 @@ libs_c_ccp_args = []
 libs_link_args = []
 libs_sanitizers = []
 
-if get_option('libs_asan')
+if get_option('libs_asan') and not meson.is_cross_build()
     libs_sanitizers += ['address']
 endif
 if get_option('libs_ubsan')
