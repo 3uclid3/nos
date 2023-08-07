@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ncxx/basic-types.hpp>
-#include <ncxx/container/static-array.hpp>
 #include <ncxx/memory/unique-ptr.hpp>
 #include <ncxx/utility/forward.hpp>
 #include <ncxx/utility/move.hpp>
