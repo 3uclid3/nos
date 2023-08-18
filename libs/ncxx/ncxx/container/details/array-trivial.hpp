@@ -126,7 +126,7 @@ constexpr void ArrayTrivial<T, TAllocator, TSize>::append(ValueParamType value)
     grow(size() + 1);
 
     Memory::copy(Memory::Block{reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T), sizeof(T)},
-                 Memory::Block{&value, sizeof(T)});
+                 Memory::ConstBlock{&value, sizeof(T)});
 
     ++Base::_size;
 }
