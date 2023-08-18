@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ncxx/basic-types.hpp>
+#include <ncxx/debug/assert.hpp>
 #include <ncxx/memory/unique-ptr.hpp>
 #include <ncxx/utility/forward.hpp>
 #include <ncxx/utility/move.hpp>
