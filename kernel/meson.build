@@ -4,6 +4,7 @@ src = files(
     'kernel/lang/cxxabi.cpp',
     'kernel/lang/ubsan.cpp',
     'kernel/lang/new.cpp',
+    'kernel/memory/malloc.cpp',
     'kernel/utility/cstring.cpp',
     'kernel/utility/log.cpp',
     'kernel/utility/panic.cpp',
@@ -48,7 +49,8 @@ kernel = executable(
     include_directories : ['.'],
     dependencies : [
         limine_dep,
-        ncxx_dep
+        ncxx_dep,
+        log_dep
     ],
     c_args : [
         c_ccp_args
