@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ncxx/container/details/array-base.hpp>
+#include <ncxx/memory/new.hpp>
 #include <ncxx/type-trait/is-copy-assignable.hpp>
 #include <ncxx/type-trait/is-copy-constructible.hpp>
 #include <ncxx/type-trait/is-move-assignable.hpp>
@@ -101,7 +102,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::prepend(ConstReference value)
 {
     grow(Base::size() + 1, 1);
 
-    ::new (Base::_buffer) T(value);
+    new (Base::_buffer) T(value);
 
     ++Base::_size;
 }
@@ -111,7 +112,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::prepend(T&& value)
 {
     grow(Base::size() + 1, 1);
 
-    ::new (Base::_buffer) T(move(value));
+    new (Base::_buffer) T(move(value));
 
     ++Base::_size;
 }
@@ -121,7 +122,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::append(ConstReference value)
 {
     grow(Base::size() + 1);
 
-    ::new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(value);
+    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(value);
 
     ++Base::_size;
 }
@@ -131,7 +132,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::append(T&& value)
 {
     grow(Base::size() + 1);
 
-    ::new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(move(value));
+    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(move(value));
 
     ++Base::_size;
 }
@@ -142,7 +143,7 @@ constexpr ArrayObject<T, TAllocator, TSize>::Reference ArrayObject<T, TAllocator
 {
     grow(Base::size() + 1, 1);
 
-    ::new (Base::_buffer) T(forward<TArgs>(args)...);
+    new (Base::_buffer) T(forward<TArgs>(args)...);
 
     ++Base::_size;
 
@@ -155,7 +156,7 @@ constexpr ArrayObject<T, TAllocator, TSize>::Reference ArrayObject<T, TAllocator
 {
     grow(Base::size() + 1);
 
-    ::new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(forward<TArgs>(args)...);
+    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(forward<TArgs>(args)...);
 
     ++Base::_size;
 
@@ -270,7 +271,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::resize(size_t newSize)
 
         for (size_t i = newSize; i < size(); ++i)
         {
-            ::new (reinterpret_cast<u8_t*>(Base::_buffer) + i * sizeof(T)) T();
+            new (reinterpret_cast<u8_t*>(Base::_buffer) + i * sizeof(T)) T();
         }
     }
 
@@ -349,11 +350,11 @@ void ArrayObject<T, TAllocator, TSize>::construct(T* to, T* from)
 
     if constexpr (IsMoveConstructibleV<T>)
     {
-        ::new (to) T(move(*from));
+        new (to) T(move(*from));
     }
     else if constexpr (IsCopyConstructibleV<T>)
     {
-        ::new (to) T(*from);
+        new (to) T(*from);
     }
 }
 
