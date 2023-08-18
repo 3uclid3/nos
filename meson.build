@@ -137,6 +137,10 @@ if meson.is_cross_build()
     )
 endif
 
+if not meson.is_cross_build()
+    add_project_arguments(['-DNOS_NATIVE'], language: ['c', 'cpp'])
+endif
+
 
 # ----------------------------------------
 # Subprojects
@@ -171,6 +175,7 @@ endif
 
 
 subdir('libs/ncxx')
+subdir('libs/log')
 
 
 # ----------------------------------------
