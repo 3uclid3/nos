@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ncxx/container/details/array-base.hpp>
-#include <ncxx/memory/new.hpp>
+#include <ncxx/memory/construct-at.hpp>
 #include <ncxx/type-trait/is-copy-assignable.hpp>
 #include <ncxx/type-trait/is-copy-constructible.hpp>
 #include <ncxx/type-trait/is-move-assignable.hpp>
@@ -102,7 +102,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::prepend(ConstReference value)
 {
     grow(Base::size() + 1, 1);
 
-    new (Base::_buffer) T(value);
+    Memory::constructAt(static_cast<T*>(Base::_buffer), value);
 
     ++Base::_size;
 }
@@ -112,7 +112,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::prepend(T&& value)
 {
     grow(Base::size() + 1, 1);
 
-    new (Base::_buffer) T(move(value));
+    Memory::constructAt(static_cast<T*>(Base::_buffer), move(value));
 
     ++Base::_size;
 }
@@ -122,7 +122,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::append(ConstReference value)
 {
     grow(Base::size() + 1);
 
-    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(value);
+    Memory::constructAt(static_cast<T*>(Base::_buffer) + Base::_size, value);
 
     ++Base::_size;
 }
@@ -132,7 +132,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::append(T&& value)
 {
     grow(Base::size() + 1);
 
-    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(move(value));
+    Memory::constructAt(static_cast<T*>(Base::_buffer) + Base::_size, move(value));
 
     ++Base::_size;
 }
@@ -143,7 +143,7 @@ constexpr ArrayObject<T, TAllocator, TSize>::Reference ArrayObject<T, TAllocator
 {
     grow(Base::size() + 1, 1);
 
-    new (Base::_buffer) T(forward<TArgs>(args)...);
+    Memory::constructAt(static_cast<T*>(Base::_buffer), forward<TArgs>(args)...);
 
     ++Base::_size;
 
@@ -156,7 +156,7 @@ constexpr ArrayObject<T, TAllocator, TSize>::Reference ArrayObject<T, TAllocator
 {
     grow(Base::size() + 1);
 
-    new (reinterpret_cast<u8_t*>(Base::_buffer) + Base::_size * sizeof(T)) T(forward<TArgs>(args)...);
+    Memory::constructAt(static_cast<T*>(Base::_buffer) + Base::_size, forward<TArgs>(args)...);
 
     ++Base::_size;
 
@@ -172,7 +172,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::removeAt(size_t index)
         take(&(*this)[i], &(*this)[i + 1]);
     }
 
-    last().~T();
+    Memory::destroyAt(&last());
 
     --Base::_size;
 }
@@ -231,7 +231,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::removeLast()
 {
     NOS_ASSERT(!isEmpty());
 
-    last().~T();
+    Memory::destroyAt(&last());
 
     --Base::_size;
 }
@@ -262,7 +262,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::resize(size_t newSize)
     {
         for (size_t i = newSize; i < size(); ++i)
         {
-            (*this)[i].~T();
+            Memory::destroyAt(&(*this)[i]);
         }
     }
     else if (newSize > size())
@@ -271,7 +271,7 @@ constexpr void ArrayObject<T, TAllocator, TSize>::resize(size_t newSize)
 
         for (size_t i = newSize; i < size(); ++i)
         {
-            new (reinterpret_cast<u8_t*>(Base::_buffer) + i * sizeof(T)) T();
+            Memory::constructAt(static_cast<T*>(Base::_buffer) + i);
         }
     }
 
@@ -350,11 +350,11 @@ void ArrayObject<T, TAllocator, TSize>::construct(T* to, T* from)
 
     if constexpr (IsMoveConstructibleV<T>)
     {
-        new (to) T(move(*from));
+        Memory::constructAt(to, move(*from));
     }
     else if constexpr (IsCopyConstructibleV<T>)
     {
-        new (to) T(*from);
+        Memory::constructAt(to, *from);
     }
 }
 
@@ -378,7 +378,7 @@ void ArrayObject<T, TAllocator, TSize>::destroyRange(T* begin, T* end)
 {
     for (T* it = begin; it != end; ++it)
     {
-        it->~T();
+        Memory::destroyAt(it);
     }
 }
 
