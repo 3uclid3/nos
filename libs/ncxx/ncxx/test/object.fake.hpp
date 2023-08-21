@@ -2,25 +2,59 @@
 
 namespace NOS::Fake {
 
-struct Object
+template<typename TConcrete>
+struct BaseObject
 {
-    constexpr Object() = default;
-    constexpr Object(int initialValue)
-        : value(initialValue)
+    bool ctorDefault : 1 {false};
+    bool ctorCopy : 1 {false};
+    bool ctorMove : 1 {false};
+    bool otorCopy : 1 {false};
+    bool otorMove : 1 {false};
+
+    inline static void resetCounts()
     {
-        ctorInt = true;
+        ctorCount = 0;
+        dtorCount = 0;
+        moveCount = 0;
+        copyCount = 0;
     }
 
-    constexpr Object(const Object& other)
+    inline static int ctorCount = 0;
+    inline static int dtorCount = 0;
+    inline static int moveCount = 0;
+    inline static int copyCount = 0;
+};
+
+struct Object : BaseObject<Object>
+{
+    Object()
+    {
+        ctorDefault = true;
+
+        ++ctorCount;
+    }
+
+    explicit Object(int initialValue)
+        : value(initialValue)
+        , ctorInt(true)
+    {
+        ++ctorCount;
+    }
+
+    Object(const Object& other)
         : value(other.value)
     {
         ctorCopy = true;
+        ++ctorCount;
+        ++copyCount;
     }
 
-    constexpr Object(Object&& other)
+    Object(Object&& other)
         : value(other.value)
     {
         ctorMove = true;
+        ++ctorCount;
+        ++moveCount;
     }
 
     ~Object()
@@ -28,17 +62,19 @@ struct Object
         ++dtorCount;
     }
 
-    constexpr Object& operator=(const Object& other)
+    Object& operator=(const Object& other)
     {
         value = other.value;
-        operatorCopy = true;
+        otorCopy = true;
+        ++copyCount;
         return *this;
     }
 
-    constexpr Object& operator=(Object&& other)
+    Object& operator=(Object&& other)
     {
         value = other.value;
-        operatorMove = true;
+        otorMove = true;
+        ++moveCount;
         return *this;
     }
 
@@ -49,15 +85,9 @@ struct Object
 
     int value{-1};
     bool ctorInt : 1 {false};
-    bool ctorCopy : 1 {false};
-    bool ctorMove : 1 {false};
-    bool operatorCopy : 1 {false};
-    bool operatorMove : 1 {false};
-
-    inline static int dtorCount = 0;
 };
 
-struct CopyOnlyObject
+struct CopyOnlyObject : BaseObject<CopyOnlyObject>
 {
     constexpr CopyOnlyObject() = default;
     constexpr CopyOnlyObject(int initialValue)
@@ -96,7 +126,7 @@ struct CopyOnlyObject
     inline static int dtorCount = 0;
 };
 
-struct MoveOnlyObject
+struct MoveOnlyObject : BaseObject<CopyOnlyObject>
 {
     constexpr MoveOnlyObject() = default;
     constexpr MoveOnlyObject(int initialValue)
@@ -138,6 +168,23 @@ struct MoveOnlyObject
 struct TrivialObject
 {
     int value{0};
+};
+
+struct ObjectFixture
+{
+    ObjectFixture()
+    {
+        Object::resetCounts();
+        CopyOnlyObject::resetCounts();
+        MoveOnlyObject::resetCounts();
+    }
+
+    virtual ~ObjectFixture()
+    {
+        Object::resetCounts();
+        CopyOnlyObject::resetCounts();
+        MoveOnlyObject::resetCounts();
+    }
 };
 
 } // namespace NOS::Fake

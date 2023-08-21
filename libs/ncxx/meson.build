@@ -40,6 +40,7 @@ if not meson.is_cross_build()
         'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
+        'ncxx/memory/construct-at.test.cpp',
         'ncxx/memory/tagged-ptr.test.cpp',
         'ncxx/memory/unique-ptr.test.cpp',
         'ncxx/range/all.test.cpp',
