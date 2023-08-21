@@ -3,9 +3,13 @@
 #include <log/log.hpp>
 #include <log/message.hpp>
 #include <log/sink.hpp>
+#include <log/tag.test-stringify.hpp>
 #include <ncxx/container/array.hpp>
 
 namespace NOS::Log {
+
+struct TestTag
+{};
 
 class TestSink : public Sink
 {
@@ -61,61 +65,111 @@ struct Fixture
         CHECK(_sink->_expectedMessages.size() == _sink->_nextMessageIndex);
     }
 
+    template<typename TFunc>
+    void checkLevel(Level level, TFunc func)
+    {
+        static constexpr StringView msg = "Message for level check";
+
+        expectedMessage(level, TagOf<TestTag>, msg);
+        expectedMessage(level, TagOf<TestTag>, msg);
+        expectedMessage(level, TagOf<TestTag>, msg);
+
+        func(msg);
+
+        checkReceivedExpectedMessages();
+    }
+
+    TestTag _tag;
+    TestTag* _tagPtr{&_tag};
+
     TestSink* _sink;
 };
 
-TEST_CASE_METHOD(Fixture, "Trace", "[Log]")
+TEST_CASE_METHOD(Fixture, "Level", "[Log]")
 {
-    expectedMessage(Level::Trace, TagOf<Fixture>, "Trace message");
+    SECTION("Trace")
+    {
+        checkLevel(Level::Trace, [this](StringView msg) {
+            trace<TestTag>(msg);
+            trace(_tag, msg);
+            trace(_tagPtr, msg);
+        });
+    }
 
-    trace<Fixture>("Trace message");
+    SECTION("Debug")
+    {
+        checkLevel(Level::Debug, [this](StringView msg) {
+            debug<TestTag>(msg);
+            debug(_tag, msg);
+            debug(_tagPtr, msg);
+        });
+    }
 
-    checkReceivedExpectedMessages();
-}
+    SECTION("Info")
+    {
+        checkLevel(Level::Info, [this](StringView msg) {
+            info<TestTag>(msg);
+            info(_tag, msg);
+            info(_tagPtr, msg);
+        });
+    }
 
-TEST_CASE_METHOD(Fixture, "Debug", "[Log]")
-{
-    expectedMessage(Level::Debug, TagOf<Fixture>, "Debug message");
+    SECTION("Warn")
+    {
+        checkLevel(Level::Warn, [this](StringView msg) {
+            warn<TestTag>(msg);
+            warn(_tag, msg);
+            warn(_tagPtr, msg);
+        });
+    }
 
-    debug<Fixture>("Debug message");
+    SECTION("Error")
+    {
+        checkLevel(Level::Error, [this](StringView msg) {
+            error<TestTag>(msg);
+            error(_tag, msg);
+            error(_tagPtr, msg);
+        });
+    }
 
-    checkReceivedExpectedMessages();
-}
+    SECTION("Fatal")
+    {
+        checkLevel(Level::Fatal, [this](StringView msg) {
+            fatal<TestTag>(msg);
+            fatal(_tag, msg);
+            fatal(_tagPtr, msg);
+        });
+    }
 
-TEST_CASE_METHOD(Fixture, "Info", "[Log]")
-{
-    expectedMessage(Level::Info, TagOf<Fixture>, "Info message");
+    SECTION("Disable")
+    {
+        auto logAll = [this] {
+            trace(_tag, "Disable");
+            debug(_tag, "Disable");
+            info(_tag, "Disable");
+            warn(_tag, "Disable");
+            error(_tag, "Disable");
+            fatal(_tag, "Disable");
+        };
 
-    info<Fixture>("Info message");
+        SECTION("global")
+        {
+            setLevel(Level::Disable);
 
-    checkReceivedExpectedMessages();
-}
+            logAll();
 
-TEST_CASE_METHOD(Fixture, "Warn", "[Log]")
-{
-    expectedMessage(Level::Warn, TagOf<Fixture>, "Warn message");
+            CHECK(_sink->_nextMessageIndex == 0);
+        }
 
-    warn<Fixture>("Warn message");
+        SECTION("tag")
+        {
+            setLevel<TestTag>(Level::Disable);
 
-    checkReceivedExpectedMessages();
-}
+            logAll();
 
-TEST_CASE_METHOD(Fixture, "Error", "[Log]")
-{
-    expectedMessage(Level::Error, TagOf<Fixture>, "Error message");
-
-    error<Fixture>("Error message");
-
-    checkReceivedExpectedMessages();
-}
-
-TEST_CASE_METHOD(Fixture, "Fatal", "[Log]")
-{
-    expectedMessage(Level::Fatal, TagOf<Fixture>, "Fatal message");
-
-    fatal<Fixture>("Fatal message");
-
-    checkReceivedExpectedMessages();
+            CHECK(_sink->_nextMessageIndex == 0);
+        }
+    }
 }
 
 } // namespace NOS::Log

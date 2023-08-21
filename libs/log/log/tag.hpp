@@ -2,7 +2,9 @@
 
 #include <ncxx/hash/crc32.hpp>
 #include <ncxx/string/string-view.hpp>
+#include <ncxx/type-trait/decay.hpp>
 #include <ncxx/type-trait/integral-constant.hpp>
+#include <ncxx/type-trait/remove-pointer.hpp>
 #include <ncxx/type-trait/type-full-name.hpp>
 #include <ncxx/type-trait/type-name.hpp>
 
@@ -30,9 +32,11 @@ struct Tag
 template<typename T>
 struct TagOfImpl
 {
+    using Type = RemovePointerT<DecayT<T>>;
+
     static constexpr Tag Tag{
-        .id = crc32(TypeFullNameV<T>),
-        .name = TypeNameV<T>};
+        .id = crc32(TypeFullNameV<Type>),
+        .name = TypeNameV<Type>};
 };
 
 template<typename T>

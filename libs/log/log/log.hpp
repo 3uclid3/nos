@@ -33,6 +33,18 @@ void setLevel(Level level);
 
 void vlog(Level level, Tag tag, StringView fmt, Span<FormatArgument> args, SourceLocation sourceLocation = SourceLocation::current());
 
+template<Tagger TTagger>
+Level getLevel()
+{
+    return getLevel(TagOf<TTagger>);
+}
+
+template<Tagger TTagger>
+void setLevel(Level level)
+{
+    setLevel(TagOf<TTagger>, level);
+}
+
 template<Tagger TTagger, typename... TArguments>
 void trace(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
@@ -58,7 +70,7 @@ template<Tagger TTagger, typename... TArguments>
 void debug(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Debug, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    vlog(Level::Debug, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
 }
 
 template<Tagger TTagger, typename... TArguments>
@@ -72,7 +84,7 @@ template<Tagger TTagger, typename... TArguments>
 void info(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Info, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    vlog(Level::Info, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
 }
 
 template<Tagger TTagger, typename... TArguments>
@@ -86,7 +98,7 @@ template<Tagger TTagger, typename... TArguments>
 void warn(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Warn, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    vlog(Level::Warn, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
 }
 
 template<Tagger TTagger, typename... TArguments>
@@ -100,7 +112,7 @@ template<Tagger TTagger, typename... TArguments>
 void error(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Error, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    vlog(Level::Error, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
 }
 
 template<Tagger TTagger, typename... TArguments>
@@ -114,7 +126,7 @@ template<Tagger TTagger, typename... TArguments>
 void fatal(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
 {
     StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Fatal, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    vlog(Level::Fatal, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
 }
 
 } // namespace NOS::Log
