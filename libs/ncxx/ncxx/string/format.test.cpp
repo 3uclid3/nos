@@ -6,9 +6,15 @@ namespace NOS {
 
 TEST_CASE("formatTo - bool", "[String]")
 {
-    CHECK(format("Hello {}", "World") == "Hello World");
-    CHECK(format("{} World", "Hello") == "Hello World");
-    CHECK(format("{} {}", "Hello", "World") == "Hello World");
+    constexpr StringView expectedResult = "Hello World";
+
+    const StringView result1 = format("Hello {}", "World");
+    const StringView result2 = format("Hello {}", "World");
+    const StringView result3 = format("Hello {}", "World");
+
+    CHECK(result1 == expectedResult);
+    CHECK(result2 == expectedResult);
+    CHECK(result3 == expectedResult);
 }
 
 } // namespace NOS

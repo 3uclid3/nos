@@ -18,7 +18,7 @@ public:
 
     Span<char> nextBuffer()
     {
-        const size_t offset = _nextBufferIndex * BufferCount;
+        const size_t offset = _nextBufferIndex * BufferSize;
         _nextBufferIndex = _nextBufferIndex == LastBuffer ? 0 : _nextBufferIndex + 1;
         return {&_buffer[offset], BufferSize};
     }
