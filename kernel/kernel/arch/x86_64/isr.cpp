@@ -2,8 +2,8 @@
 
 #include <kernel/arch/x86_64/cpu.hpp>
 #include <kernel/arch/x86_64/interrupt.hpp>
-#include <kernel/utility/log.hpp>
 #include <kernel/utility/panic.hpp>
+#include <log/log.hpp>
 #include <ncxx/utility/to-underlying-type.hpp>
 
 namespace NOS::X86_64 {
@@ -18,16 +18,15 @@ struct GlobalInstance
 
 void logRegisters(const X86_64::CPU::Registers& registers)
 {
-    Log::error("idt: registers");
-    Log::ScopeIndent scopeIndent;
+    Log::error<ISR>().message("registers");
 
     // clang-format off
-    Log::error("r8=0x{:X} r9=0x{:X} r10=0x{:X} r11=0x{:X} r12=0x{:X} r13=0x{:X} r14=0x{:X} r15=0x{:X}",
-               registers.r8, registers.r9, registers.r10, registers.r11, registers.r12, registers.r13, registers.r14, registers.r15);
-    Log::error("rax=0x{:X} rbx=0x{:X} rcx=0x{:X} rdx=0x{:X} rsi=0x{:X} rdi=0x{:X} rbp=0x{:X}",
-               registers.rax, registers.rbx, registers.rcx, registers.rdx, registers.rsi, registers.rdi, registers.rbp);
-    Log::error("interrupt=0x{:X} error code=0x{:X}",
-               registers.interrupt, registers.errorCode);
+    Log::error<ISR>().format("r8=0x{:X} r9=0x{:X} r10=0x{:X} r11=0x{:X} r12=0x{:X} r13=0x{:X} r14=0x{:X} r15=0x{:X}",
+                    registers.r8, registers.r9, registers.r10, registers.r11, registers.r12, registers.r13, registers.r14, registers.r15);
+    Log::error<ISR>().format("rax=0x{:X} rbx=0x{:X} rcx=0x{:X} rdx=0x{:X} rsi=0x{:X} rdi=0x{:X} rbp=0x{:X}",
+                    registers.rax, registers.rbx, registers.rcx, registers.rdx, registers.rsi, registers.rdi, registers.rbp);
+    Log::error<ISR>().format("interrupt=0x{:X} error code=0x{:X}",
+                    registers.interrupt, registers.errorCode);
     // clang-format on
 }
 
@@ -47,7 +46,7 @@ ISR::~ISR()
 
 void ISR::dispatch(const CPU::Registers& registers)
 {
-    const size_t exceptionCount = toUnderlyingType(Exception::Count);
+    const auto exceptionCount = toUnderlyingType(Exception::Count);
 
     if (registers.interrupt < exceptionCount)
     {
@@ -65,21 +64,21 @@ void ISR::dispatch(const CPU::Registers& registers)
 
 void ISR::dispatchException(const CPU::Registers& registers)
 {
-    Log::error("idt: Exception interrupt {} on CPU {}", ExceptionString[registers.interrupt], 0);
+    Log::error(this).format("Exception interrupt {} on CPU {}", ExceptionString[registers.interrupt], 0);
     logRegisters(registers);
     panic();
 }
 
 void ISR::dispatchHandler(const CPU::Registers& registers)
 {
-    Log::info("idt: Interrupt {} on CPU {}", registers.interrupt, 0);
+    Log::info(this).format("Interrupt {} on CPU {}", registers.interrupt, 0);
 
     _handlers[registers.interrupt].functor(registers);
 }
 
 void ISR::dispatchUnknown(const CPU::Registers& registers)
 {
-    Log::error("idt: Unknown interrupt {} on CPU {}", registers.interrupt, 0);
+    Log::error(this).format("Unknown interrupt {} on CPU {}", registers.interrupt, 0);
     logRegisters(registers);
     panic();
 }

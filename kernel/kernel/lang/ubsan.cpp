@@ -1,5 +1,5 @@
 #include <kernel/arch/interrupt.hpp>
-#include <kernel/utility/log.hpp>
+#include <log/log.hpp>
 #include <ncxx/basic-types.hpp>
 #include <ncxx/preprocessor/unused.hpp>
 
@@ -107,7 +107,7 @@ struct AlignmentAssumptionData
 
 static void print(StringView message, SourceLocation location)
 {
-    Log::error("Ubsan: {} at file {}, line {}, column {}", message, location.fileName, location.line, location.column);
+    Log::error<struct UBSan>().format("{} at file {}, line {}, column {}", message, location.fileName, location.line, location.column);
     Interrupt::hcf();
 }
 

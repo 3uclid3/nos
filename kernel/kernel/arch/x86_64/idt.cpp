@@ -2,6 +2,7 @@
 
 #include <kernel/arch/x86_64/gdt.hpp>
 #include <kernel/arch/x86_64/interrupt.hpp>
+#include <log/log.hpp>
 
 extern "C" void* NOS_interruptTable[];
 
@@ -21,7 +22,7 @@ void IDT::Entry::set(void* isr_, uint8_t typeAttr_, uint8_t ist_)
 
 void IDT::load()
 {
-    Log::info("idt: loading");
+    Log::info(this).message("loading");
 
     for (size_t i = 0; i < _entries.size(); ++i)
     {

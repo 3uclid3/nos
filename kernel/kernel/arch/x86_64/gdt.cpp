@@ -1,6 +1,6 @@
 #include <kernel/arch/x86_64/gdt.hpp>
 
-#include <kernel/utility/log.hpp>
+#include <log/log.hpp>
 
 namespace NOS::X86_64 {
 
@@ -16,7 +16,7 @@ GDT::GDT()
 
 void GDT::load(const TSS& tss)
 {
-    Log::info("gdt: loading");
+    Log::info(this).message("loading");
 
     _taskStateSegment.setPointer(tss);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/utility/log.hpp>
+#include <log/log.hpp>
 #include <ncxx/basic-types.hpp>
 #include <ncxx/utility/source-location.hpp>
 
@@ -19,25 +19,25 @@ inline bool isEnabled()
 
 inline void enable(SourceLocation sourceLocation = SourceLocation::current())
 {
-    Log::info("Interrupt: enable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::info<struct Interrupt>().format("enable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("sti");
 }
 
 inline void disable(SourceLocation sourceLocation = SourceLocation::current())
 {
-    Log::info("Interrupt: disable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::info<struct Interrupt>().format("disable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("cli");
 }
 
 inline void halt(SourceLocation sourceLocation = SourceLocation::current())
 {
-    Log::info("Interrupt: halt from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::info<struct Interrupt>().format("halt from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("hlt");
 }
 
 [[noreturn]] inline void hcf(SourceLocation sourceLocation = SourceLocation::current())
 {
-    Log::info("Interrupt: hcf from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::info<struct Interrupt>().format("hcf from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     while (true)
         asm volatile("cli; hlt");
 }

@@ -64,16 +64,26 @@ void setLevel(Tag tag, Level level)
     }
 }
 
-void vlog(Level level, Tag tag, StringView fmt, Span<FormatArgument> args, SourceLocation sourceLocation)
+bool shouldLog(Level level, Tag tag)
 {
     if (Details::logger.level == Level::Disable || level < Details::logger.level)
     {
-        return;
+        return false;
     }
 
     const size_t index = Details::logger.tags.indexOf(tag);
 
     if (index < Details::logger.tags.size() && level < Details::logger.tagsLevel[index])
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void vlog(Level level, Tag tag, StringView fmt, Span<FormatArgument> args, SourceLocation sourceLocation)
+{
+    if (!shouldLog(level, tag))
     {
         return;
     }
@@ -87,6 +97,25 @@ void vlog(Level level, Tag tag, StringView fmt, Span<FormatArgument> args, Sourc
     for (auto&& sink : Details::logger.sinks)
     {
         sink->log(message);
+    }
+}
+
+void log(Level level, Tag tag, StringView message, SourceLocation sourceLocation)
+{
+    if (!shouldLog(level, tag))
+    {
+        return;
+    }
+
+    const Message msg{
+        .sourceLocation = sourceLocation,
+        .message = message,
+        .tag = tag,
+        .level = level};
+
+    for (auto&& sink : Details::logger.sinks)
+    {
+        sink->log(msg);
     }
 }
 

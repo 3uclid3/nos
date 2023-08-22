@@ -5,6 +5,7 @@
 #include <log/sink.hpp>
 #include <log/tag.test-stringify.hpp>
 #include <ncxx/container/array.hpp>
+#include <ncxx/string/format.hpp>
 
 namespace NOS::Log {
 
@@ -16,25 +17,23 @@ class TestSink : public Sink
 public:
     void expectedMessage(Level level, Tag tag, StringView message)
     {
-        _expectedMessages.emplaceLast(Message{
+        _expected = Message{
             .message = message,
             .tag = tag,
-            .level = level});
+            .level = level};
     }
 
     void logImpl(const Message& message) override
     {
-        REQUIRE(_nextMessageIndex < _expectedMessages.size());
+        CHECK(message.level == _expected.level);
+        CHECK(message.tag == _expected.tag);
+        CHECK(message.message == _expected.message);
 
-        CHECK(_expectedMessages[_nextMessageIndex].level == message.level);
-        CHECK(_expectedMessages[_nextMessageIndex].message == message.message);
-        CHECK(_expectedMessages[_nextMessageIndex].tag == message.tag);
-
-        ++_nextMessageIndex;
+        _logged = true;
     }
 
-    Array<Message> _expectedMessages;
-    size_t _nextMessageIndex{0};
+    Message _expected;
+    bool _logged{false};
 };
 
 struct Fixture
@@ -62,19 +61,18 @@ struct Fixture
 
     void checkReceivedExpectedMessages()
     {
-        CHECK(_sink->_expectedMessages.size() == _sink->_nextMessageIndex);
+        CHECK(_sink->_logged);
     }
 
     template<typename TFunc>
     void checkLevel(Level level, TFunc func)
     {
-        static constexpr StringView msg = "Message for level check";
+        static constexpr StringView msg = "Message for level {} check";
+        const StringView expectedMsg = format(msg, LevelString.string(level));
 
-        expectedMessage(level, TagOf<TestTag>, msg);
-        expectedMessage(level, TagOf<TestTag>, msg);
-        expectedMessage(level, TagOf<TestTag>, msg);
+        expectedMessage(level, TagOf<TestTag>, expectedMsg);
 
-        func(msg);
+        func(msg, LevelString.string(level));
 
         checkReceivedExpectedMessages();
     }
@@ -89,67 +87,66 @@ TEST_CASE_METHOD(Fixture, "Level", "[Log]")
 {
     SECTION("Trace")
     {
-        checkLevel(Level::Trace, [this](StringView msg) {
-            trace<TestTag>(msg);
-            trace(_tag, msg);
-            trace(_tagPtr, msg);
+        checkLevel(Level::Trace, [this](StringView fmt, StringView arg) {
+            trace<TestTag>().format(fmt, arg);
+            trace(_tag).format(fmt, arg);
+            trace(_tagPtr).format(fmt, arg);
         });
     }
-
     SECTION("Debug")
     {
-        checkLevel(Level::Debug, [this](StringView msg) {
-            debug<TestTag>(msg);
-            debug(_tag, msg);
-            debug(_tagPtr, msg);
+        checkLevel(Level::Debug, [this](StringView fmt, StringView arg) {
+            debug<TestTag>().format(fmt, arg);
+            debug(_tag).format(fmt, arg);
+            debug(_tagPtr).format(fmt, arg);
         });
     }
 
     SECTION("Info")
     {
-        checkLevel(Level::Info, [this](StringView msg) {
-            info<TestTag>(msg);
-            info(_tag, msg);
-            info(_tagPtr, msg);
+        checkLevel(Level::Info, [this](StringView fmt, StringView arg) {
+            info<TestTag>().format(fmt, arg);
+            info(_tag).format(fmt, arg);
+            info(_tagPtr).format(fmt, arg);
         });
     }
 
     SECTION("Warn")
     {
-        checkLevel(Level::Warn, [this](StringView msg) {
-            warn<TestTag>(msg);
-            warn(_tag, msg);
-            warn(_tagPtr, msg);
+        checkLevel(Level::Warn, [this](StringView fmt, StringView arg) {
+            warn<TestTag>().format(fmt, arg);
+            warn(_tag).format(fmt, arg);
+            warn(_tagPtr).format(fmt, arg);
         });
     }
 
     SECTION("Error")
     {
-        checkLevel(Level::Error, [this](StringView msg) {
-            error<TestTag>(msg);
-            error(_tag, msg);
-            error(_tagPtr, msg);
+        checkLevel(Level::Error, [this](StringView fmt, StringView arg) {
+            error<TestTag>().format(fmt, arg);
+            error(_tag).format(fmt, arg);
+            error(_tagPtr).format(fmt, arg);
         });
     }
 
     SECTION("Fatal")
     {
-        checkLevel(Level::Fatal, [this](StringView msg) {
-            fatal<TestTag>(msg);
-            fatal(_tag, msg);
-            fatal(_tagPtr, msg);
+        checkLevel(Level::Fatal, [this](StringView fmt, StringView arg) {
+            fatal<TestTag>().format(fmt, arg);
+            fatal(_tag).format(fmt, arg);
+            fatal(_tagPtr).format(fmt, arg);
         });
     }
 
     SECTION("Disable")
     {
         auto logAll = [this] {
-            trace(_tag, "Disable");
-            debug(_tag, "Disable");
-            info(_tag, "Disable");
-            warn(_tag, "Disable");
-            error(_tag, "Disable");
-            fatal(_tag, "Disable");
+            trace(_tag).message("Disable");
+            debug(_tag).message("Disable");
+            info(_tag).message("Disable");
+            warn(_tag).message("Disable");
+            error(_tag).message("Disable");
+            fatal(_tag).message("Disable");
         };
 
         SECTION("global")
@@ -158,7 +155,7 @@ TEST_CASE_METHOD(Fixture, "Level", "[Log]")
 
             logAll();
 
-            CHECK(_sink->_nextMessageIndex == 0);
+            CHECK_FALSE(_sink->_logged);
         }
 
         SECTION("tag")
@@ -167,7 +164,7 @@ TEST_CASE_METHOD(Fixture, "Level", "[Log]")
 
             logAll();
 
-            CHECK(_sink->_nextMessageIndex == 0);
+            CHECK_FALSE(_sink->_logged);
         }
     }
 }

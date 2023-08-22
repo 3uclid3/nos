@@ -32,6 +32,7 @@ template<Tagger TTagger>
 void setLevel(Level level);
 
 void vlog(Level level, Tag tag, StringView fmt, Span<FormatArgument> args, SourceLocation sourceLocation = SourceLocation::current());
+void log(Level level, Tag tag, StringView message, SourceLocation sourceLocation = SourceLocation::current());
 
 template<Tagger TTagger>
 Level getLevel()
@@ -45,88 +46,106 @@ void setLevel(Level level)
     setLevel(TagOf<TTagger>, level);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void trace(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+struct LoggerProxy
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Trace, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    constexpr LoggerProxy(Level level_, Tag tag_, SourceLocation sourceLocation_)
+        : sourceLocation(sourceLocation_)
+        , level(level_)
+        , tag(tag_)
+    {
+    }
+
+    constexpr LoggerProxy& message(StringView message)
+    {
+        log(level, tag, message, sourceLocation);
+
+        return *this;
+    }
+
+    template<typename... TArguments>
+    constexpr LoggerProxy& format(StringView fmt, const TArguments&... rawArguments)
+    {
+        StaticArray arguments = makeFormatArguments(rawArguments...);
+        vlog(level, tag, fmt, Span<FormatArgument>(arguments), sourceLocation);
+
+        return *this;
+    }
+
+    SourceLocation sourceLocation;
+    Level level;
+    Tag tag;
+};
+
+template<Tagger TTagger>
+LoggerProxy trace(SourceLocation sourceLocation = SourceLocation::current())
+{
+    return LoggerProxy(Level::Trace, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void trace(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy trace(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Trace, TagOf<DecayT<TTagger>>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Trace, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void debug(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy debug(SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Debug, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Debug, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void debug(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy debug(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Debug, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Debug, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void info(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy info(SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Info, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Info, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void info(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy info(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Info, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Info, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void warn(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy warn(SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Warn, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Warn, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void warn(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy warn(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Warn, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Warn, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void error(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy error(SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Error, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Error, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void error(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy error(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Error, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Error, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void fatal(StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy fatal(SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Fatal, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Fatal, TagOf<TTagger>, sourceLocation);
 }
 
-template<Tagger TTagger, typename... TArguments>
-void fatal(TTagger&&, StringView fmt, const TArguments&... rawArguments, SourceLocation sourceLocation = SourceLocation::current())
+template<Tagger TTagger>
+LoggerProxy fatal(TTagger&&, SourceLocation sourceLocation = SourceLocation::current())
 {
-    StaticArray arguments = makeFormatArguments(rawArguments...);
-    vlog(Level::Fatal, TagOf<TTagger>, fmt, Span<FormatArgument>(arguments), sourceLocation);
+    return LoggerProxy(Level::Fatal, TagOf<TTagger>, sourceLocation);
 }
 
 } // namespace NOS::Log
