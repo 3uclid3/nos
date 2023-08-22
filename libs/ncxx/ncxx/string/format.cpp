@@ -14,7 +14,7 @@ class LocalData
 public:
     static constexpr size_t BufferSize = 8192;
     static constexpr size_t BufferCount = 16;
-    static constexpr size_t LastBuffer = BufferSize - 1;
+    static constexpr size_t LastBuffer = BufferCount - 1;
 
     Span<char> nextBuffer()
     {
