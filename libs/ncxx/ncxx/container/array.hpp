@@ -1,13 +1,13 @@
 #pragma once
 
 #include <ncxx/basic-types.hpp>
-#include <ncxx/config.hpp>
 #include <ncxx/container/details/array-base-type.hpp>
 #include <ncxx/container/details/array-size-type.hpp>
+#include <ncxx/memory/allocator/system-allocator.hpp>
 
 namespace NOS {
 
-using DefaultArrayAllocator = NOS_DEFAULT_ARRAY_ALLOCATOR;
+using DefaultArrayAllocator = Memory::SystemAllocator;
 
 template<typename T, typename TAllocator = DefaultArrayAllocator, typename TSize = Details::ArraySizeTypeT<T>>
 class Array : public Details::ArrayBaseTypeT<T, TAllocator, TSize>

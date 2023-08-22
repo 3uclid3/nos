@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ncxx/basic-types.hpp>
+#include <ncxx/memory/new.hpp>
 #include <ncxx/type-trait/add-lvalue-reference.hpp>
 #include <ncxx/type-trait/is-base-of.hpp>
 #include <ncxx/type-trait/is-same.hpp>
@@ -9,7 +10,7 @@
 namespace NOS {
 
 template<typename T>
-struct DefaultDelete
+struct DefaultDeleter
 {
     void operator()(T* pointer)
     {
@@ -17,7 +18,7 @@ struct DefaultDelete
     }
 };
 
-template<typename T, typename TDeleter = DefaultDelete<T>>
+template<typename T, typename TDeleter = DefaultDeleter<T>>
 class UniquePtr : private TDeleter
 {
 public:
@@ -77,7 +78,6 @@ template<typename U, typename TUDeleter>
 UniquePtr<T, TDeleter>::UniquePtr(UniquePtr<U, TUDeleter>&& other)
     : _pointer(other.release())
 {
-
 }
 
 template<typename T, typename TDeleter>

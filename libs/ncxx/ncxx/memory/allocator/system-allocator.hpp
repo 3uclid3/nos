@@ -7,7 +7,7 @@ namespace NOS::Memory {
 struct Block;
 struct ConstBlock;
 
-class MallocAllocator
+class SystemAllocator
 {
 public:
     bool owns(ConstBlock block) const;

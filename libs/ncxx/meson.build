@@ -1,6 +1,8 @@
 src = files(
     'ncxx/container/details/array-data.cpp',
-    'ncxx/memory/allocator/malloc-allocator.cpp',
+    'ncxx/memory/allocator/system-allocator.cpp',
+    'ncxx/memory/allocation.cpp',
+    'ncxx/memory/new.cpp',
     'ncxx/string/format.cpp'
 )
 
