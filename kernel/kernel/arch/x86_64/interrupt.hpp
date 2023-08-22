@@ -6,6 +6,19 @@
 
 namespace NOS::X86_64::Interrupt {
 
+bool isEnabled();
+
+void enable(SourceLocation sourceLocation = SourceLocation::current());
+void disable(SourceLocation sourceLocation = SourceLocation::current());
+
+void halt(SourceLocation sourceLocation = SourceLocation::current());
+
+[[noreturn]] void hcf(SourceLocation sourceLocation = SourceLocation::current());
+
+// logging tag
+struct Interrupt
+{};
+
 inline bool isEnabled()
 {
     u64_t flags;
@@ -17,29 +30,31 @@ inline bool isEnabled()
     return (flags & 0x200) != 0;
 }
 
-inline void enable(SourceLocation sourceLocation = SourceLocation::current())
+inline void enable(SourceLocation sourceLocation)
 {
-    Log::info<struct Interrupt>().format("enable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::trace<Interrupt>().format("enable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("sti");
 }
 
-inline void disable(SourceLocation sourceLocation = SourceLocation::current())
+inline void disable(SourceLocation sourceLocation)
 {
-    Log::info<struct Interrupt>().format("disable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::trace<Interrupt>().format("disable from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("cli");
 }
 
-inline void halt(SourceLocation sourceLocation = SourceLocation::current())
+inline void halt(SourceLocation sourceLocation)
 {
-    Log::info<struct Interrupt>().format("halt from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::trace<Interrupt>().format("halt from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     asm volatile("hlt");
 }
 
-[[noreturn]] inline void hcf(SourceLocation sourceLocation = SourceLocation::current())
+[[noreturn]] inline void hcf(SourceLocation sourceLocation)
 {
-    Log::info<struct Interrupt>().format("hcf from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
+    Log::trace<Interrupt>().format("hcf from    {} ({}:{})", sourceLocation.fileName(), sourceLocation.line(), sourceLocation.column());
     while (true)
+    {
         asm volatile("cli; hlt");
+    }
 }
 
 } // namespace NOS::X86_64::Interrupt

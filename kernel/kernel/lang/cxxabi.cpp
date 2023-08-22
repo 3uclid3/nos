@@ -83,8 +83,6 @@ extern "C" void (*__init_array_end[])();
 
 void initialize()
 {
-    // Log::info<struct CxxAbi>().format("initialization of {} global objects", __init_array_end - __init_array_start);
-
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {
         (*ctor)();

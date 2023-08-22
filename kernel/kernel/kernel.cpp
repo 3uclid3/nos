@@ -13,25 +13,14 @@ namespace NOS {
 
 void Kernel::initialize()
 {
-    Serial::initializePorts({Serial::Ports[0]});
-
     Lang::CxxAbi::initialize();
 
-    X86_64::IO::out(X86_64::IO::Port::Debug, u8_t{'D'});
+    Serial::initializePorts({Serial::Ports[0]});
 
-    auto ptr = makeUnique<Log::SerialSink>();
-    
-    X86_64::IO::out(X86_64::IO::Port::Debug, u8_t{'G'});
-
-    Log::addSink(move(ptr));
-
-    X86_64::IO::out(X86_64::IO::Port::Debug, u8_t{'S'});
-
+    Log::addSink(makeUnique<Log::SerialSink>());
     Log::info(this).message("initialization");
 
     _arch.initialize();
-
-    Log::info(this).message("initialization completed");
 }
 
 void Kernel::run()
