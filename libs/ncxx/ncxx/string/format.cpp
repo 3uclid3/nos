@@ -14,12 +14,12 @@ class LocalData
 public:
     static constexpr size_t BufferSize = 8192;
     static constexpr size_t BufferCount = 16;
-    static constexpr size_t LastBuffer = BufferCount - 1;
+    static constexpr size_t LastBufferIndex = BufferCount - 1;
 
     Span<char> nextBuffer()
     {
         const size_t offset = _nextBufferIndex * BufferSize;
-        _nextBufferIndex = _nextBufferIndex == LastBuffer ? 0 : _nextBufferIndex + 1;
+        _nextBufferIndex = _nextBufferIndex == LastBufferIndex ? 0 : _nextBufferIndex + 1;
         return {&_buffer[offset], BufferSize};
     }
 
