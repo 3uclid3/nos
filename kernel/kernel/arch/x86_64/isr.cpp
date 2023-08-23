@@ -16,7 +16,7 @@ struct GlobalInstance
     inline static ISR* isr{nullptr};
 };
 
-void logRegisters(const X86_64::CPU::Registers& registers)
+void logRegisters(const CPU::Registers& registers)
 {
     Log::error<ISR>().message("registers");
 
@@ -65,7 +65,9 @@ void ISR::dispatch(const CPU::Registers& registers)
 void ISR::dispatchException(const CPU::Registers& registers)
 {
     Log::error(this).format("Exception interrupt {} on CPU {}", ExceptionString[registers.interrupt], 0);
+
     logRegisters(registers);
+
     panic();
 }
 
@@ -79,7 +81,9 @@ void ISR::dispatchHandler(const CPU::Registers& registers)
 void ISR::dispatchUnknown(const CPU::Registers& registers)
 {
     Log::error(this).format("Unknown interrupt {} on CPU {}", registers.interrupt, 0);
+
     logRegisters(registers);
+
     panic();
 }
 

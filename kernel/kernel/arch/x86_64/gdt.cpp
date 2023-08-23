@@ -20,7 +20,7 @@ void GDT::load(const TSS& tss)
 
     _taskStateSegment.setPointer(tss);
 
-    Register r = getRegister();
+    Register r = makeRegister();
 
     asm volatile(
         "lgdt %[gdtr]\n\t"
@@ -41,7 +41,7 @@ void GDT::load(const TSS& tss)
     asm volatile("ltr %0" ::"r"(static_cast<u16_t>(Selector::TSS)));
 }
 
-GDT::Register GDT::getRegister() const
+GDT::Register GDT::makeRegister() const
 {
     return {sizeof(GDT) - 1, reinterpret_cast<uintptr_t>(this)};
 }

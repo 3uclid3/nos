@@ -19,25 +19,21 @@ void PIC::initialize()
         IO::out<u8_t>(SlaveDataPort, sd);
     });
 
-    Log::info(this).message("control word 1");
     IO::out<u8_t>(MasterPort, ICW1::Initialize | ICW1::ICW4);
     IO::wait();
     IO::out<u8_t>(SlavePort, ICW1::Initialize | ICW1::ICW4);
     IO::wait();
 
-    Log::info(this).message("control word 2");
     IO::out<u8_t>(MasterDataPort, 0x20);
     IO::wait();
     IO::out<u8_t>(SlaveDataPort, 0x28);
     IO::wait();
 
-    Log::info(this).message("control word 3");
     IO::out<u8_t>(MasterDataPort, 0x04);
     IO::wait();
     IO::out<u8_t>(SlaveDataPort, 0x02);
     IO::wait();
 
-    Log::info(this).message("control word 4");
     IO::out<u8_t>(MasterDataPort, ICW4::Mode8086);
     IO::wait();
     IO::out<u8_t>(SlaveDataPort, ICW4::Mode8086);
@@ -46,7 +42,7 @@ void PIC::initialize()
 
 void PIC::disable()
 {
-    Log::info<PIC>().message("disable");
+    Log::info(this).message("disable");
 
     IO::out<u8_t>(SlaveDataPort, 0xFF);
     IO::out<u8_t>(MasterDataPort, 0xFF);
@@ -54,7 +50,8 @@ void PIC::disable()
 
 void PIC::mask(u8_t irq)
 {
-    Log::info<PIC>().format("mask {}", irq);
+    Log::info(this).format("mask {}", irq);
+    
     const u16_t port = irq < 8 ? MasterDataPort : SlaveDataPort;
 
     if (irq >= 8)
@@ -69,6 +66,7 @@ void PIC::mask(u8_t irq)
 void PIC::unmask(u8_t irq)
 {
     Log::info(this).format("unmask {}", irq);
+
     const u16_t port = irq < 8 ? MasterDataPort : SlaveDataPort;
 
     if (irq >= 8)
@@ -83,6 +81,7 @@ void PIC::unmask(u8_t irq)
 void PIC::eoi(u64_t interrupt)
 {
     Log::info(this).format("eoi {}", interrupt);
+
     if (interrupt >= 8)
     {
         IO::out<u8_t>(SlaveDataPort, Command::EOI);

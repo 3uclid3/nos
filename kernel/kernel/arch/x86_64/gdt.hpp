@@ -43,7 +43,7 @@ public:
     void load(const TSS& tss);
 
 private:
-    [[nodiscard]] Register getRegister() const;
+    [[nodiscard]] Register makeRegister() const;
 
 private:
     Entry _null;
