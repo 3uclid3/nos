@@ -1,8 +1,10 @@
 #pragma once
 
-#include <kernel/arch/x86_64/global-descriptor-table.hpp>
-#include <kernel/arch/x86_64/interrupt-descriptor-table.hpp>
-#include <kernel/arch/x86_64/task-state-segment.hpp>
+#include <kernel/arch/x86_64/gdt.hpp>
+#include <kernel/arch/x86_64/idt.hpp>
+#include <kernel/arch/x86_64/isr.hpp>
+#include <kernel/arch/x86_64/pic.hpp>
+#include <kernel/arch/x86_64/tss.hpp>
 
 namespace NOS::X86_64 {
 
@@ -12,9 +14,11 @@ public:
     void initialize();
 
 private:
-    GlobalDescriptorTable _gdt;
-    TaskStateSegment _tss;
-    InterruptDescriptorTable _idt;
+    GDT _gdt;
+    TSS _tss;
+    IDT _idt;
+    ISR _isr;
+    PIC _pic;
 };
 
 } // namespace NOS::X86_64

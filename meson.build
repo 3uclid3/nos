@@ -137,6 +137,10 @@ if meson.is_cross_build()
     )
 endif
 
+if not meson.is_cross_build()
+    add_project_arguments(['-DNOS_NATIVE'], language: ['c', 'cpp'])
+endif
+
 
 # ----------------------------------------
 # Subprojects
@@ -153,11 +157,25 @@ endif
 # libs
 
 libs_c_ccp_args = []
+libs_link_args = []
+libs_sanitizers = []
+
+if get_option('libs_asan') and not meson.is_cross_build()
+    libs_sanitizers += ['address']
+endif
 if get_option('libs_ubsan')
-    libs_c_ccp_args += '-fsanitize=undefined'
+    libs_sanitizers += ['undefined']
 endif
 
+if libs_sanitizers.length() > 0
+    libs_sanitizers = '-fsanitize=' + ','.join(libs_sanitizers)
+    libs_c_ccp_args += libs_sanitizers
+    libs_link_args += libs_sanitizers
+endif
+
+
 subdir('libs/ncxx')
+subdir('libs/log')
 
 
 # ----------------------------------------

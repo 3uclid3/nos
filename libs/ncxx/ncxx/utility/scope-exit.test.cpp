@@ -1,4 +1,4 @@
-#include <ncxx/utility/on-scope-exit.hpp>
+#include <ncxx/utility/scope-exit.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 #include <ncxx/basic-types.hpp>

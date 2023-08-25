@@ -4,11 +4,17 @@
 
 namespace NOS {
 
-TEST_CASE("formatTo - bool", "[String]")
+TEST_CASE("format - circling buffer", "[String]")
 {
-    CHECK(format("Hello {}", "World") == "Hello World");
-    CHECK(format("{} World", "Hello") == "Hello World");
-    CHECK(format("{} {}", "Hello", "World") == "Hello World");
+    constexpr StringView expectedResult = "Hello World";
+
+    const StringView result1 = format("Hello {}", "World");
+    const StringView result2 = format("{} World", "Hello");
+    const StringView result3 = format("Hel{}rld", "lo Wo");
+
+    CHECK(result1 == expectedResult);
+    CHECK(result2 == expectedResult);
+    CHECK(result3 == expectedResult);
 }
 
 } // namespace NOS

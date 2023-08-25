@@ -9,6 +9,7 @@ using nullptr_t = decltype(nullptr);
 
 using intptr_t = ::intptr_t;
 using uintptr_t = ::uintptr_t;
+using ptrdiff_t = ::ptrdiff_t;
 
 using s8_t = ::int8_t;
 using s16_t = ::int16_t;
@@ -33,6 +34,12 @@ enum class byte_t : u8_t
 enum class alignment_t : size_t
 {
 };
+
+template<typename T>
+constexpr alignment_t alignOf()
+{
+    return static_cast<alignment_t>(alignof(T));
+}
 
 enum class Signed
 {

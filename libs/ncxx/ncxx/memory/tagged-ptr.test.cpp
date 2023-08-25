@@ -1,10 +1,10 @@
-#include <catch2/catch_test_macros.hpp>
-
 #include <ncxx/memory/tagged-ptr.hpp>
+
+#include <catch2/catch_test_macros.hpp>
 
 namespace NOS {
 
-TEST_CASE("TaggedPtr ctor", "[core]")
+TEST_CASE("TaggedPtr ctor", "[memory]")
 {
     constexpr size_t bitsA = 0x1;
     constexpr size_t bitsB = 0x3;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ncxx/basic-types.hpp>
+#include <ncxx/concept/same-as.hpp>
 
 namespace NOS::Details {
 

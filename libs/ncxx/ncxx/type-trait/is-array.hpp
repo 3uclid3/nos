@@ -9,8 +9,8 @@ template<typename T>
 struct IsArray : FalseType
 {};
 
-template<typename T>
-struct IsArray<Array<T>> : TrueType
+template<typename T, typename TAllocator, typename TSize>
+struct IsArray<Array<T, TAllocator, TSize>> : TrueType
 {};
 
 template<typename T>

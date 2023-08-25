@@ -8,7 +8,7 @@ namespace NOS {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
 
-class NOS_PACKED TaskStateSegment
+class NOS_PACKED TSS
 {
 public:
     struct NOS_PACKED Entry
@@ -22,7 +22,7 @@ public:
         u32_t base3;
         u32_t reserved;
 
-        void setPointer(const TaskStateSegment& tss);
+        void setPointer(const TSS& tss);
     };
 
     struct NOS_PACKED Register

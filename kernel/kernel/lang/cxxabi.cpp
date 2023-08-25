@@ -1,6 +1,5 @@
 #include <kernel/lang/cxxabi.hpp>
 
-#include "kernel/utility/log.hpp"
 #include <ncxx/basic-types.hpp>
 #include <ncxx/debug/assert.hpp>
 
@@ -62,7 +61,7 @@ void __cxa_finalize(void* dso_handle)
                 (*entry.func)(entry.object_ptr);
 
                 // Ensure we do not call this entry again.
-                // We don't care about maintenaining the __atexit_func_count.
+                // We don't care about maintaining the __atexit_func_count.
                 // It's not worth moving all the entries
                 entry = {};
             };
@@ -84,8 +83,6 @@ extern "C" void (*__init_array_end[])();
 
 void initialize()
 {
-    Log::info("cxxabi: initialization of {} global objects", __init_array_end - __init_array_start);
-
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {
         (*ctor)();

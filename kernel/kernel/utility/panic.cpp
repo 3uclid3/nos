@@ -1,20 +1,27 @@
 #include <kernel/utility/panic.hpp>
 
 #include <kernel/arch/interrupt.hpp>
-#include <kernel/utility/log.hpp>
+#include <kernel/arch/x86_64/cpu.hpp>
+#include <log/log.hpp>
 
 namespace NOS {
 
 void panic(StringView message, SourceLocation location)
 {
-    Log::newLine();
+    struct Panic
+    {};
+    // Log::newLine();
 
-    Log::error(message);
-    Log::error("File: {}", location.fileName());
-    Log::error("Line: {}", location.line());
-    Log::error("Column: {}", location.column());
-    Log::error("Function: {}", location.functionName());
-    Log::error("System halted");
+    if (!message.isEmpty())
+    {
+        Log::error<Panic>().message(message);
+    }
+
+    Log::error<Panic>().format("File: {}", location.fileName());
+    Log::error<Panic>().format("Line: {}", location.line());
+    Log::error<Panic>().format("Column: {}", location.column());
+    Log::error<Panic>().format("Function: {}", location.functionName());
+    Log::error<Panic>().message("System halted");
 
     Interrupt::hcf();
 }

@@ -3,8 +3,9 @@ src = files(
     'kernel/debug/assert.cpp',
     'kernel/lang/cxxabi.cpp',
     'kernel/lang/ubsan.cpp',
+    'kernel/log/serial-sink.cpp',
+    'kernel/memory/allocation.cpp',
     'kernel/utility/cstring.cpp',
-    'kernel/utility/log.cpp',
     'kernel/utility/panic.cpp',
     'kernel/kernel.cpp',
     'kernel/start.cpp',
@@ -15,10 +16,12 @@ if arch == 'x86_64'
     src += files(
         'kernel/arch/x86_64/drivers/serial.cpp',
         'kernel/arch/x86_64/arch.cpp',
-        'kernel/arch/x86_64/global-descriptor-table.cpp',
-        'kernel/arch/x86_64/interrupt-descriptor-table.cpp',
-        'kernel/arch/x86_64/interrupt-descriptor-table.S',
-        'kernel/arch/x86_64/task-state-segment.cpp'
+        'kernel/arch/x86_64/gdt.cpp',
+        'kernel/arch/x86_64/idt.cpp',
+        'kernel/arch/x86_64/idt.S',
+        'kernel/arch/x86_64/isr.cpp',
+        'kernel/arch/x86_64/pic.cpp',
+        'kernel/arch/x86_64/tss.cpp'
     )
 endif
 
@@ -45,7 +48,8 @@ kernel = executable(
     include_directories : ['.'],
     dependencies : [
         limine_dep,
-        ncxx_dep
+        ncxx_dep,
+        log_dep
     ],
     c_args : [
         c_ccp_args

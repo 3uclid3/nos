@@ -2,4 +2,4 @@
 
 namespace NOS {
 
-} // namespace NOS::Arch
+} // namespace NOS

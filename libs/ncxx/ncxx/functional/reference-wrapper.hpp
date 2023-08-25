@@ -10,7 +10,7 @@ public:
 
     constexpr ReferenceWrapper(T& ptr)
         : _ptr(&ptr) {}
-    
+
     constexpr operator Type&() const { return *_ptr; }
     constexpr Type& get() const { return *_ptr; }
 

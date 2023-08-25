@@ -1,3 +1,4 @@
 
 option('kernel_ubsan', type : 'boolean', value : true, description : 'Enable undefined behavior sanitizer in kernel')
+option('libs_asan', type : 'boolean', value : true, description : 'Enable address sanitizer in libs')
 option('libs_ubsan', type : 'boolean', value : true, description : 'Enable undefined behavior sanitizer in libs')

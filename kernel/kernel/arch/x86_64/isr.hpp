@@ -1,8 +1,9 @@
 #pragma once
 
+#include <kernel/arch/x86_64/idt.hpp>
 #include <ncxx/basic-types.hpp>
-#include <ncxx/preprocessor/packed.hpp>
 #include <ncxx/container/static-array.hpp>
+#include <ncxx/functional/function.hpp>
 #include <ncxx/utility/enum-string.hpp>
 
 namespace NOS::X86_64 {
@@ -11,7 +12,7 @@ namespace CPU {
 struct Registers;
 } // namespace CPU
 
-class NOS_PACKED InterruptDescriptorTable
+class ISR
 {
 public:
     enum class Exception
@@ -51,42 +52,31 @@ public:
 
         Count
     };
+
     static constexpr EnumString<Exception, Exception::Count> ExceptionString;
 
-    struct NOS_PACKED Entry
+    struct Handler
     {
-        u16_t offset1;
-        u16_t selector;
-        u8_t ist;
-        u8_t typeAttr;
-        u16_t offset2;
-        u32_t offset3;
-        u32_t zero;
+        using Functor = Function<void(const CPU::Registers&)>;
 
-        void set(void* isr_, uint8_t typeAttr_ = 0x8E, uint8_t ist_ = 0);
+        Functor functor;
     };
 
-    using Entries = StaticArray<Entry, 256>;
-
-    struct NOS_PACKED Register
-    {
-        u16_t limit;
-        u64_t base;
-    };
+    using Handlers = StaticArray<Handler, IDT::Entries::MaximumSize>;
 
 public:
-    InterruptDescriptorTable();
+    ISR();
+    ~ISR();
 
-    void load();
     void dispatch(const CPU::Registers& registers);
 
 private:
-    [[nodiscard]] Register makeRegister() const;
-
-    void handleException(const CPU::Registers& registers);
+    void dispatchException(const CPU::Registers& registers);
+    void dispatchHandler(const CPU::Registers& registers);
+    void dispatchUnknown(const CPU::Registers& registers);
 
 private:
-    Entries _entries;
+    Handlers _handlers;
 };
 
 } // namespace NOS::X86_64

@@ -26,4 +26,4 @@ auto cend(const I& i)
     return i.cend();
 }
 
-} // namespace NOS::Range
+} // namespace NOS

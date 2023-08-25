@@ -5,6 +5,6 @@
 
 namespace NOS {
 
-[[noreturn]] void panic(StringView message, SourceLocation location = SourceLocation::current());
+[[noreturn]] void panic(StringView message = "", SourceLocation location = SourceLocation::current());
 
 } // namespace NOS

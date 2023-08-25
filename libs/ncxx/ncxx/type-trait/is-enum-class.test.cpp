@@ -3,11 +3,23 @@
 
 namespace NOS {
 
-enum class EnumClassA { V0 };
-enum class EnumClassB { V1 };
+enum class EnumClassA
+{
+    V0
+};
+enum class EnumClassB
+{
+    V1
+};
 
-enum EnumNonClassA { EnumNonClassA_V0 };
-enum EnumNonClassB { EnumNonClassB_V1 };
+enum EnumNonClassA
+{
+    EnumNonClassA_V0
+};
+enum EnumNonClassB
+{
+    EnumNonClassB_V1
+};
 
 static_assert(IsEnumClassV<EnumClassA>);
 static_assert(IsEnumClassV<EnumClassB>);

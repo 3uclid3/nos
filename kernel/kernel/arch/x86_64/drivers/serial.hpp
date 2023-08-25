@@ -19,5 +19,4 @@ bool initializePort(Port port);
 void write(Port port, char c);
 char read(Port port);
 
-
 } // namespace NOS::X86_64::Serial

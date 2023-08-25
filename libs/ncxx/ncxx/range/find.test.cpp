@@ -13,4 +13,4 @@ TEST_CASE("find", "[range]")
     CHECK(find(values, 1) == values.end());
 }
 
-} // namespace NOS
+} // namespace NOS::Range

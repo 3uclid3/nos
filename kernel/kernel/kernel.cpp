@@ -4,25 +4,23 @@
 #include <kernel/arch/interrupt.hpp>
 #include <kernel/drivers/serial.hpp>
 #include <kernel/lang/cxxabi.hpp>
-#include <kernel/utility/log.hpp>
+#include <kernel/log/serial-sink.hpp>
+#include <log/log.hpp>
+
+#include <kernel/arch/x86_64/io.hpp>
 
 namespace NOS {
 
 void Kernel::initialize()
 {
+    Lang::CxxAbi::initialize();
+
     Serial::initializePorts({Serial::Ports[0]});
 
-    Log::info("kernel: initialization");
+    Log::addSink(makeUnique<Log::SerialSink>());
+    Log::info(this).message("initialization");
 
-    {
-        Log::ScopeIndent indent{1};
-
-        Lang::CxxAbi::initialize();
-
-        _arch.initialize();
-    }
-
-    Log::info("kernel: initialization completed");
+    _arch.initialize();
 }
 
 void Kernel::run()

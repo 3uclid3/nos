@@ -1,0 +1,15 @@
+#pragma once
+
+#include <ncxx/type-trait/add-rvalue-reference.hpp>
+#include <ncxx/type-trait/integral-constant.hpp>
+
+namespace NOS {
+
+template<typename T>
+struct IsTriviallyDestructible : BoolConstant<__is_trivially_destructible(T)>
+{};
+
+template<typename T>
+inline constexpr bool IsTriviallyDestructibleV = IsTriviallyDestructible<T>::Value;
+
+} // namespace NOS

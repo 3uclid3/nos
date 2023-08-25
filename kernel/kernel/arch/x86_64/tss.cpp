@@ -1,8 +1,8 @@
-#include <kernel/arch/x86_64/task-state-segment.hpp>
+#include <kernel/arch/x86_64/tss.hpp>
 
 namespace NOS {
 
-void TaskStateSegment::Entry::setPointer(const TaskStateSegment& tss)
+void TSS::Entry::setPointer(const TSS& tss)
 {
     const uintptr_t ptr = reinterpret_cast<uintptr_t>(&tss);
 

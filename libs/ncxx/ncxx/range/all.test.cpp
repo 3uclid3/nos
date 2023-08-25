@@ -13,4 +13,4 @@ TEST_CASE("all", "[range]")
     CHECK_FALSE(all(values, 1));
 }
 
-} // namespace NOS
+} // namespace NOS::Range

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/x86_64/task-state-segment.hpp>
+#include <kernel/arch/x86_64/tss.hpp>
 #include <ncxx/basic-types.hpp>
 
 namespace NOS::X86_64 {
@@ -8,7 +8,7 @@ namespace NOS::X86_64 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
 
-class NOS_PACKED GlobalDescriptorTable
+class NOS_PACKED GDT
 {
 public:
     struct Selector
@@ -38,12 +38,12 @@ public:
     };
 
 public:
-    GlobalDescriptorTable();
+    GDT();
 
-    void load(const TaskStateSegment& tss);
+    void load(const TSS& tss);
 
 private:
-    [[nodiscard]] Register getRegister() const;
+    [[nodiscard]] Register makeRegister() const;
 
 private:
     Entry _null;
@@ -51,9 +51,9 @@ private:
     Entry _data;
     Entry _userCode;
     Entry _userData;
-    TaskStateSegment::Entry _taskStateSegment;
+    TSS::Entry _taskStateSegment;
 };
 
 #pragma clang diagnostic pop
 
-} // namespace NOS
+} // namespace NOS::X86_64

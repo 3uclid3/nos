@@ -72,4 +72,4 @@ char read(u16_t port)
     return static_cast<char>(IO::in<u8_t>(port));
 }
 
-} // namespace NOS::Arch::X86_64::Serial
+} // namespace NOS::X86_64::Serial

@@ -33,6 +33,10 @@ tasks:
     cmds:
       - cd $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE && meson compile kernel.elf
 
+  kernel:clang-format:
+    cmds:
+      - ninja -C $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE clang-format
+
   kernel:image:build:
     cmds:
       - cd $BUILD_DIR/kernel/$ARCH/$BUILD_TYPE && meson compile image
@@ -49,6 +53,10 @@ tasks:
   native:test:
     cmds:
       - cd $BUILD_DIR/native/$BUILD_TYPE && meson test {{.CLI_ARGS}}
+
+  native:clang-format:
+    cmds:
+      - ninja -C $BUILD_DIR/native/$BUILD_TYPE clang-format
 
   native:generate-coverage:
     cmds:

@@ -47,7 +47,7 @@ constexpr Block StackAllocator<TSize, TAlignment>::allocate(size_t size)
 
     const size_t alignedSize = roundToAlignment(size, Alignment);
 
-    u8_t* endPointer = _pointer + alignedSize;
+    u8_t* endPointer = reinterpret_cast<u8_t*>(reinterpret_cast<uintptr_t>(_pointer) + alignedSize);
 
     if (endPointer > _data.end())
     {

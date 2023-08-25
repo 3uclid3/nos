@@ -1,4 +1,8 @@
 src = files(
+    'ncxx/container/details/array-data.cpp',
+    'ncxx/memory/allocator/system-allocator.cpp',
+    'ncxx/memory/allocation.cpp',
+    'ncxx/memory/new.cpp',
     'ncxx/string/format.cpp'
 )
 
@@ -8,6 +12,7 @@ ncxx = static_library(
     include_directories : ['.'],
     c_args : [libs_c_ccp_args],
     cpp_args : [libs_c_ccp_args],
+    link_args: [libs_link_args]
 )
 
 ncxx_dep  = declare_dependency(
@@ -22,17 +27,24 @@ if not meson.is_cross_build()
         'ncxx/algorithm/all-of.test.cpp',
         'ncxx/algorithm/any.test.cpp',
         'ncxx/algorithm/any-of.test.cpp',
+        'ncxx/algorithm/clamp.test.cpp',
         'ncxx/algorithm/find.test.cpp',
         'ncxx/algorithm/find-if.test.cpp',
         'ncxx/algorithm/none.test.cpp',
         'ncxx/algorithm/none-of.test.cpp',
+        'ncxx/container/details/array-base.test.cpp',
+        'ncxx/container/details/array-object.test.cpp',
+        'ncxx/container/details/array-trivial.test.cpp',
         'ncxx/container/array.test.cpp',
         'ncxx/debug/assert.test-helper.cpp',
+        'ncxx/functional/function.test.cpp',
         'ncxx/functional/reference-wrapper.test.cpp',
         'ncxx/hash/crc32.test.cpp',
         'ncxx/memory/allocator/null-allocator.test.cpp',
         'ncxx/memory/allocator/stack-allocator.test.cpp',
+        'ncxx/memory/construct-at.test.cpp',
         'ncxx/memory/tagged-ptr.test.cpp',
+        'ncxx/memory/unique-ptr.test.cpp',
         'ncxx/range/all.test.cpp',
         'ncxx/range/all-of.test.cpp',
         'ncxx/range/any.test.cpp',
@@ -41,6 +53,7 @@ if not meson.is_cross_build()
         'ncxx/range/find-if.test.cpp',
         'ncxx/range/none.test.cpp',
         'ncxx/range/none-of.test.cpp',
+        'ncxx/string/format.test.cpp',
         'ncxx/string/format-to.test.cpp',
         'ncxx/string/string-view.test.cpp',
         'ncxx/string/to-string-view.test.cpp',
@@ -67,7 +80,11 @@ if not meson.is_cross_build()
         'ncxx/type-list/type-list-size.test.cpp',
         'ncxx/type-list/types-contains.test.cpp',
         'ncxx/type-list/types-size.test.cpp',
+        'ncxx/type-trait/add-const.test.cpp',
+        'ncxx/type-trait/add-lvalue-reference.test.cpp',
+        'ncxx/type-trait/add-rvalue-reference.test.cpp',
         'ncxx/type-trait/is-array.test.cpp',
+        'ncxx/type-trait/is-copy-constructible.test.cpp',
         'ncxx/type-trait/is-same.test.cpp',
         'ncxx/type-trait/is-static-array.test.cpp',
         'ncxx/type-trait/is-enum-class.test.cpp',
@@ -76,14 +93,17 @@ if not meson.is_cross_build()
         'ncxx/type-trait/type-full-name.test.cpp',
         'ncxx/type-trait/type-name.test.cpp',
         'ncxx/utility/enum-string.test.cpp',
-        'ncxx/utility/on-scope-exit.test.cpp',
+        'ncxx/utility/scope-exit.test.cpp',
         'ncxx/basic-types.test.cpp'
     )
 
     ncxx_test = executable(
         'ncxx.test', [test],
         install : false,
-        dependencies : [catch2_dep, ncxx_dep]
+        dependencies : [catch2_dep, ncxx_dep],
+        c_args : [libs_c_ccp_args],
+        cpp_args : [libs_c_ccp_args],
+        link_args: [libs_link_args]
     )
 
     test('ncxx', ncxx_test)

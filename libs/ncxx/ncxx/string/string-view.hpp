@@ -68,7 +68,10 @@ template<typename CharType>
 constexpr BasicStringView<CharType>::BasicStringView(const CharType* cstr)
     : _data(cstr)
 {
-    while (*cstr++ != '\0') ++_size;
+    if (cstr != nullptr)
+    {
+        while (cstr[_size] != '\0') ++_size;
+    }
 }
 
 template<typename CharType>
