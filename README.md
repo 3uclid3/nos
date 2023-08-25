@@ -6,7 +6,7 @@
 
 Learning about OS development.
 
-## Resources 
+## Resources
 
 - [OS Dev](https://wiki.osdev.org/)
 - [Meson Build](https://mesonbuild.com/)
