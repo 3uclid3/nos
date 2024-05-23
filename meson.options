@@ -1,0 +1,1 @@
+option('kernel_ubsan', type : 'boolean', value : true, description : 'Enable undefined behavior sanitizer in kernel')
