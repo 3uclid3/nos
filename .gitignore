@@ -2,7 +2,9 @@
 .idea/*
 
 build/*
-logs/*
+builddir/*
+
+log.txt
 
 subprojects/*
 !subprojects/*.wrap

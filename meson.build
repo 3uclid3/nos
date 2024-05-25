@@ -28,7 +28,7 @@ iso_files = [
 qemu_args = [
     '-cpu', 'max', '-smp', '4', '-m', '512M',
     '-rtc', 'base=localtime', '-serial', 'stdio',
-    '-boot', 'order=d,menu=on,splash-time=100',
+    '-boot', 'order=d,menu=on',
     '-nic', 'user,model=rtl8139',
     '-nic', 'user,model=e1000'
 ]
@@ -72,7 +72,7 @@ if arch == 'x86_64'
     qemu_dbg_args += ['-M', 'smm=off']
 endif
 
-if get_option('gdb') == true
+if get_option('gdb')
     qemu_dbg_args += ['-s', '-S']
 endif
 

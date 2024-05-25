@@ -1,0 +1,32 @@
+---
+version: '3'
+
+env:
+  BUILD_TYPE: '{{.BUILD_TYPE | default "debug"}}'
+  BUILD_ARCH: '{{.BUILD_ARCH | default "x86_64"}}'
+  BUILD_DIR: 'builddir'
+
+dotenv: [ '.env' ]
+
+tasks:
+  setup:
+    cmds:
+      - meson setup $BUILD_DIR --cross-file cross-file/meson-kernel-$BUILD_ARCH.cross-file {{.CLI_ARGS}}
+  kernel:
+    cmds:
+      - meson compile -C $BUILD_DIR kernel.elf
+  iso:
+    cmds:
+      - meson compile -C $BUILD_DIR iso
+  run-bios:
+    cmds:
+      - meson compile -C $BUILD_DIR run_bios
+  run-bios-debug:
+    cmds:
+      - meson compile -C $BUILD_DIR run_bios_debug
+  run-uefi:
+    cmds:
+      - meson compile -C $BUILD_DIR run_uefi
+  run-uefi-debug:
+    cmds:
+      - meson compile -C $BUILD_DIR run_uefi_debug
