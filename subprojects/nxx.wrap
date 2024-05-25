@@ -1,0 +1,7 @@
+[wrap-git]
+url = https://github.com/3uclid3/nxx
+revision = main
+depth = 1
+
+[provide]
+nxx = nxx_dep

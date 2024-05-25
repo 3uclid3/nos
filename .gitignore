@@ -4,3 +4,6 @@
 build/*
 logs/*
 
+subprojects/*
+!subprojects/*.wrap
+!subprojects/packagefiles/*

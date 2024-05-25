@@ -29,7 +29,8 @@ kernel = executable(
     install : false, pie : true,
     include_directories : ['.'],
     dependencies : [
-        limine_dep
+        limine_dep,
+        nxx_dep
     ],
     c_args : [
         c_ccp_args
