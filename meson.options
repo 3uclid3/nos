@@ -1,1 +1,9 @@
+option('kernel_cflags', type : 'string', description : 'Extra c compiler arguments for kernel')
+option('kernel_cxxflags', type : 'string', description : 'Extra cpp compiler arguments for kernel')
+
 option('kernel_ubsan', type : 'boolean', value : false, description : 'Enable undefined behavior sanitizer in kernel')
+
+option('gdb', type : 'boolean', value : false, description : 'Add -s -S to qemu')
+
+option('noaccel', type : 'boolean', value : false, description : 'Disable qemu accelerators')
+option('vnc', type : 'boolean', value : false, description : 'Start VNC server on 127.0.0.1:5901')

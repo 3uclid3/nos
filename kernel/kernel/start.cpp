@@ -1,9 +1,9 @@
 #include <nxx/def.hpp>
+#include <kernel/drivers/serial.hpp>
 
 extern "C" void _start(void)
 {
-    nxx::u16_t i;
-    (void)i;
+    nos::serial::early_init();
 
     while (1)
     {

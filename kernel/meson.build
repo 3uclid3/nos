@@ -1,50 +1,31 @@
 src = files(
+    'kernel/arch'/ arch /'drivers/serial.cpp',
+    'kernel/arch'/ arch /'arch.cpp',
+    'kernel/start.cpp',
     'kernel/start.cpp',
 )
 
-# x86_64 specific files
-if arch == 'x86_64'
+c_args = get_option('kernel_cflags').split()
+cxx_args = get_option('kernel_cxxflags').split()
 
-endif
-
-linker_file_path = meson.current_source_dir() / 'linker' / arch + '.ld'
-
-c_ccp_args = [
-    '-m64',
-    '-mcmodel=large',
-    '-march=x86-64',
-    '-mno-80387',
-    '-mno-mmx',
-    '-mno-sse',
-    '-mno-sse2',
-    '-mno-red-zone'
+ld_args = [
+    '-Wl,-T,' + meson.current_source_dir() / 'linker' / arch + '.ld',
+    '-Wl,-z,max-page-size=0x1000',
+    '-nostdlib',
+    '-static'
 ]
 
+args = [ ]
 if get_option('kernel_ubsan')
     c_ccp_args += '-fsanitize=undefined'
 endif
 
-kernel = executable(
+kernel_elf = executable(
     'kernel.elf', src,
-    install : false, pie : true,
+    dependencies : [deps],
     include_directories : ['.'],
-    dependencies : [
-        limine_dep,
-        nxx_dep
-    ],
-    c_args : [
-        c_ccp_args
-    ],
-    cpp_args : [
-        c_ccp_args,
-        '-MP'
-    ],
-    link_args : [
-        '-nostdlib',
-        '-static',
-        '-Xlinker', '--no-dynamic-linker',
-        '-z', 'text',
-        '-z', 'max-page-size=0x1000',
-        '-T', linker_file_path
-    ]
+    c_args : [c_args, args],
+    cpp_args : [cxx_args, args],
+    link_args : ld_args,
+    install : false
 )
