@@ -17,7 +17,7 @@ ld_args = [
 
 args = [ ]
 if get_option('kernel_ubsan')
-    c_ccp_args += '-fsanitize=undefined'
+#    cxx_args += '-fsanitize=undefined'
 endif
 
 subdir('kernel/arch' / arch)
