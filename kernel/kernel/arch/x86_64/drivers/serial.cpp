@@ -3,6 +3,9 @@
 #include <kernel/arch/x86_64/arch.hpp>
 #include <kernel/arch/x86_64/io.hpp>
 #include <kernel/def.hpp>
+#include <kernel/arch/x86_64/drivers/serial.hpp>
+
+#include <kernel/log.hpp>
 
 namespace nos::x86_64::serial {
 
@@ -41,6 +44,8 @@ void early_init()
 {
     init_port(com1);
     init_port(com2);
+
+    log::set_output(log::output::serial);
 }
 
 char read()

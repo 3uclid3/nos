@@ -1,8 +1,8 @@
 src = files(
-    'kernel/arch'/ arch /'drivers/serial.cpp',
-    'kernel/arch'/ arch /'arch.cpp',
-    'kernel/start.cpp',
-    'kernel/start.cpp',
+    'kernel/boot/kmain.cpp',
+    'kernel/boot/start.cpp',
+    'kernel/cxx/cxx-abi.cpp',
+    'kernel/log.cpp'
 )
 
 c_args = get_option('kernel_cflags').split()
@@ -19,6 +19,8 @@ args = [ ]
 if get_option('kernel_ubsan')
     c_ccp_args += '-fsanitize=undefined'
 endif
+
+subdir('kernel/arch' / arch)
 
 kernel_elf = executable(
     'kernel.elf', src,
