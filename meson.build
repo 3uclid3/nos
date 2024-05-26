@@ -114,7 +114,6 @@ warningss = [
 add_global_arguments([
     warningss, macros,
     '-ffreestanding',
-    '-ffreestanding',
     '-fno-stack-protector',
     '-fno-omit-frame-pointer',
     '-fno-pic',
