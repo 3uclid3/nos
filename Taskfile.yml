@@ -12,6 +12,9 @@ tasks:
   setup:
     cmds:
       - meson setup $BUILD_DIR --cross-file cross-file/meson-kernel-$BUILD_ARCH.cross-file {{.CLI_ARGS}}
+  setup-debug:
+    cmds:
+      - meson setup $BUILD_DIR --cross-file cross-file/meson-kernel-$BUILD_ARCH.cross-file -Dgdb=true -Dkernel_ubsan=true {{.CLI_ARGS}}
   kernel:
     cmds:
       - meson compile -C $BUILD_DIR kernel.elf
