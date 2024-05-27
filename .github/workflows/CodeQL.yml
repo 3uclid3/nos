@@ -1,0 +1,42 @@
+---
+name: CodeQL
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # At 03:00 on Sunday
+    - cron: '0 3 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-22.04
+    container: 3uclid3/nos-buildenv:latest
+
+    permissions:
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: cpp
+
+      - name: Setup build
+        run: |
+          task setup BUILD_TYPE=debug
+
+      - name: Compile
+        run: |
+          task kernel
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:cpp"

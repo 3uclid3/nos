@@ -1,0 +1,30 @@
+---
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build-kernel:
+    name: Build Kernel
+    runs-on: ubuntu-22.04
+    container: 3uclid3/nos-buildenv:latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [debug, release]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup build
+        run: |
+            task setup BUILD_TYPE=${{ matrix.build-type }};
+
+      - name: Compile
+        run: |
+          task kernel
