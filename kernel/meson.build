@@ -2,6 +2,7 @@ src = files(
     'kernel/arch/arch.cpp',
     'kernel/boot/start.cpp',
     'kernel/cxx/cxxabi.cpp',
+    'kernel/libc/string.cpp',
     'kernel/utility/log.cpp',
     'kernel/kernel.cpp'
 )
@@ -26,7 +27,7 @@ subdir('kernel/arch' / arch)
 kernel_elf = executable(
     'kernel.elf', src,
     dependencies : [deps],
-    include_directories : ['.'],
+    include_directories : ['.', './kernel/libc'],
     c_args : [c_args, args],
     cpp_args : [cxx_args, args],
     link_args : ld_args,
