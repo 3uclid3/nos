@@ -1,11 +1,11 @@
 #include <kernel/arch/x86_64/drivers/serial.hpp>
 
 #include <kernel/arch/x86_64/arch.hpp>
-#include <kernel/arch/x86_64/io.hpp>
-#include <kernel/def.hpp>
 #include <kernel/arch/x86_64/drivers/serial.hpp>
+#include <kernel/arch/x86_64/utility/io.hpp>
+#include <kernel/def.hpp>
 
-#include <kernel/log.hpp>
+#include "kernel/utility/log.hpp"
 
 namespace nos::x86_64::serial {
 

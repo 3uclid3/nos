@@ -1,8 +1,9 @@
 src = files(
-    'kernel/boot/kmain.cpp',
+    'kernel/arch/arch.cpp',
     'kernel/boot/start.cpp',
-    'kernel/cxx/cxx-abi.cpp',
-    'kernel/log.cpp'
+    'kernel/cxx/cxxabi.cpp',
+    'kernel/utility/log.cpp',
+    'kernel/kernel.cpp'
 )
 
 c_args = get_option('kernel_cflags').split()

@@ -1,14 +1,21 @@
 #pragma once
 
-namespace nos::x86_64::arch {
+#include <kernel/arch/x86_64/cpu/cpu.hpp>
 
-void init();
+namespace nos::x86_64 {
 
-[[noreturn]] void halt(bool ints = true);
+class arch
+{
+public:
+    void early_init();
+    void init();
 
-void pause();
+public:
+    [[noreturn]] static void halt(bool ints = true);
+    static void pause();
 
-void shutdown(bool now);
-void reboot(bool now);
+private:
+    cpu _cpu;
+};
 
-} // namespace nos::x86_64::arch
+} // namespace nos::x86_64

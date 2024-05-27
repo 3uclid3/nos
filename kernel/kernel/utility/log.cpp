@@ -1,4 +1,4 @@
-#include <kernel/log.hpp>
+#include <kernel/utility/log.hpp>
 
 #include <kernel/drivers/serial.hpp>
 #include <nxx/string/format-to.hpp>

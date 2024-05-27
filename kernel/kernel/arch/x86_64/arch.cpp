@@ -1,16 +1,20 @@
 #include <kernel/arch/x86_64/arch.hpp>
 
-#include <kernel/def.hpp>
+namespace nos::x86_64 {
 
-namespace nos::x86_64::arch {
-
-void init()
+void arch::early_init()
 {
+    _cpu.early_init();
 }
 
-void halt(bool ints)
+void arch::init()
 {
-    if (ints == true)
+    _cpu.init();
+}
+
+void arch::halt(bool ints)
+{
+    if (ints)
     {
         while (true)
         {
@@ -26,19 +30,9 @@ void halt(bool ints)
     }
 }
 
-void pause()
+void arch::pause()
 {
     asm volatile("pause");
 }
 
-void shutdown(bool now)
-{
-    NOS_UNUSED(now);
-}
-
-void reboot(bool now)
-{
-    NOS_UNUSED(now);
-}
-
-} // namespace nos::x86_64::arch
+} // namespace nos::x86_64

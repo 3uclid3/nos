@@ -1,7 +1,7 @@
-#include <kernel/cxx/cxx-abi.hpp>
+#include <kernel/cxx/cxxabi.hpp>
 
 #include <kernel/def.hpp>
-#include <kernel/log.hpp>
+#include <kernel/utility/log.hpp>
 
 extern "C" {
 
@@ -76,7 +76,7 @@ void __cxa_pure_virtual()
 
 } // extern "C"
 
-namespace nos::cxx_abi {
+namespace nos::cxxabi {
 
 extern "C" void (*__init_array_start[])();
 extern "C" void (*__init_array_end[])();
@@ -91,4 +91,4 @@ void init()
     log::traceln("cxxabi initialization done");
 }
 
-} // namespace nos::cxx_abi
+} // namespace nos::cxxabi

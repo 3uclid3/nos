@@ -1,4 +1,6 @@
 src += files(
+    'cpu/cpu.cpp',
+    'cpu/gdt.cpp',
     'drivers/serial.cpp',
     'arch.cpp'
 )

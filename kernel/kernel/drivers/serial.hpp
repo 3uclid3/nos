@@ -6,11 +6,6 @@
 
 namespace nos::serial {
 
-inline void early_init()
-{
-    NOS_ARCH::serial::early_init();
-}
-
 inline char read()
 {
     return NOS_ARCH::serial::read();

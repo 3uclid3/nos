@@ -2,8 +2,8 @@
 
 #include <kernel/def.hpp>
 #include <nxx/container/span.hpp>
-#include <nxx/string/string-view.hpp>
 #include <nxx/string/format-to.hpp>
+#include <nxx/string/string-view.hpp>
 #include <nxx/type-trait/underlying-type.hpp>
 #include <nxx/utility/source-location.hpp>
 

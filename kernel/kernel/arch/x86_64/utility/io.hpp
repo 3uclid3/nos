@@ -1,7 +1,7 @@
 #pragma once
 
-#include <kernel/def.hpp>
-#include <nxx/concept/same-as.hpp>
+#include "../../../../../subprojects/nxx/nxx/nxx/concept/same-as.hpp"
+#include "../../../def.hpp"
 
 namespace nos::x86_64::io {
 

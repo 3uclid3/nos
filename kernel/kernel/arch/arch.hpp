@@ -1,24 +1,17 @@
 #pragma once
 
-#include <nos/def.hpp>
+#include <kernel/def.hpp>
 
 #include NOS_INCLUDE_KERNEL_ARCH(arch.hpp)
 
-namespace nos::arch {
+namespace nos {
 
-inline void init()
+class arch : public current_arch::arch
 {
-    NOS_ARCH::arch::init();
-}
+    using super = current_arch::arch;
 
-inline void pause()
-{
-    NOS_ARCH::arch::pause();
-}
+public:
+    void early_init();
+};
 
-[[noreturn]] inline void halt(bool ints = true)
-{
-    NOS_ARCH::arch::halt(ints);
-}
-
-} // namespace nos::arch
+} // namespace nos
