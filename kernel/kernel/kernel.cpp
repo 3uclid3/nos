@@ -10,6 +10,10 @@ kernel::kernel()
 
 void kernel::run()
 {
+    while (true)
+    {
+        arch::pause();
+    }
 }
 
 void kernel::early_init()

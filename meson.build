@@ -78,7 +78,7 @@ endif
 
 qemu_accel_args = []
 if not get_option('noaccel')
-    qemu_accel_args += ['-M', 'accel=kvm:hvf:whpx:haxm:tcg']
+#    qemu_accel_args += ['-M', 'accel=kvm:hvf:whpx:haxm:tcg']
 endif
 
 if get_option('vnc')
