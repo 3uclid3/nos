@@ -5,31 +5,65 @@ env:
   BUILD_TYPE: '{{.BUILD_TYPE | default "debug"}}'
   BUILD_ARCH: '{{.BUILD_ARCH | default "x86_64"}}'
   BUILD_DIR: 'build'
+ 
+  OVMF_BINARIES: 'subprojects/ovmf_binaries'
+ 
+  QEMU_ARGS: ' -cdrom {{.BUILD_DIR}}/image.iso -cpu max -smp 4 -m 512M -rtc base=localtime -serial stdio -boot order=d,menu=on -nic user,model=rtl8139 -nic user,model=e1000' 
+  QEMU_DEBUG_ARGS: '{{.QEMU_ARGS}} -s -S -no-reboot -no-shutdown -d int -monitor telnet:127.0.0.1:12345,server,nowait'
 
 dotenv: [ '.env' ]
 
 tasks:
-  setup:
+  buildenv:setup:
     cmds:
-      - meson setup $BUILD_DIR --cross-file cross-file/meson-kernel-$BUILD_ARCH.cross-file {{.CLI_ARGS}}
-  setup-debug:
+      - docker build buildenv -t nos-buildenv
+  buildenv:run:
     cmds:
-      - meson setup $BUILD_DIR --cross-file cross-file/meson-kernel-$BUILD_ARCH.cross-file -Dgdb=true -Dkernel_ubsan=true {{.CLI_ARGS}}
-  kernel:
+      - docker run --rm -it -v $pwd:/root/env nos-buildenv
+
+  build:setup:
     cmds:
-      - meson compile -C $BUILD_DIR kernel.elf
-  iso:
+      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file
+  build:setup-debug:
     cmds:
-      - meson compile -C $BUILD_DIR iso
-  run-bios:
+      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file -Dgdb=true -Dkernel_ubsan=true
+  
+  kernel:compile:
     cmds:
-      - meson compile -C $BUILD_DIR run_bios
-  run-bios-debug:
+      - meson compile -C {{.BUILD_DIR}} kernel.elf
+
+  iso:build:
     cmds:
-      - meson compile -C $BUILD_DIR run_bios_debug
-  run-uefi:
+      - meson compile -C {{.BUILD_DIR}} iso
+      
+  qemu-x86_64:bios:
     cmds:
-      - meson compile -C $BUILD_DIR run_uefi
-  run-uefi-debug:
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -M q35
+
+  qemu-x86_64:bios-debug:
     cmds:
-      - meson compile -C $BUILD_DIR run_uefi_debug
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -M q35 -M smm=off
+      
+  qemu-x86_64:uefi:
+    cmds:
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -M q35 -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
+ 
+  qemu-x86_64:uefi-debug:
+    cmds:
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -M q35 -M smm=off -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
+
+  qemu:bios:
+    cmds:
+      - task: qemu-{{.BUILD_ARCH}}:bios
+
+  qemu:bios-debug:
+    cmds:
+      - task: qemu-{{.BUILD_ARCH}}:bios-debug
+      
+  qemu:uefi:
+    cmds:
+      - task: qemu-{{.BUILD_ARCH}}:uefi
+
+  qemu:uefi-debug:
+    cmds:
+      - task: qemu-{{.BUILD_ARCH}}:uefi-debug
