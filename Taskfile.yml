@@ -14,13 +14,6 @@ env:
 dotenv: [ '.env' ]
 
 tasks:
-  buildenv:setup:
-    cmds:
-      - docker build buildenv -t nos-buildenv
-  buildenv:run:
-    cmds:
-      - docker run --rm -it -v $pwd:/root/env nos-buildenv
-
   build:setup:
     cmds:
       - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file
@@ -28,27 +21,31 @@ tasks:
     cmds:
       - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file -Dgdb=true -Dkernel_ubsan=true
   
-  kernel:compile:
+  os:compile-kernel:
     cmds:
       - meson compile -C {{.BUILD_DIR}} kernel.elf
 
-  iso:build:
+  os:build-iso:
     cmds:
       - meson compile -C {{.BUILD_DIR}} iso
       
   qemu-x86_64:bios:
+    internal: true
     cmds:
       - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}}
 
   qemu-x86_64:bios-debug:
+    internal: true
     cmds:
       - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}}
       
   qemu-x86_64:uefi:
+    internal: true    
     cmds:
       - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
  
   qemu-x86_64:uefi-debug:
+    internal: true
     cmds:
       - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
 

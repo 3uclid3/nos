@@ -34,7 +34,7 @@ jobs:
 
       - name: Compile
         run: |
-          task kernel:compile
+          task os:compile-kernel
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

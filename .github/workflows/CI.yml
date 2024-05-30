@@ -27,8 +27,8 @@ jobs:
 
       - name: Compile kernel
         run: |
-          task kernel:compile
+          task os:compile-kernel
 
       - name: Build ISO
         run: |
-          task iso:build
+          task os:build-iso
