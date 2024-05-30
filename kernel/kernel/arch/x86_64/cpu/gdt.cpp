@@ -26,7 +26,7 @@ void gdt::load(size_t i)
     log::infoln("gdt: loading");
 
     const u64_t base = reinterpret_cast<u64_t>(&_tsses[i]);
-    const u16_t limit = sizeof(_tsses[i]);
+    const u16_t limit = sizeof(tss::entry);
 
     entries& current_entries = _entries[i];
 

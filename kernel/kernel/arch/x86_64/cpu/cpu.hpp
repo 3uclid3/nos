@@ -1,6 +1,7 @@
 #pragma once
 
 #include <kernel/arch/x86_64/cpu/gdt.hpp>
+#include <kernel/arch/x86_64/cpu/idt.hpp>
 
 namespace nos::x86_64 {
 
@@ -12,6 +13,7 @@ public:
 
 private:
     gdt _gdt;
+    idt _idt;
 };
 
 } // namespace nos::x86_64
