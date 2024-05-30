@@ -3,7 +3,7 @@ project('nos', ['c', 'cpp'],
     license: 'MIT',
     default_options : [
         'c_std=c17',
-        'cpp_std=c++2a',
+        'cpp_std=c++23',
 
         'cpp_eh=none',
         'cpp_rtti=false',
@@ -82,9 +82,6 @@ add_global_arguments([
 )
 
 add_global_arguments([
-     '-std=c++2a',
-     '-fno-rtti',
-     '-fno-exceptions',
      '-fsized-deallocation',
      '-Wno-unused-parameter',
      '-Wno-non-virtual-dtor',
