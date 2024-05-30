@@ -8,8 +8,8 @@ env:
  
   OVMF_BINARIES: 'subprojects/ovmf_binaries'
  
-  QEMU_ARGS: ' -cdrom {{.BUILD_DIR}}/image.iso -cpu max -smp 4 -m 512M -rtc base=localtime -serial stdio -boot order=d,menu=on -nic user,model=rtl8139 -nic user,model=e1000' 
-  QEMU_DEBUG_ARGS: '{{.QEMU_ARGS}} -s -S -no-reboot -no-shutdown -d int -monitor telnet:127.0.0.1:12345,server,nowait'
+  QEMU_ARGS: '-cdrom {{.BUILD_DIR}}/image.iso -rtc base=localtime -serial stdio' 
+  QEMU_DEBUG_ARGS: '{{.QEMU_ARGS}} -s -S -no-reboot -no-shutdown -d int -D log.txt'
 
 dotenv: [ '.env' ]
 
@@ -38,19 +38,19 @@ tasks:
       
   qemu-x86_64:bios:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -M q35
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}}
 
   qemu-x86_64:bios-debug:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -M q35 -M smm=off
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}}
       
   qemu-x86_64:uefi:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -M q35 -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
  
   qemu-x86_64:uefi-debug:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -M q35 -M smm=off -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
+      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
 
   qemu:bios:
     cmds:

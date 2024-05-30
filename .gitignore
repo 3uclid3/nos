@@ -1,11 +1,17 @@
-.vscode/*
+# ide
 .idea/*
+.vs/*
+.vscode/*
+!.vscode/launch.json
 
+# build
 build/*
 builddir/*
 
-log.txt
-
+# subprojects
 subprojects/*
 !subprojects/*.wrap
 !subprojects/packagefiles/*
+
+# logs
+log.txt
