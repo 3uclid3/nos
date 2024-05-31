@@ -30,11 +30,11 @@ jobs:
 
       - name: Setup build
         run: |
-          task build:setup BUILD_TYPE=debug
+          task setup:x86_64 BUILD_TYPE=debug
 
       - name: Compile
         run: |
-          task os:compile-kernel
+          task build:kernel
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

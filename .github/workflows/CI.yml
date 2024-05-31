@@ -23,12 +23,12 @@ jobs:
 
       - name: Setup build
         run: |
-            task build:setup BUILD_TYPE=${{ matrix.build-type }};
+            task setup:x86_64 BUILD_TYPE=${{ matrix.build-type }};
 
       - name: Compile kernel
         run: |
-          task os:compile-kernel
+          task build:kernel
 
       - name: Build ISO
         run: |
-          task os:build-iso
+          task build:iso

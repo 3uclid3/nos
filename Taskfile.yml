@@ -3,64 +3,34 @@ version: '3'
 
 env:
   BUILD_TYPE: '{{.BUILD_TYPE | default "debug"}}'
-  BUILD_ARCH: '{{.BUILD_ARCH | default "x86_64"}}'
   BUILD_DIR: 'build'
- 
-  OVMF_BINARIES: 'subprojects/ovmf_binaries'
- 
-  QEMU_ARGS: '-cdrom {{.BUILD_DIR}}/image.iso -rtc base=localtime -serial stdio' 
-  QEMU_DEBUG_ARGS: '{{.QEMU_ARGS}} -s -S -no-reboot -no-shutdown -d int -D log.txt'
 
 dotenv: [ '.env' ]
 
 tasks:
-  build:setup:
+  setup:x86_64:
     cmds:
-      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file
-  build:setup-debug:
+      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-x86_64.cross-file -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
+  setup:x86_64-debug:
     cmds:
-      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-{{.BUILD_ARCH}}.cross-file -Dgdb=true -Dkernel_ubsan=true
+      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-x86_64.cross-file -Dgdb=true -Dkernel_ubsan=true -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
   
-  os:compile-kernel:
+  build:kernel:
     cmds:
       - meson compile -C {{.BUILD_DIR}} kernel.elf
-
-  os:build-iso:
+  build:iso:
     cmds:
       - meson compile -C {{.BUILD_DIR}} iso
-      
-  qemu-x86_64:bios:
-    internal: true
-    cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}}
 
-  qemu-x86_64:bios-debug:
-    internal: true
+  qemu:debug-with-bios:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}}
-      
-  qemu-x86_64:uefi:
-    internal: true    
+      - meson compile -C {{.BUILD_DIR}} qemu_debug_with_bios
+  qemu:debug-with-uefi:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
- 
-  qemu-x86_64:uefi-debug:
-    internal: true
+      - meson compile -C {{.BUILD_DIR}} qemu_debug_with_uefi
+  qemu:run-with-bios:
     cmds:
-      - qemu-system-{{.BUILD_ARCH}} {{.QEMU_DEBUG_ARGS}} -bios {{.OVMF_BINARIES}}/OVMF_X64.fd
-
-  qemu:bios:
+      - meson compile -C {{.BUILD_DIR}} qemu_run_with_bios
+  qemu:run-with-uefi:
     cmds:
-      - task: qemu-{{.BUILD_ARCH}}:bios
-
-  qemu:bios-debug:
-    cmds:
-      - task: qemu-{{.BUILD_ARCH}}:bios-debug
-      
-  qemu:uefi:
-    cmds:
-      - task: qemu-{{.BUILD_ARCH}}:uefi
-
-  qemu:uefi-debug:
-    cmds:
-      - task: qemu-{{.BUILD_ARCH}}:uefi-debug
+      - meson compile -C {{.BUILD_DIR}} qemu_run_with_uefi
