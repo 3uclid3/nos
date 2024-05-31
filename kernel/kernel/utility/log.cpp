@@ -3,48 +3,67 @@
 #include <nxx/string/format-to.hpp>
 
 namespace nos::log {
-namespace {
+namespace details {
 
-// TODO ref_wrap
-printer* main_printer{nullptr};
+printer* printer{nullptr};
 
-} // namespace
+} // namespace details
 
-void set_printer(printer& printer)
+void printer::prints(string_view str)
 {
-    main_printer = &printer;
+    prints_impl(str);
+
+    if (_next_printer)
+    {
+        _next_printer->prints(str);
+    }
 }
 
-void unset_printer()
+void printer::printc(char c)
 {
-    main_printer = nullptr;
+    printc_impl(c);
+
+    if (_next_printer)
+    {
+        _next_printer->printc(c);
+    }
+}
+
+void add_printer(printer& printer)
+{
+    if (details::printer)
+    {
+        printer._next_printer = details::printer;
+    }
+
+    details::printer = &printer;
 }
 
 void prints(string_view str)
 {
-    if (main_printer)
+    if (details::printer)
     {
-        main_printer->prints(str);
+        details::printer->prints(str);
     }
 }
 
 void printc(char c)
 {
-    if (main_printer)
+    if (details::printer)
     {
-        main_printer->printc(c);
+        details::printer->printc(c);
     }
 }
 
 void vprint(string_view fmt, span<format_argument> args)
 {
-    if (main_printer)
+    if (details::printer)
     {
         struct
         {
             void write(char c)
             {
-                main_printer->printc(c);
+                details::printer->printc(c);
             }
         } out;
 

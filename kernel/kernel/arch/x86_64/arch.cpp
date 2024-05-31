@@ -8,7 +8,7 @@ void arch::early_init()
 {
     _com_log_printer.init(standard_com_port::com1);
 
-    log::set_printer(_com_log_printer);
+    log::add_printer(_com_log_printer);
 
     cxxabi::init();
 

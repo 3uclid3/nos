@@ -1,8 +1,8 @@
-#include <kernel/arch/x86_64/utility/com-log-printer.hpp>
+#include <kernel/arch/x86_64/drivers/com-port-log-printer.hpp>
 
 namespace nos::x86_64 {
 
-void com_log_printer::init(com_port com)
+void com_port_log_printer::init(com_port com)
 {
     _com = com;
     _com.init();
@@ -10,7 +10,7 @@ void com_log_printer::init(com_port com)
     NOS_ASSERT(_com.loopback_test());
 }
 
-void com_log_printer::prints_impl(string_view str)
+void com_port_log_printer::prints_impl(string_view str)
 {
     for (char c : str)
     {
@@ -18,7 +18,7 @@ void com_log_printer::prints_impl(string_view str)
     }
 }
 
-void com_log_printer::printc_impl(char c)
+void com_port_log_printer::printc_impl(char c)
 {
     _com.write(c);
 }

@@ -5,7 +5,7 @@
 
 namespace nos::x86_64 {
 
-class com_log_printer : public log::printer
+class com_port_log_printer : public log::printer
 {
 public:
     void init(com_port port);

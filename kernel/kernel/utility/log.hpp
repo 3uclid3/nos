@@ -12,16 +12,19 @@ class printer
 public:
     virtual ~printer() = default;
 
-    void prints(string_view str) { prints_impl(str); }
-    void printc(char c) { printc_impl(c); }
+    void prints(string_view str);
+    void printc(char c);
 
 private:
     virtual void prints_impl(string_view str) = 0;
     virtual void printc_impl(char c) = 0;
+    
+    printer* _next_printer{nullptr};
+
+    friend void add_printer(printer& printer);
 };
 
-void set_printer(printer& printer);
-void unset_printer();
+void add_printer(printer& printer);
 
 void prints(string_view str);
 void printc(char c);
