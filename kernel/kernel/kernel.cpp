@@ -12,7 +12,7 @@ void kernel::run()
 {
     while (true)
     {
-        arch::pause();
+        arch::cpu::pause();
     }
 }
 

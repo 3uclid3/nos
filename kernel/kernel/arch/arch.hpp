@@ -6,12 +6,6 @@
 
 namespace nos {
 
-class arch : public current_arch::arch
-{
-    using super = current_arch::arch;
-
-public:
-    void early_init();
-};
+using arch = current_arch::arch;
 
 } // namespace nos

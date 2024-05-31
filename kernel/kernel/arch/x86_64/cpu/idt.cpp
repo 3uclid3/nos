@@ -1,7 +1,6 @@
 #include <kernel/arch/x86_64/cpu/idt.hpp>
 
 #include <kernel/arch/x86_64/cpu/gdt.hpp>
-#include <kernel/arch/x86_64/utility/io.hpp>
 #include <kernel/utility/log.hpp>
 
 extern "C" void* nos_interrupt_table[];

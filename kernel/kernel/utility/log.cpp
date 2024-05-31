@@ -1,54 +1,53 @@
 #include <kernel/utility/log.hpp>
 
-#include <kernel/drivers/serial.hpp>
 #include <nxx/string/format-to.hpp>
 
 namespace nos::log {
 namespace {
 
-auto current_output = output::none;
-bool is_output_enabled(output out)
-{
-    return (current_output & out) != output::none;
-}
+// TODO ref_wrap
+printer* main_printer{nullptr};
 
 } // namespace
 
-void set_output(output out)
+void set_printer(printer& printer)
 {
-    current_output = out;
+    main_printer = &printer;
+}
+
+void unset_printer()
+{
+    main_printer = nullptr;
 }
 
 void prints(string_view str)
 {
-    if (is_output_enabled(output::serial))
+    if (main_printer)
     {
-        for (char c : str)
-        {
-            serial::write(c);
-        }
+        main_printer->prints(str);
     }
 }
 
 void printc(char c)
 {
-    if (is_output_enabled(output::serial))
+    if (main_printer)
     {
-        serial::write(c);
+        main_printer->printc(c);
     }
 }
 
 void vprint(string_view fmt, span<format_argument> args)
 {
-    if (is_output_enabled(output::serial))
+    if (main_printer)
     {
         struct
         {
             void write(char c)
             {
-                serial::write(c);
+                main_printer->printc(c);
             }
         } out;
+
         vformat_to(out, fmt, args);
     }
 }

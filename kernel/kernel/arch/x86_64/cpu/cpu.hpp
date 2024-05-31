@@ -10,6 +10,9 @@ class cpu
 public:
     void early_init();
     void init();
+    
+public:
+    static void pause();
 
 private:
     gdt _gdt;

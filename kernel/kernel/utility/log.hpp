@@ -2,32 +2,26 @@
 
 #include <kernel/def.hpp>
 #include <nxx/container/span.hpp>
-#include <nxx/string/format-to.hpp>
+#include <nxx/string/format-argument.hpp>
 #include <nxx/string/string-view.hpp>
-#include <nxx/type-trait/underlying-type.hpp>
-#include <nxx/utility/source-location.hpp>
 
 namespace nos::log {
 
-enum class output : u8_t
+class printer
 {
-    none = 0x0,
-    serial = 0x1,
-    terminal = 0x2,
-    all = 0xF
+public:
+    virtual ~printer() = default;
+
+    void prints(string_view str) { prints_impl(str); }
+    void printc(char c) { printc_impl(c); }
+
+private:
+    virtual void prints_impl(string_view str) = 0;
+    virtual void printc_impl(char c) = 0;
 };
 
-constexpr output operator|(output lhs, output rhs)
-{
-    return static_cast<output>(static_cast<underlying_type<output>>(lhs) | static_cast<underlying_type<output>>(rhs));
-}
-
-constexpr output operator&(output lhs, output rhs)
-{
-    return static_cast<output>(static_cast<underlying_type<output>>(lhs) & static_cast<underlying_type<output>>(rhs));
-}
-
-void set_output(output out);
+void set_printer(printer& printer);
+void unset_printer();
 
 void prints(string_view str);
 void printc(char c);

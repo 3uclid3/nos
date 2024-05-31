@@ -1,7 +1,7 @@
 src = files(
-    'kernel/arch/arch.cpp',
     'kernel/boot/start.cpp',
     'kernel/cxx/cxxabi.cpp',
+    'kernel/cxx/memory.cpp',
     'kernel/debug/assert.cpp',
     'kernel/libc/string.cpp',
     'kernel/utility/log.cpp',
