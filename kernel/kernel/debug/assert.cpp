@@ -20,7 +20,7 @@ void trigger_assert(const char* condition, const char* message, const char* file
 
     log::fatal("System halted");
 
-    arch::halt(false);
+    arch::hcf();
 }
 
 } // namespace nxx::details

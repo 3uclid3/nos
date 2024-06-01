@@ -14,7 +14,8 @@ public:
     void init();
 
 public:
-    static void halt(bool ints = true);
+    static void halt();
+    static void hcf();
 
 private:
     cpu _cpu;

@@ -2,6 +2,7 @@
 
 #include <kernel/arch/x86_64/cpu/cpu-registers.hpp>
 #include <kernel/arch/x86_64/cpu/gdt.hpp>
+#include <kernel/arch/x86_64/cpu/interrupt.hpp>
 #include <kernel/utility/log.hpp>
 #include <nxx/utility/to-underlying.hpp>
 
@@ -107,9 +108,9 @@ void idt::load()
     ptr.limit = static_cast<u16_t>(sizeof(entry) * _entries.size() - 1);
     ptr.base = reinterpret_cast<uintptr_t>(_entries.data());
 
-    asm volatile("cli");
+    interrupt::disable();
     asm volatile("lidt %0" ::"memory"(ptr));
-    asm volatile("sti");
+    interrupt::enable();
 }
 
 void idt::dispatch_interrupt(const cpu_registers& registers)

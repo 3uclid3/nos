@@ -1,5 +1,6 @@
 #include <kernel/arch/x86_64/arch.hpp>
 
+#include <kernel/arch/x86_64/cpu/interrupt.hpp>
 #include <kernel/arch/x86_64/drivers/com-port-logger.hpp>
 #include <kernel/cxx/cxxabi.hpp>
 #include <kernel/utility/log.hpp>
@@ -20,22 +21,14 @@ void arch::init()
     _cpu.init();
 }
 
-void arch::halt(bool ints)
+void arch::halt()
 {
-    // if (ints)
-    //{
-    //     while (true)
-    //     {
-    //         asm volatile("hlt");
-    //     }
-    // }
-    // else
-    //{
-    //     while (true)
-    //     {
-    //         asm volatile("cli; hlt");
-    //     }
-    // }
+    interrupt::halt();
+}
+
+void arch::hcf()
+{
+    interrupt::hcf();
 }
 
 } // namespace nos::x86_64
