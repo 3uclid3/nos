@@ -144,9 +144,9 @@ void idt::dispatch_handler(const cpu_registers& registers)
 {
     log::info("isr: interrupt {} on CPU {}", registers.interrupt, 0);
 
-    if (_handlers[registers.interrupt] != nullptr)
+    if (_handlers[registers.interrupt])
     {
-        (*_handlers[registers.interrupt])(registers);
+        _handlers[registers.interrupt](registers);
     }
     else
     {
