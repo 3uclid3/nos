@@ -1,7 +1,7 @@
 #include <kernel/debug/assert.hpp>
 
-#include <kernel/arch/arch.hpp>
-#include <kernel/utility/log.hpp>
+#include <kernel/arch.hpp>
+#include <kernel/log.hpp>
 
 namespace nxx::details {
 

@@ -1,8 +1,8 @@
 #pragma once
 
-namespace nos {
+namespace nos::log {
 
-enum class log_level
+enum class level
 {
     trace,
     debug,
@@ -12,4 +12,4 @@ enum class log_level
     fatal
 };
 
-} // namespace nos
+} // namespace nos::log

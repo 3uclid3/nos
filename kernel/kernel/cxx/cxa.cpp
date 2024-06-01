@@ -1,7 +1,7 @@
-#include <kernel/cxx/cxxabi.hpp>
+#include <kernel/cxx/cxa.hpp>
 
 #include <kernel/def.hpp>
-#include <kernel/utility/log.hpp>
+#include <kernel/log.hpp>
 
 extern "C" {
 
@@ -95,18 +95,18 @@ void __cxa_guard_abort(__guard* g)
 
 } // extern "C"
 
-namespace nos::cxxabi {
+namespace nos::cxa {
 
 extern "C" void (*__init_array_start[])();
 extern "C" void (*__init_array_end[])();
 
 void init()
 {
-    log::info("cxxabi: init");
+    log::trace("cxa: init");
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {
         (*ctor)();
     }
 }
 
-} // namespace nos::cxxabi
+} // namespace nos::cxa

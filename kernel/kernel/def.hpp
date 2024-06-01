@@ -1,6 +1,7 @@
 #pragma once
 
 #include <kernel_config.hpp>
+
 #include <nxx/def.hpp>
 
 #define NOS_ASSERT(...) NXX_ASSERT(__VA_ARGS__)

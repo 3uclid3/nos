@@ -1,6 +1,7 @@
-#include <kernel/cxx/malloc.hpp>
+#include <kernel/cxx/new.hpp>
 
 #include <kernel/def.hpp>
+#include <nxx/memory/alloc.hpp>
 #include <nxx/memory/allocator/stack_allocator.hpp>
 
 namespace nxx {

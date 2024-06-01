@@ -1,4 +1,4 @@
-.include "kernel/arch/x86_64/cpu/idt-push-pop-registers.inc"
+.include "kernel/arch/x86_64/cpu/idt_push_pop_registers.inc"
 
 .extern nos_interrupt_handler
 nos_interrupt_common_stub:

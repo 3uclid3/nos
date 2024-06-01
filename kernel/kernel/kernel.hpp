@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/arch.hpp>
+#include <kernel/arch.hpp>
 
 namespace nos {
 

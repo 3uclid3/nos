@@ -1,6 +1,6 @@
 #include <kernel/arch/x86_64/cpu/gdt.hpp>
 
-#include <kernel/utility/log.hpp>
+#include <kernel/log.hpp>
 #include <nxx/type_trait/underlying_type.hpp>
 
 namespace nos::x86_64 {

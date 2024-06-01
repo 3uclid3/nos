@@ -1,10 +1,10 @@
 src = files(
     'kernel/boot/start.cpp',
-    'kernel/cxx/cxxabi.cpp',
-    'kernel/cxx/malloc.cpp',
+    'kernel/cxx/cxa.cpp',
+    'kernel/cxx/new.cpp',
     'kernel/debug/assert.cpp',
     'kernel/libc/string.cpp',
-    'kernel/utility/details/main_logger.cpp',
+    'kernel/log/logger.cpp',
     'kernel/kernel.cpp'
 )
 
@@ -35,7 +35,7 @@ configure_file(
     input: 'config_files/config.hpp.in',
     output: 'kernel_config.hpp',
     configuration: {
-        'MAIN_LOGGER_STACK_ALLOCATOR_SIZE': 64
+        'LOGGER_STACK_ALLOCATOR_SIZE': 64
     }
 )
 

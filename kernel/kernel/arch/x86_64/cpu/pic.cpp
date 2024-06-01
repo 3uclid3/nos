@@ -1,6 +1,6 @@
 #include <kernel/arch/x86_64/cpu/pic.hpp>
 
-#include <kernel/utility/log.hpp>
+#include <kernel/log.hpp>
 
 namespace nos::x86_64 {
 

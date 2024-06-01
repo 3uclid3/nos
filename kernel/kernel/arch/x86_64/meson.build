@@ -1,13 +1,13 @@
 src += files(
-    'cpu/cpu.cpp',
     'cpu/gdt.cpp',
-    'cpu/idt.cpp',
     'cpu/idt.S',
+    'cpu/idt.cpp',
     'cpu/pic.cpp',
-    'drivers/com_port_logger.cpp',
+    'drivers/com_port_log_sink.cpp',
     'drivers/com_port.cpp',
     'drivers/serial_port.cpp',
-    'arch.cpp'
+    'arch.cpp',
+    'cpu.cpp',
 )
 
 args += [
@@ -17,7 +17,7 @@ args += [
     '-mno-sse',
     '-mno-sse2',
     '-mno-red-zone',
-    '-mcmodel=kernel'
+    '-mcmodel=kernel',
 ]
 
 ld_args += ['-Wl,-z,noexecstack']

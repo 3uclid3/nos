@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/x86_64/cpu/cpu.hpp>
+#include <kernel/arch/x86_64/cpu.hpp>
 
 namespace nos::x86_64 {
 

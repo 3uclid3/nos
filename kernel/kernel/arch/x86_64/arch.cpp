@@ -1,17 +1,17 @@
 #include <kernel/arch/x86_64/arch.hpp>
 
 #include <kernel/arch/x86_64/cpu/interrupt.hpp>
-#include <kernel/arch/x86_64/drivers/com_port_logger.hpp>
-#include <kernel/cxx/cxxabi.hpp>
-#include <kernel/utility/log.hpp>
+#include <kernel/arch/x86_64/drivers/com_port_log_sink.hpp>
+#include <kernel/cxx/cxa.hpp>
+#include <kernel/log.hpp>
 
 namespace nos::x86_64 {
 
 void arch::early_init()
 {
-    log::add_logger<com_port_logger>().init(standard_com_port::com1);
+    log::add_sink<com_port_log_sink>().init(standard_com_port::com1);
 
-    cxxabi::init();
+    cxa::init();
 
     _cpu.early_init();
 }

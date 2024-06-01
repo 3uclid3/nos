@@ -1,17 +1,17 @@
 #pragma once
 
 #include <kernel/arch/x86_64/drivers/com_port.hpp>
-#include <kernel/utility/logger.hpp>
+#include <kernel/log/sink.hpp>
 
 namespace nos::x86_64 {
 
-class com_port_logger : public logger
+class com_port_log_sink : public log::sink
 {
 public:
     void init(com_port port);
 
 private:
-    void log_impl(string_view str) override;
+    void log_impl(const log::message& message) override;
 
 private:
     com_port _com;
