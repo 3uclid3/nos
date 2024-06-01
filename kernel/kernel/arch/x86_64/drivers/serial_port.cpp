@@ -1,4 +1,4 @@
-#include <kernel/arch/x86_64/drivers/serial-port.hpp>
+#include <kernel/arch/x86_64/drivers/serial_port.hpp>
 
 #include <kernel/arch/x86_64/cpu/cpu.hpp>
 

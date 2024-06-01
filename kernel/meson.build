@@ -4,7 +4,7 @@ src = files(
     'kernel/cxx/malloc.cpp',
     'kernel/debug/assert.cpp',
     'kernel/libc/string.cpp',
-    'kernel/utility/details/main-logger.cpp',
+    'kernel/utility/details/main_logger.cpp',
     'kernel/kernel.cpp'
 )
 
@@ -24,16 +24,16 @@ if get_option('kernel_ubsan')
 endif
 
 configure_file(
-    input: 'config-files/arch.hpp.in',
-    output: 'kernel-arch.hpp',
+    input: 'config_files/arch.hpp.in',
+    output: 'kernel_arch.hpp',
     configuration: {
         'ARCH': arch
     }
 )
 
 configure_file(
-    input: 'config-files/config.hpp.in',
-    output: 'kernel-config.hpp',
+    input: 'config_files/config.hpp.in',
+    output: 'kernel_config.hpp',
     configuration: {
         'MAIN_LOGGER_STACK_ALLOCATOR_SIZE': 64
     }

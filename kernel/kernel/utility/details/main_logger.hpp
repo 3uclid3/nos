@@ -1,13 +1,13 @@
 #pragma once
 
 #include <kernel/def.hpp>
-#include <kernel/utility/log-level.hpp>
+#include <kernel/utility/log_level.hpp>
 #include <kernel/utility/logger.hpp>
 #include <nxx/container/span.hpp>
-#include <nxx/memory/allocator/stack-allocator.hpp>
-#include <nxx/memory/construct-at.hpp>
-#include <nxx/string/format-argument.hpp>
-#include <nxx/string/string-view.hpp>
+#include <nxx/memory/allocator/stack_allocator.hpp>
+#include <nxx/memory/construct_at.hpp>
+#include <nxx/string/format_argument.hpp>
+#include <nxx/string/string_view.hpp>
 
 namespace nos::log::details {
 

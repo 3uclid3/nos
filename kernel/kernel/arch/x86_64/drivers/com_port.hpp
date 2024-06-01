@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/x86_64/drivers/serial-port.hpp>
+#include <kernel/arch/x86_64/drivers/serial_port.hpp>
 #include <kernel/def.hpp>
 
 namespace nos::x86_64 {

@@ -1,10 +1,10 @@
 #include <kernel/arch/x86_64/cpu/idt.hpp>
 
-#include <kernel/arch/x86_64/cpu/cpu-registers.hpp>
+#include <kernel/arch/x86_64/cpu/cpu_registers.hpp>
 #include <kernel/arch/x86_64/cpu/gdt.hpp>
 #include <kernel/arch/x86_64/cpu/interrupt.hpp>
 #include <kernel/utility/log.hpp>
-#include <nxx/utility/to-underlying.hpp>
+#include <nxx/utility/to_underlying.hpp>
 
 namespace nos::x86_64::details {
 idt* active_idt{nullptr};

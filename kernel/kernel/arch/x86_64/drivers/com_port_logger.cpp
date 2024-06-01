@@ -1,4 +1,4 @@
-#include <kernel/arch/x86_64/drivers/com-port-logger.hpp>
+#include <kernel/arch/x86_64/drivers/com_port_logger.hpp>
 
 namespace nos::x86_64 {
 

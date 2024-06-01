@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nxx/string/string-view.hpp>
+#include <nxx/string/string_view.hpp>
 
 namespace nos {
 

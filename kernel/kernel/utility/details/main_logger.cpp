@@ -1,4 +1,4 @@
-#include <kernel/utility/details/main-logger.hpp>
+#include <kernel/utility/details/main_logger.hpp>
 
 #include <nxx/string/format.hpp>
 

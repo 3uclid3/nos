@@ -1,10 +1,10 @@
 #pragma once
 
 #include <kernel/def.hpp>
-#include <kernel/utility/details/main-logger.hpp>
-#include <kernel/utility/log-level.hpp>
+#include <kernel/utility/details/main_logger.hpp>
+#include <kernel/utility/log_level.hpp>
 #include <nxx/container/span.hpp>
-#include <nxx/string/format-argument.hpp>
+#include <nxx/string/format_argument.hpp>
 
 namespace nos::log {
 

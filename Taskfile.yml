@@ -10,10 +10,10 @@ dotenv: [ '.env' ]
 tasks:
   setup:x86_64:
     cmds:
-      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-x86_64.cross-file -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
+      - meson setup {{.BUILD_DIR}} --cross-file cross_file/meson_kernel_x86_64.cross_file -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
   setup:x86_64-debug:
     cmds:
-      - meson setup {{.BUILD_DIR}} --cross-file cross-file/meson-kernel-x86_64.cross-file -Dgdb=true -Dkernel_ubsan=true -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
+      - meson setup {{.BUILD_DIR}} --cross-file cross_file/meson_kernel_x86_64.cross_file -Dgdb=true -Dkernel_ubsan=true -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
   
   build:kernel:
     cmds:

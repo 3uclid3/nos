@@ -1,8 +1,8 @@
 #pragma once
 
-#include <kernel/arch/x86_64/cpu/cpu-registers.hpp>
+#include <kernel/arch/x86_64/cpu/cpu_registers.hpp>
 #include <kernel/def.hpp>
-#include <nxx/container/static-array.hpp>
+#include <nxx/container/static_array.hpp>
 #include <nxx/utility/function.hpp>
 
 namespace nos::x86_64 {

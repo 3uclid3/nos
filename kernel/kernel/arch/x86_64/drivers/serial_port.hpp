@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/x86_64/utility/io-port.hpp>
+#include <kernel/arch/x86_64/utility/io_port.hpp>
 
 namespace nos::x86_64 {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kernel/arch/x86_64/drivers/com-port.hpp>
+#include <kernel/arch/x86_64/drivers/com_port.hpp>
 #include <kernel/utility/logger.hpp>
 
 namespace nos::x86_64 {
