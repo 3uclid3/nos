@@ -162,12 +162,12 @@ iso = custom_target('iso',
  
  
 if supports_bios
-    run_bios = run_target('qemu_run_with_bios',
+    qemu_run_with_bios = run_target('qemu_run_with_bios',
         command : [qemu, qemu_args, qemu_accel_args, '-cdrom', iso],
         depends : iso
     )
 
-    run_bios_debug = run_target('qemu_debug_with_bios',
+    qemu_debug_with_bios = run_target('qemu_debug_with_bios',
         command : [qemu, qemu_args, qemu_dbg_args, '-cdrom', iso],
         depends : iso
     )
@@ -176,12 +176,12 @@ endif
 ovmf_binaries = subproject('ovmf_binaries')
 ovmf = ovmf_binaries.get_variable(ovmf_id)
 
-run_uefi = run_target('qemu_with_uefi',
+qemu_run_with_uefi = run_target('qemu_run_with_uefi',
     command : [qemu, qemu_args, qemu_accel_args, '-cdrom', iso, '-bios', ovmf],
     depends : iso
 )
 
-run_uefi_debug = run_target('qemu_debug_with_uefi',
+qemu_debug_with_uefi = run_target('qemu_debug_with_uefi',
     command : [qemu, qemu_args, qemu_dbg_args, '-cdrom', iso, '-bios', ovmf],
     depends : iso
 )
