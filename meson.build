@@ -18,11 +18,11 @@ cxx = meson.get_compiler('cpp')
 ld = cxx.get_linker_id()
 arch = host_machine.cpu_family()
 
-logfile = meson.source_root() / 'log.txt'
+logfile = meson.project_source_root() / 'log.txt'
 
 iso_dir = '/tmp/iso'
 iso_files = [
-    meson.source_root() / 'kernel/limine.cfg'
+    meson.project_source_root() / 'kernel/limine.cfg'
 ]
 
 qemu_args = [
@@ -162,12 +162,12 @@ iso = custom_target('iso',
  
  
 if supports_bios
-    qemu_run_with_bios = run_target('qemu_run_with_bios',
+    run_target('qemu_run_with_bios',
         command : [qemu, qemu_args, qemu_accel_args, '-cdrom', iso],
         depends : iso
     )
 
-    qemu_debug_with_bios = run_target('qemu_debug_with_bios',
+    run_target('qemu_debug_with_bios',
         command : [qemu, qemu_args, qemu_dbg_args, '-cdrom', iso],
         depends : iso
     )
@@ -176,12 +176,12 @@ endif
 ovmf_binaries = subproject('ovmf_binaries')
 ovmf = ovmf_binaries.get_variable(ovmf_id)
 
-qemu_run_with_uefi = run_target('qemu_run_with_uefi',
+run_target('qemu_run_with_uefi',
     command : [qemu, qemu_args, qemu_accel_args, '-cdrom', iso, '-bios', ovmf],
     depends : iso
 )
 
-qemu_debug_with_uefi = run_target('qemu_debug_with_uefi',
+run_target('qemu_debug_with_uefi',
     command : [qemu, qemu_args, qemu_dbg_args, '-cdrom', iso, '-bios', ovmf],
     depends : iso
 )
