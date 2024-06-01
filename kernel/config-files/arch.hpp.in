@@ -1,0 +1,10 @@
+#pragma once
+
+#include <kernel/def.hpp>
+#include <kernel/arch/@ARCH@/arch.hpp>
+
+namespace nos {
+
+using arch = @ARCH@::arch;
+
+} // namespace nos

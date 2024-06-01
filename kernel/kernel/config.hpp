@@ -1,3 +1,0 @@
-#pragma once
-
-#define NOS_MAIN_LOGGER_STACK_ALLOCATOR_SIZE 64
