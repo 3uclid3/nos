@@ -6,6 +6,8 @@
 
 namespace nos::x86_64 {
 
+struct cpu_registers;
+
 class idt
 {
 public:
@@ -28,12 +30,22 @@ public:
         void setup(void* new_isr_ptr, uint8_t new_type_attr = 0x8E, uint8_t new_ist = 0);
     };
 
+    using handler = void (*)(const cpu_registers&);
+
 public:
     void init();
+    void load();
+
+    void dispatch_interrupt(const cpu_registers& registers);
+
+private:
+    void dispatch_exception(const cpu_registers& registers);
+    void dispatch_handler(const cpu_registers& registers);
+    void dispatch_unknown(const cpu_registers& registers);
 
 private:
     static_array<entry, 256> _entries{};
-    ptr _ptr{};
+    static_array<handler, 256> _handlers{};
 };
 
 } // namespace nos::x86_64

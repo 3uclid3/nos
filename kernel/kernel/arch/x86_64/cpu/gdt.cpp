@@ -23,7 +23,7 @@ bool gdt::is_loaded() const
 
 void gdt::load(size_t i)
 {
-    log::infoln("gdt: loading");
+    log::info("gdt: load core {}", i);
 
     const u64_t base = reinterpret_cast<u64_t>(&_tsses[i]);
     const u16_t limit = sizeof(tss::entry);
@@ -68,8 +68,6 @@ void gdt::load(size_t i)
     asm volatile("ltr %0" ::"r"(static_cast<u16_t>(selector::tss)));
 
     NOS_ASSERT(is_loaded());
-
-    log::infoln("gdt: loaded");
 }
 
 } // namespace nos::x86_64

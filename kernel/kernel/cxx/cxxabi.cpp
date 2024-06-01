@@ -7,6 +7,8 @@ extern "C" {
 
 static constexpr size_t at_exit_maximum_entries_capacity = 128;
 
+using __guard = int;
+
 using atexit_func_t = void (*)(void*);
 
 struct atexit_func_entry
@@ -74,6 +76,23 @@ void __cxa_pure_virtual()
     NOS_ASSERT(false);
 }
 
+int __cxa_guard_acquire(__guard* g)
+{
+    return !*(reinterpret_cast<volatile uint8_t*>(g));
+}
+
+void __cxa_guard_release(__guard* g)
+{
+    *(reinterpret_cast<volatile uint8_t*>(g)) = 1;
+}
+
+void __cxa_guard_abort(__guard* g)
+{
+    // Typically used if constructor throws an exception (optional for bare-metal)
+    // Reset the guard to 0 to indicate initialization failed.
+    *(reinterpret_cast<volatile uint8_t*>(g)) = 0;
+}
+
 } // extern "C"
 
 namespace nos::cxxabi {
@@ -83,12 +102,11 @@ extern "C" void (*__init_array_end[])();
 
 void init()
 {
-    log::traceln("cxxabi initialization");
+    log::info("cxxabi: init");
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {
         (*ctor)();
     }
-    log::traceln("cxxabi initialization done");
 }
 
 } // namespace nos::cxxabi

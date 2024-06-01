@@ -7,18 +7,20 @@ namespace nxx::details {
 
 void trigger_assert(const char* condition, const char* message, const char* file, size_t line)
 {
-    nos::log::fatalln("Assertion failed: {}", condition);
-    nos::log::fatalln("File: {}", file);
-    nos::log::fatalln("Line: {}", file);
+    using namespace nos;
+
+    log::fatal("Assertion failed: {}", condition);
+    log::fatal("File: {}", file);
+    log::fatal("Line: {}", file);
 
     if (message != nullptr && message[0] != '\0')
     {
-        nos::log::fatalln(message);
+        log::fatal(message);
     }
 
-    nos::log::fatalln("System halted");
+    log::fatal("System halted");
 
-    nos::arch::halt(false);
+    arch::halt(false);
 }
 
 } // namespace nxx::details

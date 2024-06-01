@@ -1,14 +1,14 @@
 #include <kernel/arch/x86_64/arch.hpp>
 
+#include <kernel/arch/x86_64/drivers/com-port-logger.hpp>
 #include <kernel/cxx/cxxabi.hpp>
+#include <kernel/utility/log.hpp>
 
 namespace nos::x86_64 {
 
 void arch::early_init()
 {
-    _com_log_printer.init(standard_com_port::com1);
-
-    log::add_printer(_com_log_printer);
+    log::add_logger<com_port_logger>().init(standard_com_port::com1);
 
     cxxabi::init();
 
@@ -22,20 +22,20 @@ void arch::init()
 
 void arch::halt(bool ints)
 {
-    //if (ints)
+    // if (ints)
     //{
-    //    while (true)
-    //    {
-    //        asm volatile("hlt");
-    //    }
-    //}
-    //else
+    //     while (true)
+    //     {
+    //         asm volatile("hlt");
+    //     }
+    // }
+    // else
     //{
-    //    while (true)
-    //    {
-    //        asm volatile("cli; hlt");
-    //    }
-    //}
+    //     while (true)
+    //     {
+    //         asm volatile("cli; hlt");
+    //     }
+    // }
 }
 
 } // namespace nos::x86_64

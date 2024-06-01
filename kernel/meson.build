@@ -1,10 +1,10 @@
 src = files(
     'kernel/boot/start.cpp',
     'kernel/cxx/cxxabi.cpp',
-    'kernel/cxx/memory.cpp',
+    'kernel/cxx/malloc.cpp',
     'kernel/debug/assert.cpp',
     'kernel/libc/string.cpp',
-    'kernel/utility/log.cpp',
+    'kernel/utility/details/main-logger.cpp',
     'kernel/kernel.cpp'
 )
 

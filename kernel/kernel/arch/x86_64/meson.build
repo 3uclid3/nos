@@ -3,7 +3,7 @@ src += files(
     'cpu/gdt.cpp',
     'cpu/idt.cpp',
     'cpu/idt.S',
-    'drivers/com-port-log-printer.cpp',
+    'drivers/com-port-logger.cpp',
     'drivers/com-port.cpp',
     'drivers/serial-port.cpp',
     'arch.cpp'
