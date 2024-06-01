@@ -1,5 +1,7 @@
 #include <kernel/kernel.hpp>
 
+#include <kernel/utility/log.hpp>
+
 namespace nos {
 
 kernel::kernel()
@@ -23,7 +25,11 @@ void kernel::early_init()
 
 void kernel::init()
 {
+    log::info("kernel: init");
+
     _arch.init();
+
+    log::info("kernel: init completed");
 }
 
 } // namespace nos

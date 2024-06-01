@@ -89,7 +89,7 @@ void idt::entry::setup(void* new_isr_ptr, uint8_t new_type_attr, uint8_t new_ist
 
 void idt::init()
 {
-    log::trace("idt: init");
+    log::info("idt: init");
 
     NXX_ASSERT(details::active_idt == nullptr);
     details::active_idt = this;
@@ -138,6 +138,8 @@ void idt::dispatch_exception(const cpu_registers& registers)
     details::log_error_registers(registers);
 
     // TODO Panic
+
+    interrupt::hcf();
 }
 
 void idt::dispatch_handler(const cpu_registers& registers)
