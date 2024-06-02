@@ -1,7 +1,16 @@
 #include <kernel/kernel.hpp>
+#include <kernel/cxx/cxa.hpp>
 
 extern "C" void _start(void)
 {
-    nos::kernel kernel;
-    kernel.run();
+    using namespace nos;
+
+    kernel kernel;
+    kernel.serial_init();
+    kernel.early_init();
+
+    cxa::init();
+
+    kernel.init();
+    kernel.main();
 }

@@ -4,18 +4,9 @@
 
 namespace nos {
 
-kernel::kernel()
+void kernel::serial_init()
 {
-    early_init();
-    init();
-}
-
-void kernel::run()
-{
-    while (true)
-    {
-        arch::cpu::pause();
-    }
+    _arch.serial_init();
 }
 
 void kernel::early_init()
@@ -23,15 +14,25 @@ void kernel::early_init()
     _arch.early_init();
     
     _physical_memory.init();
+    
+    log::info("kernel: early initialized");
 }
 
 void kernel::init()
 {
-    log::info("kernel: init");
-
     _arch.init();
+    
+    log::info("kernel: initialized");
+}
 
-    log::info("kernel: init completed");
+void kernel::main()
+{
+    log::info("kernel: main");
+
+    while (true)
+    {
+        arch::cpu::pause();
+    }
 }
 
 } // namespace nos

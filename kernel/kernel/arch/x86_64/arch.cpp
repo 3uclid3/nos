@@ -2,17 +2,18 @@
 
 #include <kernel/arch/x86_64/cpu/interrupt.hpp>
 #include <kernel/arch/x86_64/drivers/com_port_log_sink.hpp>
-#include <kernel/cxx/cxa.hpp>
 #include <kernel/log.hpp>
 
 namespace nos::x86_64 {
 
-void arch::early_init()
+void arch::serial_init()
 {
     log::add_sink<com_port_log_sink>().init(standard_com_port::com1);
+    log::info("arch: com1 port initialized");
+}
 
-    cxa::init();
-
+void arch::early_init()
+{
     _cpu.early_init();
 }
 

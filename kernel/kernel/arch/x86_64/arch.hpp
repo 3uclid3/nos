@@ -10,6 +10,7 @@ public:
     using cpu = x86_64::cpu;
 
 public:
+    void serial_init();
     void early_init();
     void init();
 
