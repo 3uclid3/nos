@@ -21,6 +21,8 @@ void kernel::run()
 void kernel::early_init()
 {
     _arch.early_init();
+    
+    _physical_memory.init();
 }
 
 void kernel::init()

@@ -16,6 +16,8 @@ private:
     void init();
 
     arch _arch{};
+
+    physical_memory _physical_memory{};
 };
 
 } // namespace nos
