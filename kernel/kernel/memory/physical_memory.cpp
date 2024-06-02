@@ -4,6 +4,7 @@
 
 #include <kernel/boot/limine.hpp>
 #include <kernel/log.hpp>
+#include <kernel/memory/size_conversion.hpp>
 #include <nxx/algorithm/max.hpp>
 #include <nxx/container/span.hpp>
 #include <nxx/memory/alignment.hpp>
@@ -50,6 +51,63 @@ void physical_memory::init()
     init_bitmap(entries);
 }
 
+void* physical_memory::allocate_pages(size_t count)
+{
+    for (size_t page = 0; page < _bitmap.size(); ++page)
+    {
+        if (_bitmap.test(page))
+        {
+            continue;
+        }
+
+        bool found = true;
+        size_t i = 1;
+        for (; i < count; ++i)
+        {
+            if (_bitmap.test(page + i))
+            {
+                found = false;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            // skip checked pages
+            page = page + i;
+            continue;
+        }
+
+        for (i = 0; i < count; ++i)
+        {
+            _bitmap.set(page + i);
+        }
+
+        _used_size += count * page_size;
+
+        return reinterpret_cast<void*>(page * page_size);
+    }
+
+    return nullptr;
+}
+
+void physical_memory::deallocate_pages(void* ptr, size_t count)
+{
+    if (ptr == nullptr)
+    {
+        return;
+    }
+
+    const size_t page = reinterpret_cast<uintptr_t>(ptr) / page_size;
+
+    for(size_t i = page; i < page + count; ++i)
+    {
+        _bitmap.clear(i);
+    }
+
+    _used_size -= count * page_size;
+}
+
 void physical_memory::init_bounds(span<limine_memmap_entry*> entries)
 {
     for (const limine_memmap_entry* entry : entries)
@@ -77,10 +135,10 @@ void physical_memory::init_bounds(span<limine_memmap_entry*> entries)
         _total_size += entry->length;
     }
 
-    log::trace("pmm: total_size = {}, used_size = {}, usable_size = {}, max_address = 0x{:X}, max_usable_address = 0x{:X}",
-               _total_size,
-               _used_size,
-               _usable_size,
+    log::trace("pmm: total_size = {}mb, used_size = {}mb, usable_size = {}mb, max_base_address = 0x{:X}, max_usable_base_address = 0x{:X}",
+               bytes_to_megabytes(_total_size),
+               bytes_to_megabytes(_used_size),
+               bytes_to_megabytes(_usable_size),
                _max_base_address,
                _max_usable_base_address);
 }
@@ -97,7 +155,7 @@ void physical_memory::init_bitmap_buffer(span<limine_memmap_entry*> entries)
 
         if (entry->length >= bitmap_size)
         {
-            span<u8_t> bitmap_buffer{reinterpret_cast<u8_t*>(entry->base + _hhdm_offset), bitmap_size};
+            span<u8_t> bitmap_buffer{reinterpret_cast<u8_t*>(tohh(entry->base)), bitmap_size};
             _bitmap.init(bitmap_buffer);
 
             entry->base += bitmap_size;
@@ -105,7 +163,7 @@ void physical_memory::init_bitmap_buffer(span<limine_memmap_entry*> entries)
 
             _used_size += bitmap_size;
 
-            log::trace("pmm: bitmap_buffer = 0x{:X}, bitmap_size = {}", bitmap_buffer.data(), bitmap_buffer.size());
+            log::trace("pmm: bitmap_buffer = 0x{:X}, bitmap_size = {}kb", entry->base, bytes_to_kilobytes(bitmap_buffer.size()));
             break;
         }
     }
