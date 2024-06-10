@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  build-iso:
+  build-kernel:
     name: Build Kernel
     runs-on: ubuntu-22.04
     container: 3uclid3/nos-buildenv:latest
@@ -21,13 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup build
+      - name: Setup
         run: |
-            task setup:x86_64 BUILD_TYPE=${{ matrix.build-type }};
+            task setup:x86_64:clang-18 BUILD_TYPE=${{ matrix.build-type }};
 
       - name: Compile kernel
         run: |
-          task build:kernel
+          task compile:kernel
 
       - name: Build ISO
         run: |
