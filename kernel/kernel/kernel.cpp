@@ -29,6 +29,10 @@ void kernel::main()
 {
     log::info("kernel: main");
 
+    int* v = new int(12);
+
+    delete v;
+
     while (true)
     {
         arch::cpu::pause();

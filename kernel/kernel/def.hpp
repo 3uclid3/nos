@@ -4,6 +4,8 @@
 
 #include <nxx/def.hpp>
 
+#define NOS_MEMORY_CORRUPTION_DETECTOR_ENABLED 1
+
 #define NOS_ASSERT(...) NXX_ASSERT(__VA_ARGS__)
 #define NOS_UNUSED(var) NXX_UNUSED(var)
 #define NOS_UNREACHABLE() NXX_UNREACHABLE()

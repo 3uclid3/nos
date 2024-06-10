@@ -6,6 +6,7 @@ src = files(
     'kernel/libc/string.cpp',
     'kernel/log/logger.cpp',
     'kernel/memory/allocate.cpp',
+    'kernel/memory/physical_memory_allocator.cpp',
     'kernel/memory/physical_memory.cpp',
     'kernel/kernel.cpp'
 )

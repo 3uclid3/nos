@@ -2,6 +2,8 @@
 
 #include <kernel/boot/limine.hpp>
 #include <kernel/log.hpp>
+#include <kernel/memory/allocate.hpp>
+#include <kernel/memory/physical_memory_allocator.hpp>
 #include <kernel/memory/size_conversion.hpp>
 #include <nxx/algorithm/max.hpp>
 #include <nxx/container/span.hpp>
@@ -47,6 +49,8 @@ void physical_memory::init()
     init_bounds(entries);
     init_bitmap_buffer(entries);
     init_bitmap(entries);
+
+    physical_memory_allocator::set_physical_memory(passkey<physical_memory>{}, this);
 }
 
 void* physical_memory::allocate_pages(size_t count)
@@ -98,7 +102,7 @@ void physical_memory::deallocate_pages(void* ptr, size_t count)
 
     const size_t page = reinterpret_cast<uintptr_t>(ptr) / page_size;
 
-    for(size_t i = page; i < page + count; ++i)
+    for (size_t i = page; i < page + count; ++i)
     {
         _bitmap.clear(i);
     }
