@@ -11,14 +11,16 @@ tasks:
   setup:internal:
     internal: true
     cmds:
-      - meson setup {{.BUILD_DIR}} --cross-file cross_file/kernel-{{.ARCH}}-{{.COMPILER}}.cross_file -Dbuildtype={{.BUILD_TYPE}} {{.CLI_ARGS}}
-
+      - meson setup {{.BUILD_DIR}} --buildtype={{.BUILD_TYPE}} --cross-file cross_file/kernel-{{.ARCH}}-{{.COMPILER}}.cross_file {{.CLI_ARGS}}
   setup:x86_64:clang-18:
     cmds:
       - task: setup:internal
         vars:
           ARCH: x86_64
           COMPILER: clang-18
+  setup:wipe:
+    cmds:
+      - rm -r {{.BUILD_DIR}}
 
   compile:kernel:
     cmds:
