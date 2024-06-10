@@ -126,10 +126,10 @@ add_global_arguments([
      '-Wno-frame-address',
 ], language: ['cpp'])
 
-limine = subproject('limine', default_options : 'arch=' + arch)
+limine = subproject('limine', default_options : ['arch=' + arch])
+nxx = subproject('nxx', default_options : ['tests=false'])
 deps = [
-    dependency('nxx'),
-
+    nxx.get_variable('nxx_dep'),
     limine.get_variable('limine_dep')
 ]
 

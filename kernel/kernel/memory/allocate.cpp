@@ -1,7 +1,6 @@
-#include <kernel/cxx/new.hpp>
+#include <kernel/memory/allocate.hpp>
 
-#include <kernel/def.hpp>
-#include <nxx/memory/alloc.hpp>
+#include <nxx/memory/allocator/prefixed_size_allocator.hpp>
 #include <nxx/memory/allocator/stack_allocator.hpp>
 
 namespace nxx {
@@ -9,7 +8,7 @@ namespace nxx {
 namespace details {
 
 // lets start with a simple stack allocator
-using global_allocator_t = stack_allocator<8196>;
+using global_allocator_t = prefixed_size_allocator<stack_allocator<8196>>;
 
 global_allocator_t global_allocator{};
 
@@ -20,45 +19,49 @@ memory_block allocate(size_t size)
     return details::global_allocator.allocate(size);
 }
 
-void deallocate(memory_block block)
+bool expand_allocate(memory_block& block, size_t delta)
+{
+    return details::global_allocator.expand(block, delta);
+}
+
+bool reallocate(memory_block& block, size_t new_size)
+{
+    return details::global_allocator.reallocate(block, new_size);
+}
+
+void deallocate(memory_block& block)
 {
     details::global_allocator.deallocate(block);
 }
 
 } // namespace nxx
 
+/*
 void* operator new(nxx::size_t size)
 {
-    nxx::memory_block block = nxx::allocate(size);
-    NXX_ASSERT(block.pointer != nullptr);
-    return block.pointer;
+    return nxx::allocate(size).ptr;
 }
 
 void* operator new[](nxx::size_t size)
 {
-    nxx::memory_block block = nxx::allocate(size);
-    NXX_ASSERT(block.pointer != nullptr);
-    return block.pointer;
+    return nxx::allocate(size).ptr;
 }
 
 void operator delete(void* ptr) noexcept
 {
-    // TODO Size
-    // affix allocator with the size
-    nxx::memory_block block{.pointer = ptr, .size = 0};
+    nxx::memory_block block{ptr, 0};
     nxx::deallocate(block);
 }
 
 void operator delete[](void* ptr) noexcept
 {
-    // TODO Size
-    // affix allocator with the size
-    nxx::memory_block block{.pointer = ptr, .size = 0};
+    nxx::memory_block block{ptr, 0};
     nxx::deallocate(block);
 }
 
 void operator delete(void* ptr, nxx::size_t size) noexcept
 {
-    nxx::memory_block block{.pointer = ptr, .size = size};
+    nxx::memory_block block{ptr, size};
     nxx::deallocate(block);
 }
+*/

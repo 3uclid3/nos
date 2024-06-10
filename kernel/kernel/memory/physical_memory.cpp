@@ -1,7 +1,5 @@
 #include <kernel/memory/physical_memory.hpp>
 
-#include <string.h>
-
 #include <kernel/boot/limine.hpp>
 #include <kernel/log.hpp>
 #include <kernel/memory/size_conversion.hpp>

@@ -2,10 +2,10 @@ src = files(
     'kernel/boot/limine.cpp',
     'kernel/boot/start.cpp',
     'kernel/cxx/cxa.cpp',
-    'kernel/cxx/new.cpp',
     'kernel/debug/assert.cpp',
     'kernel/libc/string.cpp',
     'kernel/log/logger.cpp',
+    'kernel/memory/allocate.cpp',
     'kernel/memory/physical_memory.cpp',
     'kernel/kernel.cpp'
 )

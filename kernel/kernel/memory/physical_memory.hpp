@@ -7,6 +7,9 @@ struct limine_memmap_entry;
 
 namespace nos {
 
+constexpr size_t bytes_to_pages(size_t bytes);
+constexpr size_t pages_to_bytes(size_t bytes);
+
 class physical_memory
 {
 public:
@@ -67,6 +70,16 @@ private:
 
     inline static uintptr_t _hhdm_offset{0};
 };
+
+constexpr size_t bytes_to_pages(size_t bytes)
+{
+    return (bytes + physical_memory::page_size - 1) / physical_memory::page_size;
+}
+
+constexpr size_t pages_to_bytes(size_t bytes)
+{
+    return bytes * physical_memory::page_size;
+}
 
 template<typename T>
 T* physical_memory::allocate_pages(size_t count)

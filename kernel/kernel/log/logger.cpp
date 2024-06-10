@@ -38,7 +38,7 @@ void logger::vlog(level level, string_view fmt, span<format_argument> args)
 
 void* logger::allocate_sink(size_t size)
 {
-    return _allocator.allocate(size).pointer;
+    return _allocator.allocate(size).ptr;
 }
 
 void logger::link_sink(sink_node& sink)
