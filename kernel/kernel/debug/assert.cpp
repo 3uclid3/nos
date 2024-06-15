@@ -11,7 +11,7 @@ void trigger_assert(const char* condition, const char* message, const char* file
 
     log::fatal("Assertion failed: {}", condition);
     log::fatal("File: {}", file);
-    log::fatal("Line: {}", file);
+    log::fatal("Line: {}", line);
 
     if (message != nullptr && message[0] != '\0')
     {
