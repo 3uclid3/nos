@@ -1,6 +1,6 @@
 package("ovmf")
     add_urls("https://github.com/3uclid3/ovmf-binaries.git")
-    add_versions("latest", "master")
+    add_versions("latest", "main")
 
     on_install(function (package)
         if is_arch("x86_64") then
