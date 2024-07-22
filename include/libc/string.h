@@ -1,10 +1,9 @@
 #pragma once
 
+#include <hedley.h>
 #include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+HEDLEY_BEGIN_C_DECLS
 
 void* memcpy(void* dest, const void* src, size_t len);
 int memcmp(const void* ptr1, const void* ptr2, size_t len);
@@ -31,6 +30,4 @@ char* strncpy(char* dest, const char* src, size_t len);
 char* strstr(const char* str, const char* substr);
 void strrev(char* str);
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+HEDLEY_END_C_DECLS

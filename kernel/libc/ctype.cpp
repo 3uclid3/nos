@@ -1,6 +1,6 @@
 #include <ctype.h>
 
-extern "C" {
+HEDLEY_BEGIN_C_DECLS
 
 int isalnum(int c)
 {
@@ -72,4 +72,4 @@ int tolower(int c)
     return (c >= 'A' && c <= 'Z') ? c + 0x20 : c;
 }
 
-} // extern "C"
+HEDLEY_END_C_DECLS

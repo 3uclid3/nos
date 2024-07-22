@@ -1,25 +1,21 @@
 
 #pragma once
 
+#include <hedley.h>
 #include <stdarg.h>
 #include <stddef.h>
 
 #define ATTR_FORMAT(fmt_index, first_arg) __attribute__((format(printf, (fmt_index), (first_arg))))
 #define EOF (-1)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+HEDLEY_BEGIN_C_DECLS
 
-// Stubs for fmtlib
 typedef size_t FILE;
+
 extern FILE* stdout;
 extern FILE* stderr;
 
 int fflush(FILE* stream);
-
-void flockfile(FILE* stream);
-void funlockfile(FILE* stream);
 
 int fputc(char c, FILE* stream);
 int fputs(const char* str, FILE* stream);
@@ -43,7 +39,4 @@ int asprintf(char** str, const char* format, ...) ATTR_FORMAT(2, 3);
 int fctprintf(void (*out)(char c, void* extra_arg), void* extra_arg, const char* format, ...);
 int vfctprintf(void (*out)(char c, void* extra_arg), void* extra_arg, const char* format, va_list arg);
 
-#ifdef __cplusplus
-} // extern "C"
-
-#endif
+HEDLEY_END_C_DECLS

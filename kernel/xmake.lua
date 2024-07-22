@@ -6,6 +6,7 @@ target("nos.deps")
     add_packages(
         "libstdcxx-fh",
         "limine",
+        "printf",
         { public = true }
     )
 

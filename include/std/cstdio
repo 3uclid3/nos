@@ -1,0 +1,32 @@
+#pragma once
+
+#include <hedley.h>
+#include <stdio.h>
+
+namespace std {
+
+using ::fputc;
+using ::fputs;
+using ::fputws;
+
+using ::fprintf;
+using ::fwrite;
+
+using ::printf;
+using ::vprintf;
+
+using ::sprintf;
+using ::vsprintf;
+
+using ::snprintf;
+using ::vsnprintf;
+
+using ::asprintf;
+using ::vasprintf;
+
+using ::fctprintf;
+using ::vfctprintf;
+
+HEDLEY_NO_RETURN void terminate() noexcept;
+
+} // namespace std

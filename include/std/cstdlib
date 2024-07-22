@@ -1,0 +1,25 @@
+#pragma once
+
+#include <hedley.h>
+#include <stdlib.h>
+
+namespace std {
+
+using ::calloc;
+using ::free;
+using ::malloc;
+using ::realloc;
+
+using ::atoi;
+using ::atol;
+using ::atoll;
+
+using ::strtol;
+using ::strtoll;
+
+using ::strtoul;
+using ::strtoull;
+
+HEDLEY_C_DECL HEDLEY_NO_RETURN void abort() noexcept;
+
+} // namespace std

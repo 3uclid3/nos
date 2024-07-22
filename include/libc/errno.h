@@ -1,8 +1,8 @@
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <hedley.h>
+
+HEDLEY_BEGIN_C_DECLS
 
 enum errno_t : int
 {

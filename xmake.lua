@@ -220,7 +220,8 @@ add_repositories("local-repo build-repo")
 add_requires(
     "libstdcxx-fh",
     "limine",
-    "ovmf"
+    "ovmf",
+    "printf"
 )
 
 -- <-- dependencies
@@ -235,7 +236,7 @@ target("iso")
     
     add_deps("nos.elf")
 
-    add_packages("ovmf", "limine")
+    add_packages("limine", "ovmf")
 
     on_clean(function (target)
         os.rm(get_targetfile("image", ".iso"))

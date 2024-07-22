@@ -5,7 +5,7 @@
             "name": "Debug Kernel",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/anos/x86_64/debug/anos.elf",
+            "program": "${workspaceFolder}/build/nos/x86_64/debug/nos.elf",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

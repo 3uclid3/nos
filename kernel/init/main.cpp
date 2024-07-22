@@ -1,9 +1,10 @@
+#include <cstdio>
 #include <string_view>
 
 extern "C" void _start()
 {
-    std::string_view sv = "hello";
+    char buf[256];
+    std::sprintf(buf, "Hello, %s!\n", "world");
 
-    while (!sv.empty())
-        asm volatile ("cli; hlt");
+    while (true) asm volatile("cli; hlt");
 }

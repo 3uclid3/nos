@@ -1,10 +1,9 @@
 #include <string.h>
 
-#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 
-extern "C" {
+HEDLEY_BEGIN_C_DECLS
 
 void* memcpy(void* dest, const void* src, size_t len)
 {
@@ -199,4 +198,4 @@ void strrev(char* str)
     }
 }
 
-} // extern "C"
+HEDLEY_END_C_DECLS

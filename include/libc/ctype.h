@@ -1,8 +1,8 @@
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <hedley.h>
+
+HEDLEY_BEGIN_C_DECLS
 
 int isalnum(int c);
 int isalpha(int c);
@@ -19,6 +19,4 @@ int ispunct(int c);
 int toupper(int c);
 int tolower(int c);
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+HEDLEY_END_C_DECLS

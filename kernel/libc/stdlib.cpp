@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-extern "C" {
+HEDLEY_BEGIN_C_DECLS
 
 void* malloc(size_t size)
 {
@@ -61,4 +61,4 @@ unsigned long long strtoull(const char* str, char** str_end, int base)
     return 0;
 }
 
-} // extern "C"
+HEDLEY_END_C_DECLS
