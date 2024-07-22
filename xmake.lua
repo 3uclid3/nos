@@ -159,10 +159,6 @@ toolchain("anos-clang")
             "-fsized-deallocation",
 
             "-DMAGIC_ENUM_NO_STREAMS=1",
-            "-DFMT_STATIC_THOUSANDS_SEPARATOR=1",
-            "-DFMT_USE_LONG_DOUBLE=0",
-            "-DFMT_USE_DOUBLE=0",
-            "-DFMT_USE_FLOAT=0",
 
             "-Wno-unused-parameter",
             "-Wno-non-virtual-dtor"
@@ -181,14 +177,9 @@ toolchain("anos-clang")
 
             table.insert(cx_args, "-march=x86-64")
             table.insert(cx_args, "-mno-red-zone")
-            -- disable in kernel and modules
-            -- table.insert(cx_args, "-mno-mmx")
-            -- table.insert(cx_args, "-mno-sse")
-            -- table.insert(cx_args, "-mno-sse2")
         elseif is_arch("aarch64") then
             target = "aarch64-elf"
 
-            -- table.insert(cx_args, "-mgeneral-regs-only")
             table.insert(cx_args, "-mcmodel=small")
         end
 
