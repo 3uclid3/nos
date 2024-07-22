@@ -28,10 +28,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Git config
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
       - name: Build
         run: |
           xmake f -y -a x86_64
