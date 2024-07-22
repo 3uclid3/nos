@@ -19,4 +19,4 @@ jobs:
 
     - name: Build
       run: |
-        xmake build -j$(nproc) nos.elf
+        xmake build -y -j$(nproc) nos.elf
