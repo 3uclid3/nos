@@ -1,0 +1,46 @@
+#pragma once
+
+#include <exception>
+#include <string>
+
+#include <hedley.h>
+
+namespace std {
+
+class runtime_error : public exception
+{
+public:
+    runtime_error(const string& what_arg);
+    runtime_error(const char* what_arg);
+    runtime_error(const runtime_error&) noexcept = default;
+    runtime_error& operator=(const runtime_error&) noexcept = default;
+
+    const char* what() const noexcept override;
+
+private:
+    string _what;
+};
+
+HEDLEY_INLINE const char* exception::what() const noexcept
+{
+    return "std::exception";
+}
+
+HEDLEY_INLINE exception::~exception() noexcept = default;
+
+HEDLEY_INLINE runtime_error::runtime_error(const string& what_arg)
+    : _what(what_arg)
+{
+}
+
+HEDLEY_INLINE runtime_error::runtime_error(const char* what_arg)
+    : _what(what_arg)
+{
+}
+
+HEDLEY_INLINE const char* runtime_error::what() const noexcept
+{
+    return this->_what.c_str();
+}
+
+} // namespace std

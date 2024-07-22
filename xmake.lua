@@ -159,6 +159,11 @@ toolchain("nos-clang")
             "-fsized-deallocation",
 
             "-DMAGIC_ENUM_NO_STREAMS=1",
+            "-DFMT_STATIC_THOUSANDS_SEPARATOR=1",
+            "-DFMT_USE_LONG_DOUBLE=0",
+            "-DFMT_USE_DOUBLE=0",
+            "-DFMT_USE_FLOAT=0",
+            "-DFMT_USE_INT128=0",
 
             "-Wno-unused-parameter",
             "-Wno-non-virtual-dtor"
@@ -201,7 +206,7 @@ toolchain("nos-clang")
         toolchain:add("includedirs",
             "$(projectdir)/include",
             "$(projectdir)/include/std",
-            "$(projectdir)/include/std/studs",
+            "$(projectdir)/include/std/stubs",
             "$(projectdir)/include/libc",
             "$(projectdir)/include/kernel",
             "$(projectdir)/include/modules"
@@ -218,10 +223,13 @@ add_toolchains("nos-clang")
 add_repositories("local-repo build-repo")
 
 add_requires(
+    "fmt",
     "libstdcxx-fh",
     "limine",
+    "magic_enum",
     "ovmf",
-    "printf"
+    "printf",
+    "string"
 )
 
 -- <-- dependencies

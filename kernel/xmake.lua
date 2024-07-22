@@ -4,9 +4,12 @@ target("nos.deps")
     set_toolchains("nos-clang", { public = true })
 
     add_packages(
+        "fmt",
         "libstdcxx-fh",
         "limine",
+        "magic_enum",
         "printf",
+        "string",
         { public = true }
     )
 

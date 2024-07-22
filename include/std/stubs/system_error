@@ -1,0 +1,76 @@
+#pragma once
+
+#include <exception>
+#include <string>
+
+namespace std {
+
+struct error_code
+{
+    constexpr error_code(auto...) {}
+};
+
+struct error_category
+{
+    constexpr error_category(auto...) {}
+};
+
+constexpr const error_category generic_category() noexcept { return error_category(); }
+
+class system_error : public exception
+{
+public:
+    system_error(auto);
+    system_error(auto, const string& what_arg);
+    system_error(auto, const char* what_arg);
+    system_error(auto, auto&);
+    system_error(auto, auto&, const string& what_arg);
+    system_error(auto, auto&, const char* what_arg);
+
+    system_error(const system_error&) noexcept = default;
+
+    system_error& operator=(const system_error&) noexcept = default;
+    const error_code code() const noexcept;
+
+    const char* what() const noexcept override;
+
+private:
+    string _what;
+};
+
+HEDLEY_INLINE system_error::system_error(auto)
+{}
+
+HEDLEY_INLINE system_error::system_error(auto, const string& what_arg)
+    : _what(what_arg)
+{
+}
+
+HEDLEY_INLINE system_error::system_error(auto, const char* what_arg)
+    : _what(what_arg) {}
+
+HEDLEY_INLINE system_error::system_error(auto, auto&)
+{
+}
+
+HEDLEY_INLINE system_error::system_error(auto, auto&, const string& what_arg)
+    : _what(what_arg)
+{
+}
+
+HEDLEY_INLINE system_error::system_error(auto, auto&, const char* what_arg)
+    : _what(what_arg)
+{
+}
+
+HEDLEY_INLINE const error_code system_error::code() const noexcept
+{
+    return error_code();
+}
+
+HEDLEY_INLINE const char* system_error::what() const noexcept
+{
+    return this->_what.c_str();
+}
+
+} // namespace std

@@ -1,0 +1,44 @@
+#pragma once
+
+#include_next <memory>
+#include <new>
+
+namespace std {
+
+template<typename Alloc>
+struct allocator_traits;
+
+template<typename Type>
+struct allocator
+{
+    using value_type = Type;
+    using pointer = Type*;
+    using const_pointer = const Type*;
+    using reference = Type&;
+    using const_reference = const Type&;
+    using size_type = size_t;
+    using difference_type = ptrdiff_t;
+
+    constexpr allocator() noexcept = default;
+
+    template<typename U>
+    constexpr allocator(const allocator<U>& other) noexcept
+    {}
+
+    HEDLEY_WARN_UNUSED_RESULT constexpr Type* allocate(size_t count)
+    {
+        return static_cast<Type*>(::operator new(count * sizeof(Type)));
+    }
+
+    constexpr void deallocate(Type* ptr, size_t count)
+    {
+        ::operator delete(ptr, count * sizeof(Type));
+    }
+
+    friend constexpr bool operator==(const allocator&, const allocator&) noexcept
+    {
+        return true;
+    }
+};
+
+} // namespace std

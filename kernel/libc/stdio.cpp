@@ -5,6 +5,46 @@
 
 HEDLEY_BEGIN_C_DECLS
 
+// Stubs for fmtlib
+FILE* stdout = (FILE*)&stdout;
+FILE* stderr = (FILE*)&stderr;
+
+int fflush(FILE* stream)
+{
+    return 0;
+}
+
+int fputc(char c, FILE* stream)
+{
+    return c;
+}
+
+int fputs(const char* str, FILE* stream)
+{
+    return 0;
+}
+
+int fputws(const wchar_t* str, FILE* stream)
+{
+    return -1;
+}
+
+int fprintf(FILE* stream, const char* format, ...)
+{
+    va_list arg;
+    va_start(arg, format);
+
+    int ret = vprintf(format, arg);
+
+    va_end(arg);
+    return ret;
+}
+
+size_t fwrite(const void* ptr, size_t size, size_t nmemb, FILE* stream)
+{
+    return nmemb;
+}
+
 void putchar_(char c)
 {
     // TODO logging
@@ -91,3 +131,12 @@ int asprintf(char** str, const char* format, ...)
 }
 
 HEDLEY_END_C_DECLS
+
+namespace std {
+
+void terminate() noexcept
+{
+    __builtin_trap();
+}
+
+} // namespace std

@@ -147,6 +147,4 @@ errno_t _get_errno();
 #define errno (_get_errno())
 #define noerror ((errno_t)0)
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+HEDLEY_END_C_DECLS
