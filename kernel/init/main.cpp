@@ -1,5 +1,9 @@
+#include <string_view>
+
 extern "C" void _start()
 {
-    while (true)
+    std::string_view sv = "hello";
+
+    while (!sv.empty())
         asm volatile ("cli; hlt");
 }

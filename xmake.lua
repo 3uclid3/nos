@@ -207,14 +207,14 @@ toolchain("anos-clang")
 
         toolchain:add("ldflags", ld_args, { force = true })
 
-        -- toolchain:add("includedirs",
-        --     "$(projectdir)/include",
-        --     "$(projectdir)/include/std",
-        --     "$(projectdir)/include/std/stubs",
-        --     "$(projectdir)/include/libc",
-        --     "$(projectdir)/include/kernel",
-        --     "$(projectdir)/include/modules"
-        -- )
+        toolchain:add("includedirs",
+            "$(projectdir)/include",
+            "$(projectdir)/include/std",
+            "$(projectdir)/include/std/studs",
+            "$(projectdir)/include/libc",
+            "$(projectdir)/include/kernel",
+            "$(projectdir)/include/modules"
+        )
     end)
 toolchain_end()
 
@@ -224,9 +224,10 @@ toolchain_end()
 
 add_toolchains("anos-clang")
 
-add_repositories("local-repo packages-repo")
+add_repositories("local-repo build-repo")
 
 add_requires(
+    "libstdcxx-fh",
     "limine",
     "ovmf"
 )
