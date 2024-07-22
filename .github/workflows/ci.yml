@@ -1,0 +1,35 @@
+---
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  kernel:
+    name: Kernel
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get install -y --no-install-recommends software-properties-common apt-utils ccache clang lld llvm xorriso tar python3 python3-pip pipx qemu-system-x86 
+          pipx install ninja xbstrap
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: 'latest'
+          actions-cache-folder: '.xmake-cache'
+
+      - name: Build
+        run: |
+          xmake f -y -a x86_64
+          xmake build -y nos.elf

@@ -1,0 +1,16 @@
+#pragma once
+
+#include <wchar.h>
+
+namespace std {
+
+using ::wint_t;
+
+using ::wcslen;
+using ::wmemchr;
+using ::wmemcmp;
+using ::wmemcpy;
+using ::wmemmove;
+using ::wmemset;
+
+} // namespace std

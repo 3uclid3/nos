@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Kernel",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/nos/x86_64/debug/nos.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                //{
+                //  "description": "Set hexadecimal display",
+                //  "text": "set output-radix 16",
+                //  "ignoreFailures": true
+                //},
+                {
+                    "description": "Set remote target",
+                    "text": "target remote localhost:1234"
+                },
+                {
+                    "description": "Set architecture",
+                    "text": "set architecture i386:x86-64"
+                }
+            ],
+            "targetArchitecture": "x86_64",
+            "additionalSOLibSearchPath": "/usr/lib64"
+        }
+    ]
+}
