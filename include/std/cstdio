@@ -5,13 +5,6 @@
 
 namespace std {
 
-using ::fputc;
-using ::fputs;
-using ::fputws;
-
-using ::fprintf;
-using ::fwrite;
-
 using ::printf;
 using ::vprintf;
 
