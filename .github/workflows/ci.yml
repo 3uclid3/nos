@@ -1,0 +1,22 @@
+---
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-kernel:
+    name: Build Kernel
+    runs-on: ubuntu-24.04
+    container: 3uclid3/nos-build-env:ubuntu-24.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        xmake build nos.elf -j$(nproc)
