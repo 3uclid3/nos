@@ -1,7 +1,7 @@
 
-target("anos.deps")
+target("nos.deps")
     set_kind("phony")
-    set_toolchains("anos-clang", { public = true })
+    set_toolchains("nos-clang", { public = true })
 
     add_packages(
         "libstdcxx-fh",
@@ -18,11 +18,11 @@ target("anos.deps")
         )
     end
 
-target("anos.elf")
-    set_default(false)
+target("nos.elf")
+    set_default(true)
     set_kind("binary")
      
-    add_deps("anos.deps")
+    add_deps("nos.deps")
 
     -- files
     add_files("**.cpp")

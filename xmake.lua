@@ -1,4 +1,4 @@
-set_project("AnOS")
+set_project("nos")
 set_version("v0.1")
 
 set_license("MIT")
@@ -11,8 +11,8 @@ set_policy("build.c++.modules", true)
 set_allowedarchs("x86_64", "aarch64")
 set_defaultarchs("x86_64")
 
-set_allowedplats("anos")
-set_defaultplat("anos")
+set_allowedplats("nos")
+set_defaultplat("nos")
 
 set_languages("c17", "c++23")
 
@@ -111,7 +111,7 @@ local bios = false
 
 -- toolchain -->
 
-toolchain("anos-clang")
+toolchain("nos-clang")
     set_kind("standalone")
 
     set_toolset("as", "clang")
@@ -213,7 +213,7 @@ toolchain_end()
 
 -- dependencies -->
 
-add_toolchains("anos-clang")
+add_toolchains("nos-clang")
 
 add_repositories("local-repo build-repo")
 
@@ -233,7 +233,7 @@ target("iso")
     set_default(false)
     set_kind("phony")
     
-    add_deps("anos.elf")
+    add_deps("nos.elf")
 
     add_packages("ovmf", "limine")
 
@@ -249,9 +249,9 @@ target("iso")
         targetfile = get_targetfile("image", ".iso")
         target:set("values", "targetfile", targetfile)
 
-        local kernel = project.target("anos.elf")
+        local kernel = project.target("nos.elf")
 
-        local iso_dirname = "anos.iso.dir"
+        local iso_dirname = "nos.iso.dir"
         local iso_dir = path.join(os.tmpdir(), iso_dirname)
         local iso_dir_eb = path.join(iso_dir, "EFI/BOOT")
 
