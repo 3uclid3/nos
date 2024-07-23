@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hedley.h>
+#include <hedley/hedley.h>
 
 HEDLEY_BEGIN_C_DECLS
 

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <hedley.h>
+#include <hedley/hedley.h>
 #include <stdarg.h>
 #include <stddef.h>
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <hedley/hedley.h>
+
 #include <exception>
 #include <string>
 

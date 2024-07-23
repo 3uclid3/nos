@@ -1,7 +1,8 @@
 #pragma once
 
+#include <hedley/hedley.h>
+
 #include <stddef.h>
-#include <hedley.h>
 
 HEDLEY_BEGIN_C_DECLS
 

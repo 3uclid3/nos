@@ -1,9 +1,9 @@
 #pragma once
 
+#include <hedley/hedley.h>
+
 #include <exception>
 #include <string>
-
-#include <hedley.h>
 
 namespace std {
 
