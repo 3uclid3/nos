@@ -31,7 +31,7 @@ public:
 public:
     void init();
 
-    void* allocate_pages(std::size_t count = 1);
+    HEDLEY_WARN_UNUSED_RESULT void* allocate_pages(std::size_t count = 1);
     void deallocate_pages(void* ptr, std::size_t count = 1);
 
     template<typename T>
