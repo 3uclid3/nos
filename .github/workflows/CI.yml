@@ -12,6 +12,11 @@ jobs:
     name: Kernel
     runs-on: ubuntu-24.04
 
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [debug, release]
+
     steps:
       - name: Install dependencies
         run: |
@@ -31,12 +36,12 @@ jobs:
 
       - name: Xmake Configure
         run: |
-          xmake f -y -a x86_64
+          xmake f -y -p nos -a x86_64 -m ${{ matrix.build-type }} --toolchain=nos-clang
 
       - name: Xmake Build Kernel
         run: |
-          xmake build -y nos.elf
+          xmake build nos.elf
 
       - name: Xmake Build ISO
         run: |
-          xmake build -y iso
+          xmake build iso
