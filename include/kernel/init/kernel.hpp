@@ -1,6 +1,7 @@
 #pragma once
 
 #include <arch/arch.hpp>
+#include <mm/pmm.hpp>
 
 namespace nos {
 
@@ -15,6 +16,8 @@ public:
 
 private:
     arch _arch{};
+
+    pmm _pmm{};
 };
 
 } // namespace nos

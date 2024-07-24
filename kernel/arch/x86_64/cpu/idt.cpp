@@ -95,7 +95,7 @@ void idt::entry::setup(void* new_isr_ptr, std::uint8_t new_type_attr, std::uint8
 
 void idt::init()
 {
-    log::info("nos: idt init");
+    log::info("idt: init");
 
     assert(details::active_idt == nullptr);
     details::active_idt = this;
@@ -139,7 +139,7 @@ void idt::dispatch_interrupt(const cpu_registers& registers)
 
 void idt::dispatch_exception(const cpu_registers& registers)
 {
-    log::error("nos: idt exception interrupt {} on CPU {}", magic_enum::enum_name(static_cast<details::exception>(registers.interrupt)), 0);
+    log::error("idt: exception interrupt {} on CPU {}", magic_enum::enum_name(static_cast<details::exception>(registers.interrupt)), 0);
 
     details::log_error_registers(registers);
 
@@ -150,7 +150,7 @@ void idt::dispatch_exception(const cpu_registers& registers)
 
 void idt::dispatch_handler(const cpu_registers& registers)
 {
-    log::info("nos: idt interrupt {} on CPU {}", registers.interrupt, 0);
+    log::info("idt: interrupt {} on CPU {}", registers.interrupt, 0);
 
     if (_handlers[registers.interrupt])
     {
@@ -158,7 +158,7 @@ void idt::dispatch_handler(const cpu_registers& registers)
     }
     else
     {
-        log::error("nos: idt unimplemented interrupt");
+        log::error("idt: unimplemented interrupt");
 
         details::log_error_registers(registers);
 
@@ -168,7 +168,7 @@ void idt::dispatch_handler(const cpu_registers& registers)
 
 void idt::dispatch_unknown(const cpu_registers& registers)
 {
-    log::error("nos: idt unknown interrupt {:X} on CPU {}", registers.interrupt, 0);
+    log::error("idt: unknown interrupt {:X} on CPU {}", registers.interrupt, 0);
 
     details::log_error_registers(registers);
 

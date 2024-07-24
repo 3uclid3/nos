@@ -7,27 +7,28 @@ namespace nos {
 void kernel::serial_init()
 {
     _arch.serial_init();
+    log::info("knos: serial port initialized");
 }
 
 void kernel::early_init()
 {
-    log::info("nos: kernel early init");
+    log::info("knos: early init");
 
     _arch.early_init();
+
+    _pmm.init();
 }
 
 void kernel::init()
 {
-    log::info("nos: kernel early init");
+    log::info("knos: init");
 
     _arch.init();
-
-    log::info("nos: kernel initialized");
 }
 
 void kernel::main()
 {
-    log::info("nos: kernel main");
+    log::info("knos: main");
 
     while (true)
     {
@@ -36,3 +37,4 @@ void kernel::main()
 }
 
 } // namespace nos
+ 

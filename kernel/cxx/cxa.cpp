@@ -103,7 +103,7 @@ HEDLEY_C_DECL void (*__init_array_end[])();
 
 void init()
 {
-    log::trace("nos: cxa init");
+    log::trace("cxa: init");
 
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {

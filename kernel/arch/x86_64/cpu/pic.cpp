@@ -6,7 +6,7 @@ namespace nos::x86_64 {
 
 void pic::init()
 {
-    log::info("nos: pic init");
+    log::info("pic: init");
 
     // restore mask on exit
     const std::uint8_t md = _master.read(data_offset);
