@@ -11,21 +11,23 @@ void kernel::serial_init()
 
 void kernel::early_init()
 {
-    _arch.early_init();
+    log::info("nos: kernel early init");
 
-    log::info("kernel: early initialized");
+    _arch.early_init();
 }
 
 void kernel::init()
 {
+    log::info("nos: kernel early init");
+
     _arch.init();
 
-    log::info("kernel: initialized");
+    log::info("nos: kernel initialized");
 }
 
 void kernel::main()
 {
-    log::info("kernel: main");
+    log::info("nos: kernel main");
 
     while (true)
     {

@@ -16,9 +16,6 @@ set_defaultplat("nos")
 
 set_languages("c17", "c++23")
 
--- set_symbols("debug")
--- set_optimize("aggressive")
-
 add_rules("mode.debug", "mode.release")
 
 
@@ -55,7 +52,7 @@ option("syscall_log")
     set_description("Log system calls to serial. Requires rebuild")
 
 option("qaccel")
-    set_default(true)
+    set_default(false)
     set_showmenu(true)
     set_description("Enable QEMU accelerators. Disabled when debugging")
 
@@ -95,6 +92,8 @@ local qemu_args = {
     "-cpu", "max", "-smp", "4", "-m", "512M",
     "-rtc", "base=localtime", "-serial", "stdio",
     "-boot", "order=d,menu=on,splash-time=100",
+    "-no-reboot", "-no-shutdown",
+    "-d", "int", "-D", logfile,
 }
 
 local qemu_accel_args = {
@@ -102,8 +101,6 @@ local qemu_accel_args = {
 }
 
 local qemu_dbg_args = {
-    "-no-reboot", "-no-shutdown",
-    "-d", "int", "-D", logfile,
     "-monitor", "telnet:127.0.0.1:12345,server,nowait"
 }
 
@@ -403,7 +400,7 @@ task("qemu")
             multi_insert(qemu_args, unpack(qemu_dbg_args))
             if get_config("qgdb") then
                 multi_insert(qemu_args,
-                    "-s", "-S"
+                    "-s"
                 )
             end
         elseif get_config("qaccel") then

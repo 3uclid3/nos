@@ -98,12 +98,12 @@ HEDLEY_END_C_DECLS
 
 namespace nos::cxa {
 
-extern "C" void (*__init_array_start[])();
-extern "C" void (*__init_array_end[])();
+HEDLEY_C_DECL void (*__init_array_start[])();
+HEDLEY_C_DECL void (*__init_array_end[])();
 
 void init()
 {
-    log::trace("cxa: init");
+    log::trace("nos: cxa init");
 
     for (auto ctor = __init_array_start; ctor < __init_array_end; ++ctor)
     {

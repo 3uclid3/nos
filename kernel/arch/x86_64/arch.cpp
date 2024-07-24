@@ -9,7 +9,7 @@ namespace nos::x86_64 {
 void arch::serial_init()
 {
     log::add_sink<com_port_log_sink>().init(standard_com_port::com1);
-    log::info("arch: com1 port initialized");
+    log::info("nos: com1 port initialized");
 }
 
 void arch::early_init()

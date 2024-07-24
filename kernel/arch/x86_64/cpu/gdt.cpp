@@ -24,7 +24,7 @@ bool gdt::is_loaded() const
 
 void gdt::load(size_t i)
 {
-    log::info("gdt: load core {}", i);
+    log::info("nos: gdt loading (core={})", i);
 
     const std::uint64_t base = reinterpret_cast<std::uint64_t>(&_tsses[i]);
     const std::uint16_t limit = sizeof(tss::entry);
@@ -50,6 +50,7 @@ void gdt::load(size_t i)
         sizeof(entries) - 1,
         reinterpret_cast<std::uint64_t>(&current_entries)};
 
+    log::info("nos: gdt init");
     asm volatile(
         "lgdt %[gdtr]\n\t"
         "mov %[dsel], %%ds \n\t"
@@ -66,9 +67,14 @@ void gdt::load(size_t i)
         [csel] "i"(selector::kernel_code)
         : "rax", "memory");
 
+    log::info("nos: gdt setup");
     asm volatile("ltr %0" ::"r"(static_cast<std::uint16_t>(selector::tss)));
 
+    log::info("nos: gdt validate loading (core={})", i);
+
     assert(is_loaded());
+
+    log::info("nos: gdt loadend (core={})", i);
 }
 
 } // namespace nos::x86_64

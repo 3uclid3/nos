@@ -65,16 +65,16 @@ enum class exception
 
 void log_error_registers(const cpu_registers& registers)
 {
-    log::error("isr: registers");
+    log::error("nos: registers");
 
     // clang-format off
-    log::error("isr: r8=0x{:X} r9=0x{:X} r10=0x{:X} r11=0x{:X} r12=0x{:X} r13=0x{:X} r14=0x{:X} r15=0x{:X}",
+    log::error("nos: r8=0x{:X} r9=0x{:X} r10=0x{:X} r11=0x{:X} r12=0x{:X} r13=0x{:X} r14=0x{:X} r15=0x{:X}",
                     registers.r8, registers.r9, registers.r10, registers.r11, registers.r12, registers.r13, registers.r14, registers.r15);
 
-    log::error("isr: rax=0x{:X} rbx=0x{:X} rcx=0x{:X} rdx=0x{:X} rsi=0x{:X} rdi=0x{:X} rbp=0x{:X}",
+    log::error("nos: rax=0x{:X} rbx=0x{:X} rcx=0x{:X} rdx=0x{:X} rsi=0x{:X} rdi=0x{:X} rbp=0x{:X}",
                     registers.rax, registers.rbx, registers.rcx, registers.rdx, registers.rsi, registers.rdi, registers.rbp);
 
-    log::error("isr: interrupt=0x{:X} error code=0x{:X}",
+    log::error("nos: interrupt=0x{:X} error code=0x{:X}",
                     registers.interrupt, registers.error_code);
     // clang-format on
 }
@@ -95,7 +95,7 @@ void idt::entry::setup(void* new_isr_ptr, std::uint8_t new_type_attr, std::uint8
 
 void idt::init()
 {
-    log::info("idt: init");
+    log::info("nos: idt init");
 
     assert(details::active_idt == nullptr);
     details::active_idt = this;
@@ -139,7 +139,7 @@ void idt::dispatch_interrupt(const cpu_registers& registers)
 
 void idt::dispatch_exception(const cpu_registers& registers)
 {
-    log::error("isr: exception interrupt {:X} on CPU {}", magic_enum::enum_name(static_cast<details::exception>(registers.interrupt)), 0);
+    log::error("nos: idt exception interrupt {} on CPU {}", magic_enum::enum_name(static_cast<details::exception>(registers.interrupt)), 0);
 
     details::log_error_registers(registers);
 
@@ -150,7 +150,7 @@ void idt::dispatch_exception(const cpu_registers& registers)
 
 void idt::dispatch_handler(const cpu_registers& registers)
 {
-    log::info("isr: interrupt {} on CPU {}", registers.interrupt, 0);
+    log::info("nos: idt interrupt {} on CPU {}", registers.interrupt, 0);
 
     if (_handlers[registers.interrupt])
     {
@@ -158,7 +158,7 @@ void idt::dispatch_handler(const cpu_registers& registers)
     }
     else
     {
-        log::error("isr: unimplemented interrupt");
+        log::error("nos: idt unimplemented interrupt");
 
         details::log_error_registers(registers);
 
@@ -168,7 +168,7 @@ void idt::dispatch_handler(const cpu_registers& registers)
 
 void idt::dispatch_unknown(const cpu_registers& registers)
 {
-    log::error("isr: unknown interrupt {:X} on CPU {}", registers.interrupt, 0);
+    log::error("nos: idt unknown interrupt {:X} on CPU {}", registers.interrupt, 0);
 
     details::log_error_registers(registers);
 
