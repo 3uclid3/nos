@@ -1,6 +1,6 @@
 #include <cxx/cxa.hpp>
+#include <init/kernel.hpp>
 #include <kdef.hpp>
-#include <kernel.hpp>
 
 HEDLEY_C_DECL void _start()
 {

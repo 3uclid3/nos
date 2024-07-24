@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-#include <log/level.hpp>
+#include <lib/logging/level.hpp>
 
 namespace nos::log {
 

@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 namespace nos::x86_64 {
 

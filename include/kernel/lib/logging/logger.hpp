@@ -7,8 +7,8 @@
 
 #include <ca/stack_allocator.hpp>
 
-#include <log/level.hpp>
-#include <log/sink.hpp>
+#include <lib/logging/level.hpp>
+#include <lib/logging/sink.hpp>
 
 namespace nos::log {
 

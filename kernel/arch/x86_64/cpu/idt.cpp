@@ -8,7 +8,7 @@
 #include <arch/x86_64/cpu/cpu_registers.hpp>
 #include <arch/x86_64/cpu/gdt.hpp>
 #include <arch/x86_64/cpu/interrupt.hpp>
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 namespace nos::x86_64::details {
 idt* active_idt{nullptr};

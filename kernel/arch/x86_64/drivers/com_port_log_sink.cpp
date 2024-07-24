@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <log/message.hpp>
+#include <lib/logging/message.hpp>
 
 namespace nos::x86_64 {
 

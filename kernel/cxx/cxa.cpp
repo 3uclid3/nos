@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include <kdef.hpp>
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 HEDLEY_BEGIN_C_DECLS
 

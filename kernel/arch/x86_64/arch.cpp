@@ -1,8 +1,8 @@
-#include <arch.hpp>
+#include <arch/x86_64/arch.hpp>
 
 #include <arch/x86_64/cpu/interrupt.hpp>
 #include <arch/x86_64/drivers/com_port_log_sink.hpp>
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 namespace nos::x86_64 {
 

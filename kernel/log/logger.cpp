@@ -1,8 +1,8 @@
-#include <log/logger.hpp>
+#include <lib/logging/logger.hpp>
 
 #include <span>
 
-#include <log/message.hpp>
+#include <lib/logging/message.hpp>
 
 namespace nos::log {
 
@@ -27,17 +27,17 @@ private:
     std::size_t _next_buffer_index{0};
 };
 
-struct output_iterator_wrapper
+struct printer
 {
-    constexpr output_iterator_wrapper& operator=(char c)
+    constexpr printer& operator=(char c)
     {
         buffer[size++] = c;
         return *this;
     }
 
-    constexpr output_iterator_wrapper& operator*() { return *this; }
-    constexpr output_iterator_wrapper& operator++() { return *this; }
-    constexpr output_iterator_wrapper& operator++(int) { return *this; }
+    constexpr printer& operator*() { return *this; }
+    constexpr printer& operator++() { return *this; }
+    constexpr printer& operator++(int) { return *this; }
 
     std::span<char> buffer;
     std::size_t size{0};
@@ -50,9 +50,9 @@ local_buffers buffers;
 
 std::string_view vformat(std::string_view fmt, std::format_args args)
 {
-    output_iterator_wrapper out{.buffer = buffers.next_buffer()};
+    printer out{.buffer = buffers.next_buffer()};
     out = std::vformat_to(out, fmt, args);
-    return std::string_view{std::as_const(out).buffer.data(), out.size};
+    return std::string_view{out.buffer.data(), out.size};
 }
 
 logger& logger::get()

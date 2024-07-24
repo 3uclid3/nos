@@ -1,7 +1,7 @@
-#include <arch.hpp>
+#include <arch/arch.hpp>
 #include <cxx/ubsan.hpp>
 #include <kdef.hpp>
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 namespace nos::ubsan {
 

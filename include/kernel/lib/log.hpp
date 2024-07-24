@@ -3,8 +3,8 @@
 #include <format>
 #include <string_view>
 
-#include <log/level.hpp>
-#include <log/logger.hpp>
+#include <lib/logging/level.hpp>
+#include <lib/logging/logger.hpp>
 
 namespace nos::log {
 

@@ -1,6 +1,6 @@
-#include <kernel.hpp>
+#include <init/kernel.hpp>
 
-#include <klog.hpp>
+#include <lib/log.hpp>
 
 namespace nos {
 
