@@ -1,0 +1,185 @@
+#pragma once
+
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include_next <functional>
+#include <type_traits>
+#include <utility>
+
+#include <hedley/hedley.h>
+
+namespace std {
+
+template<typename Functor>
+class function;
+
+template<typename Return, typename... Args>
+class function<Return(Args...)>
+{
+public:
+    function() = default;
+    ~function();
+
+    template<typename Functor>
+    function(const Functor& t);
+
+    template<typename Functor>
+    function(Functor&& t);
+
+    template<typename Functor>
+    function& operator=(Functor&& t);
+
+    Return operator()(Args... args);
+
+    explicit operator bool() const;
+
+    void clear();
+
+private:
+    using function_pointer_t = Return (*)(Args...);
+
+    class callable
+    {
+    public:
+        virtual ~callable() = default;
+        virtual Return invoke(Args&&...) = 0;
+    };
+
+    template<typename Functor>
+    class callable_functor : public callable
+    {
+    public:
+        callable_functor(const Functor& functor);
+
+        Return invoke(Args&&... args) override;
+
+    private:
+        Functor _functor;
+    };
+
+    template<typename Functor>
+    void set_functor(Functor&& t);
+
+    callable* get_callable();
+
+    union storage
+    {
+        static constexpr std::size_t stack_size = sizeof(void*) * 3;
+
+        std::byte callable_stack[stack_size];
+        callable* callable_heap;
+        function_pointer_t function_pointer;
+    };
+
+    enum class type : std::uint8_t
+    {
+        none,
+
+        function_pointer,
+        callable_stack,
+        callable_heap
+    };
+
+    storage _storage{.callable_heap = nullptr};
+    type _type{type::none};
+};
+
+template<typename Return, typename... Args>
+function<Return(Args...)>::~function()
+{
+    clear();
+}
+
+template<typename Return, typename... Args>
+template<typename Functor>
+function<Return(Args...)>::function(const Functor& f)
+{
+    set_functor(f);
+}
+
+template<typename Return, typename... Args>
+template<typename Functor>
+function<Return(Args...)>::function(Functor&& f)
+{
+    set_functor(std::move(f));
+}
+
+template<typename Return, typename... Args>
+template<typename Functor>
+function<Return(Args...)>& function<Return(Args...)>::operator=(Functor&& f)
+{
+    if (_type == type::callable_heap && _storage.callable_heap != nullptr)
+        delete _storage.callable_heap;
+
+    set_functor(std::forward<Functor>(f));
+    return *this;
+}
+
+template<typename Return, typename... Args>
+Return function<Return(Args...)>::operator()(Args... args)
+{
+    switch (_type)
+    {
+    case type::callable_stack:
+        return reinterpret_cast<callable*>(&_storage.callable_stack)->invoke(std::forward<Args>(args)...);
+
+    case type::callable_heap:
+        return _storage.callable_heap->invoke(std::forward<Args>(args)...);
+
+    case type::function_pointer:
+        return _storage.function_pointer(std::forward<Args>(args)...);
+
+    case type::none:
+        assert(type::none != _type);
+        break;
+    }
+
+    HEDLEY_UNREACHABLE();
+}
+
+template<typename Return, typename... Args>
+function<Return(Args...)>::operator bool() const
+{
+    return _type != type::none;
+}
+
+template<typename Return, typename... Args>
+void function<Return(Args...)>::clear()
+{
+    if (_type == type::callable_heap && _storage.callable_heap != nullptr)
+        delete _storage.callable_heap;
+
+    _storage.callable_heap = nullptr;
+    _type = type::none;
+}
+
+template<typename Return, typename... Args>
+template<typename Functor>
+void function<Return(Args...)>::set_functor(Functor&& f)
+{
+    if constexpr (std::is_function_v<Functor>)
+    {
+        _storage.function_pointer = f;
+        _type = type::function_pointer;
+    }
+    else if constexpr (sizeof(Functor) <= storage::stack_size)
+    {
+        std::construct_at<callable_functor<Functor>>(&_storage.callable_stack, std::forward<Functor>(f));
+
+        _type = type::callable_stack;
+    }
+    else
+    {
+        _storage.callable_heap = new callable_functor<Functor>(std::forward<Functor>(f));
+
+        _type = type::callable_heap;
+    }
+}
+
+template<typename Return, typename... Args>
+function<Return(Args...)>::callable* function<Return(Args...)>::get_callable()
+{
+}
+
+} // namespace std

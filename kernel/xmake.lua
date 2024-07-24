@@ -30,11 +30,11 @@ target("nos.elf")
     add_deps("nos.deps")
 
     -- files
-    add_files("**.cpp")
+    add_files("**.cpp|arch/**.cpp")
 
     if is_arch("x86_64") then
-       -- add_files("arch/x86_64/**.cpp")
-       -- add_files("arch/x86_64/**.S")
+        add_files("arch/x86_64/**.cpp")
+        add_files("arch/x86_64/**.S")
     elseif is_arch("aarch64") then
         -- add_files("arch/aarch64/**.cpp")
         -- add_files("arch/aarch64/**.S")
