@@ -114,31 +114,36 @@ SinkT& logger::add_sink(ArgsT&&... args)
 template<typename... ArgsT>
 void trace(std::string_view fmt, const ArgsT&... args)
 {
-    logger::get().vlog(level::trace, fmt, std::make_format_args(args...));
+    vlog(level::trace, fmt, std::make_format_args(args...));
 }
 
 template<typename... ArgsT>
 void info(std::string_view fmt, const ArgsT&... args)
 {
-    logger::get().vlog(level::info, fmt, std::make_format_args(args...));
+    vlog(level::info, fmt, std::make_format_args(args...));
 }
 
 template<typename... ArgsT>
 void warn(std::string_view fmt, const ArgsT&... args)
 {
-    logger::get().vlog(level::warn, fmt, std::make_format_args(args...));
+    vlog(level::warn, fmt, std::make_format_args(args...));
 }
 
 template<typename... ArgsT>
 void error(std::string_view fmt, const ArgsT&... args)
 {
-    logger::get().vlog(level::error, fmt, std::make_format_args(args...));
+    vlog(level::error, fmt, std::make_format_args(args...));
 }
 
 template<typename... ArgsT>
 void fatal(std::string_view fmt, const ArgsT&... args)
 {
-    logger::get().vlog(level::fatal, fmt, std::make_format_args(args...));
+    vlog(level::fatal, fmt, std::make_format_args(args...));
+}
+
+HEDLEY_ALWAYS_INLINE void vlog(level lvl, std::string_view fmt, std::format_args args)
+{
+    logger::get().vlog(lvl, fmt, args);
 }
 
 template<typename SinkT, typename... ArgsT>
