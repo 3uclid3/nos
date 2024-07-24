@@ -19,9 +19,9 @@ An educational project focused on developing a comprehensive operating system fr
 
 - **Hardware Abstraction and Initialization**
   - [x] Serial
-  - [ ] GDT
-  - [ ] IDT
-  - [ ] TSS
+  - [X] GDT
+  - [X] IDT
+  - [X] TSS
   - [ ] PCI
   - [ ] PCIe
   - [ ] MSI
