@@ -1,7 +1,7 @@
 #pragma once
 
 #include <arch/x86_64/drivers/com_port.hpp>
-#include <lib/logging/sink.hpp>
+#include <lib/log.hpp>
 
 namespace nos::x86_64 {
 

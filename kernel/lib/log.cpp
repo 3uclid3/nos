@@ -1,8 +1,6 @@
-#include <lib/logging/logger.hpp>
+#include <lib/log.hpp>
 
 #include <span>
-
-#include <lib/logging/message.hpp>
 
 namespace nos::log {
 

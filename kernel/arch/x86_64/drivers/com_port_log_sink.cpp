@@ -2,8 +2,6 @@
 
 #include <cassert>
 
-#include <lib/logging/message.hpp>
-
 namespace nos::x86_64 {
 
 void com_port_log_sink::init(com_port com)
