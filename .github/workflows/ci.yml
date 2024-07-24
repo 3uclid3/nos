@@ -29,7 +29,14 @@ jobs:
           xmake-version: 'latest'
           actions-cache-folder: '.xmake-cache'
 
-      - name: Build
+      - name: Xmake Configure
         run: |
           xmake f -y -a x86_64
+
+      - name: Xmake Build Kernel
+        run: |
           xmake build -y nos.elf
+
+      - name: Xmake Build ISO
+        run: |
+          xmake build -y iso
