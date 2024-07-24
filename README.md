@@ -18,7 +18,7 @@ An educational project focused on developing a comprehensive operating system fr
 ### TODO List
 
 - **Hardware Abstraction and Initialization**
-  - [ ] Serial
+  - [x] Serial
   - [ ] GDT
   - [ ] IDT
   - [ ] TSS

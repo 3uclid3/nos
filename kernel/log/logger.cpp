@@ -51,7 +51,7 @@ local_buffers buffers;
 std::string_view vformat(std::string_view fmt, std::format_args args)
 {
     output_iterator_wrapper out{.buffer = buffers.next_buffer()};
-    std::vformat_to(out, fmt, args);
+    out = std::vformat_to(out, fmt, args);
     return std::string_view{std::as_const(out).buffer.data(), out.size};
 }
 

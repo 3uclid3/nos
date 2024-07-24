@@ -16,8 +16,11 @@ set_defaultplat("nos")
 
 set_languages("c17", "c++23")
 
-set_symbols("debug")
-set_optimize("aggressive")
+-- set_symbols("debug")
+-- set_optimize("aggressive")
+
+add_rules("mode.debug", "mode.release")
+
 
 -- options -->
 
