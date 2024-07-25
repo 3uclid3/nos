@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include <hedley/hedley.h>
 #include <stdarg.h>
 #include <stddef.h>
 
 #define EOF (-1)
+#define PRINTF_FORMAT(fmt, args) __attribute__((format(printf, fmt, args)))
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 // Stubs for fmtlib
 typedef size_t FILE;
@@ -23,22 +23,22 @@ int fputws(const wchar_t* str, FILE* stream);
 int fprintf(FILE* stream, const char* format, ...);
 size_t fwrite(const void* ptr, size_t size, size_t nmemb, FILE* stream);
 
-int printf(const char* format, ...) HEDLEY_PRINTF_FORMAT(1, 2);
-int vprintf(const char* format, va_list arg) HEDLEY_PRINTF_FORMAT(1, 0);
+int printf(const char* format, ...) PRINTF_FORMAT(1, 2);
+int vprintf(const char* format, va_list arg) PRINTF_FORMAT(1, 0);
 
-int sprintf(char* str, const char* format, ...) HEDLEY_PRINTF_FORMAT(2, 3);
-int vsprintf(char* str, const char* format, va_list arg) HEDLEY_PRINTF_FORMAT(2, 0);
+int sprintf(char* str, const char* format, ...) PRINTF_FORMAT(2, 3);
+int vsprintf(char* str, const char* format, va_list arg) PRINTF_FORMAT(2, 0);
 
-int snprintf(char* str, size_t count, const char* format, ...) HEDLEY_PRINTF_FORMAT(3, 4);
-int vsnprintf(char* str, size_t count, const char* format, va_list arg) HEDLEY_PRINTF_FORMAT(3, 0);
+int snprintf(char* str, size_t count, const char* format, ...) PRINTF_FORMAT(3, 4);
+int vsnprintf(char* str, size_t count, const char* format, va_list arg) PRINTF_FORMAT(3, 0);
 
-int vasprintf(char** str, const char* format, va_list arg) HEDLEY_PRINTF_FORMAT(2, 0);
-int asprintf(char** str, const char* format, ...) HEDLEY_PRINTF_FORMAT(2, 3);
+int vasprintf(char** str, const char* format, va_list arg) PRINTF_FORMAT(2, 0);
+int asprintf(char** str, const char* format, ...) PRINTF_FORMAT(2, 3);
 
 int fctprintf(void (*out)(char c, void* extra_arg), void* extra_arg, const char* format, ...);
 int vfctprintf(void (*out)(char c, void* extra_arg), void* extra_arg, const char* format, va_list arg);
 
-HEDLEY_END_C_DECLS
+END_C_DECLS
 
 namespace std {
 

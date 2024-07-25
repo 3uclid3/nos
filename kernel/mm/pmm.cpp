@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstring>
 
-#include <ca/alignment.hpp>
+#include <coal/alignment.hpp>
 
 #include <init/bootloader.hpp>
 #include <lib/log.hpp>
@@ -145,7 +145,7 @@ void pmm::init_bounds(std::span<limine_memmap_entry*> entries)
 
 void pmm::init_bitmap_buffer(std::span<limine_memmap_entry*> entries)
 {
-    const std::size_t bitmap_size = ca::align_up(_max_usable_base_address / page_size / 8, page_size);
+    const std::size_t bitmap_size = coal::align_up(_max_usable_base_address / page_size / 8, page_size);
     for (limine_memmap_entry* entry : entries)
     {
         if (entry->type != LIMINE_MEMMAP_USABLE)

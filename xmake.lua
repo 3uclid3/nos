@@ -223,7 +223,7 @@ add_toolchains("nos-clang")
 add_repositories("local-repo build-repo")
 
 add_requires(
-    "composable-allocator",
+    "coal",
     "fmt",
     "libstdcxx-fh",
     "limine",

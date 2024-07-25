@@ -16,7 +16,7 @@ public:
 
 public:
     static void halt();
-    HEDLEY_NO_RETURN static void hcf();
+    [[noreturn]] static void hcf();
 
 private:
     cpu _cpu;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <hedley/hedley.h>
+#include <stddef.h>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 enum errno_t : int
 {
@@ -147,4 +147,4 @@ errno_t _get_errno();
 #define errno (_get_errno())
 #define noerror ((errno_t)0)
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

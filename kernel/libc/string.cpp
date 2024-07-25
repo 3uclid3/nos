@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 void* memcpy(void* dest, const void* src, size_t len)
 {
@@ -198,4 +198,4 @@ void strrev(char* str)
     }
 }
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

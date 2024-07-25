@@ -4,7 +4,7 @@ target("nos.deps")
     set_toolchains("nos-clang", { public = true })
 
     add_packages(
-        "composable-allocator",
+        "coal",
         "fmt",
         "libstdcxx-fh",
         "limine",

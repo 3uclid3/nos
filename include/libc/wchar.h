@@ -1,7 +1,5 @@
 #pragma once
 
-#include <hedley/hedley.h>
-
 #include <stddef.h>
 
 #ifndef __WINT_TYPE__
@@ -10,7 +8,7 @@
 
 typedef __WINT_TYPE__ wint_t;
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, size_t count);
 wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, size_t count);
@@ -20,4 +18,4 @@ wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, size_t count);
 int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, size_t count);
 size_t wcslen(const wchar_t* start);
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

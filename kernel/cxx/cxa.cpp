@@ -5,7 +5,7 @@
 #include <kdef.hpp>
 #include <lib/log.hpp>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 static constexpr size_t __cxa_atexit_entries_capacity = 128;
 
@@ -94,12 +94,12 @@ void __cxa_guard_abort(__cxa_guard* g)
     *(reinterpret_cast<volatile uint8_t*>(g)) = 0;
 }
 
-HEDLEY_END_C_DECLS
+END_C_DECLS
 
 namespace nos::cxa {
 
-HEDLEY_C_DECL void (*__init_array_start[])();
-HEDLEY_C_DECL void (*__init_array_end[])();
+C_DECL void (*__init_array_start[])();
+C_DECL void (*__init_array_end[])();
 
 void init()
 {

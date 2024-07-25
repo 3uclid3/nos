@@ -14,9 +14,9 @@ namespace nos::x86_64::details {
 idt* active_idt{nullptr};
 } // namespace nos::x86_64::details
 
-HEDLEY_C_DECL void* nos_interrupt_table[];
+C_DECL void* nos_interrupt_table[];
 
-HEDLEY_C_DECL void nos_interrupt_handler(nos::x86_64::cpu_registers* registers)
+C_DECL void nos_interrupt_handler(nos::x86_64::cpu_registers* registers)
 {
     nos::x86_64::details::active_idt->dispatch_interrupt(*registers);
 }

@@ -5,7 +5,7 @@
 #include <string_view>
 #include <utility>
 
-#include <ca/stack_allocator.hpp>
+#include <coal/stack_allocator.hpp>
 
 namespace nos::log {
 
@@ -77,14 +77,14 @@ private:
     void link_sink(sink_node& sink);
 
 private:
-    ca::stack_allocator<64> _allocator{};
+    coal::stack_allocator<64> _allocator{};
 
     sink_node* _first_sink_node{nullptr};
 
     level _level{level::trace};
 };
 
-HEDLEY_INLINE void sink::log(const message& message)
+inline void sink::log(const message& message)
 {
     log_impl(message);
 }
@@ -141,7 +141,7 @@ void fatal(std::string_view fmt, const ArgsT&... args)
     vlog(level::fatal, fmt, std::make_format_args(args...));
 }
 
-HEDLEY_ALWAYS_INLINE void vlog(level lvl, std::string_view fmt, std::format_args args)
+inline void vlog(level lvl, std::string_view fmt, std::format_args args)
 {
     logger::get().vlog(lvl, fmt, args);
 }

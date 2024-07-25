@@ -1,8 +1,8 @@
 #pragma once
 
-#include <hedley/hedley.h>
+#include <stddef.h>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 int isalnum(int c);
 int isalpha(int c);
@@ -19,4 +19,4 @@ int ispunct(int c);
 int toupper(int c);
 int tolower(int c);
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

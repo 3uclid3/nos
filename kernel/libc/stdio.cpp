@@ -3,7 +3,7 @@
 #include <printf/printf.h>
 #include <stdlib.h>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 // Stubs for fmtlib
 FILE* stdout = (FILE*)&stdout;
@@ -130,7 +130,7 @@ int asprintf(char** str, const char* format, ...)
     return ret;
 }
 
-HEDLEY_END_C_DECLS
+END_C_DECLS
 
 namespace std {
 

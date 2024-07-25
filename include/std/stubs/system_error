@@ -1,7 +1,6 @@
 #pragma once
 
-#include <hedley/hedley.h>
-
+#include <cstddef>
 #include <exception>
 #include <string>
 
@@ -40,37 +39,37 @@ private:
     string _what;
 };
 
-HEDLEY_INLINE system_error::system_error(auto)
+inline system_error::system_error(auto)
 {}
 
-HEDLEY_INLINE system_error::system_error(auto, const string& what_arg)
+inline system_error::system_error(auto, const string& what_arg)
     : _what(what_arg)
 {
 }
 
-HEDLEY_INLINE system_error::system_error(auto, const char* what_arg)
+inline system_error::system_error(auto, const char* what_arg)
     : _what(what_arg) {}
 
-HEDLEY_INLINE system_error::system_error(auto, auto&)
+inline system_error::system_error(auto, auto&)
 {
 }
 
-HEDLEY_INLINE system_error::system_error(auto, auto&, const string& what_arg)
+inline system_error::system_error(auto, auto&, const string& what_arg)
     : _what(what_arg)
 {
 }
 
-HEDLEY_INLINE system_error::system_error(auto, auto&, const char* what_arg)
+inline system_error::system_error(auto, auto&, const char* what_arg)
     : _what(what_arg)
 {
 }
 
-HEDLEY_INLINE const error_code system_error::code() const noexcept
+inline const error_code system_error::code() const noexcept
 {
     return error_code();
 }
 
-HEDLEY_INLINE const char* system_error::what() const noexcept
+inline const char* system_error::what() const noexcept
 {
     return this->_what.c_str();
 }

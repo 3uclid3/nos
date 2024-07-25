@@ -15,7 +15,7 @@ public:
     constexpr base_io_port() = default;
     constexpr base_io_port(std::uint16_t port);
 
-    HEDLEY_WARN_UNUSED_RESULT constexpr std::uint16_t get_port() const;
+    [[nodiscard]] constexpr std::uint16_t get_port() const;
 
 protected:
     std::uint16_t _port{};
@@ -28,7 +28,7 @@ public:
     constexpr io_port() = default;
     constexpr io_port(std::uint16_t port);
 
-    HEDLEY_WARN_UNUSED_RESULT std::uint8_t read(std::uint16_t offset = 0);
+    [[nodiscard]] std::uint8_t read(std::uint16_t offset = 0);
     void write(std::uint8_t data, std::uint16_t offset = 0);
 };
 
@@ -39,7 +39,7 @@ public:
     constexpr io_port() = default;
     constexpr io_port(std::uint16_t port);
 
-    HEDLEY_WARN_UNUSED_RESULT std::uint16_t read(std::uint16_t offset = 0);
+    [[nodiscard]] std::uint16_t read(std::uint16_t offset = 0);
     void write(std::uint16_t data, std::uint16_t offset = 0);
 };
 
@@ -50,7 +50,7 @@ public:
     constexpr io_port() = default;
     constexpr io_port(std::uint16_t port);
 
-    HEDLEY_WARN_UNUSED_RESULT std::uint32_t read(std::uint16_t offset = 0);
+    [[nodiscard]] std::uint32_t read(std::uint16_t offset = 0);
     void write(std::uint32_t data, std::uint16_t offset = 0);
 };
 

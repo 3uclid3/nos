@@ -1,7 +1,5 @@
 #pragma once
 
-#include <hedley/hedley.h>
-
 #include <stdlib.h>
 
 namespace std {
@@ -21,6 +19,6 @@ using ::strtoll;
 using ::strtoul;
 using ::strtoull;
 
-HEDLEY_C_DECL HEDLEY_NO_RETURN void abort() noexcept;
+using ::abort;
 
 } // namespace std

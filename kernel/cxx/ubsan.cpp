@@ -13,7 +13,7 @@ void print(const char* message, source_location loc)
 
 } // namespace nos::ubsan
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 void __ubsan_handle_add_overflow(nos::ubsan::overflow_data* data)
 {
@@ -125,4 +125,4 @@ void __ubsan_handle_alignment_assumption(nos::ubsan::alignment_assumption_data* 
     nos::ubsan::print("alignment assumption", data->location);
 }
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

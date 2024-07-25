@@ -2,7 +2,7 @@
 #include <init/kernel.hpp>
 #include <kdef.hpp>
 
-HEDLEY_C_DECL void _start()
+C_DECL void _start()
 {
     using namespace nos;
 

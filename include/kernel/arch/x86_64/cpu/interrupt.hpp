@@ -4,22 +4,22 @@
 
 namespace nos::x86_64::interrupt {
 
-HEDLEY_INLINE void enable()
+inline void enable()
 {
     asm volatile("sti");
 }
 
-HEDLEY_INLINE void disable()
+inline void disable()
 {
     asm volatile("cli");
 }
 
-HEDLEY_INLINE void halt()
+inline void halt()
 {
     asm volatile("hlt");
 }
 
-HEDLEY_NO_RETURN HEDLEY_INLINE void hcf()
+[[noreturn]] inline void hcf()
 {
     while (true)
     {

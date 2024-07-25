@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-HEDLEY_BEGIN_C_DECLS
+BEGIN_C_DECLS
 
 wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, size_t count)
 {
@@ -49,4 +49,4 @@ size_t wcslen(const wchar_t* start)
     return end - start;
 }
 
-HEDLEY_END_C_DECLS
+END_C_DECLS

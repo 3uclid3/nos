@@ -7,8 +7,6 @@
 #include <type_traits>
 #include <utility>
 
-#include <hedley/hedley.h>
-
 namespace std {
 
 template<typename Functor>
@@ -135,7 +133,7 @@ Return function<Return(Args...)>::operator()(Args... args)
         break;
     }
 
-    HEDLEY_UNREACHABLE();
+    __builtin_unreachable();
 }
 
 template<typename Return, typename... Args>

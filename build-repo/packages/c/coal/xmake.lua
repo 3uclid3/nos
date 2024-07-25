@@ -1,5 +1,5 @@
-package("composable-allocator")
-    add_urls("https://github.com/3uclid3/composable-allocator.git")
+package("coal")
+    add_urls("https://github.com/3uclid3/coal.git")
     add_versions("latest", "main")
 
     add_includedirs("include")
