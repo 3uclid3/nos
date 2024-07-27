@@ -49,9 +49,9 @@ An educational project focused on developing a comprehensive operating system fr
   - [ ] E1000 (100E 153A and 10EA)
 
 - **Memory Management**
-  - [ ] PMM
+  - [X] PMM
   - [ ] VMM (5 and 4 level)
-  - [ ] Heap
+  - [X] Heap
   - [ ] MMAP
 
 - **File Systems and Storage**
