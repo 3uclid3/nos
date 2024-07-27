@@ -2,35 +2,13 @@
 
 #include <assert.h>
 
-#include <coal/prefixed_size_allocator.hpp>
-#include <coal/proxy_allocator.hpp>
-
 #include <mm/heap.hpp>
-
-namespace nos {
-
-using kmalloc_allocator_t = coal::prefixed_size_allocator<coal::proxy_allocator<heap_allocator_t>>;
-
-kmalloc_allocator_t& get_kmalloc_allocator()
-{
-    assert(heap::get_active_allocator());
-
-    static kmalloc_allocator_t kmalloc_allocator = []() {
-        kmalloc_allocator_t allocator;
-        allocator.get_allocator().set_allocator(heap::get_active_allocator());
-        return allocator;
-    }();
-
-    return kmalloc_allocator;
-}
-
-} // namespace nos
 
 BEGIN_C_DECLS
 
 void* malloc(size_t size)
 {
-    return nos::get_kmalloc_allocator().allocate(size).ptr;
+    return nos::heap::get_active()->get_kmalloc_allocator().allocate(size).ptr;
 }
 
 void* calloc(size_t num, size_t size)
@@ -42,14 +20,14 @@ void* calloc(size_t num, size_t size)
 void* realloc(void* oldptr, size_t size)
 {
     coal::memory_block block(oldptr, 0);
-    nos::get_kmalloc_allocator().reallocate(block, size);
+    nos::heap::get_active()->get_kmalloc_allocator().reallocate(block, size);
     return block.ptr;
 }
 
 void free(void* ptr)
 {
     coal::memory_block block(ptr, 0);
-    nos::get_kmalloc_allocator().deallocate(block);
+    nos::heap::get_active()->get_kmalloc_allocator().deallocate(block);
 }
 
 int atoi(const char* str)

@@ -7,7 +7,7 @@ namespace nos {
 class heap
 {
 public:
-    inline static heap_allocator_t* get_active_allocator();
+    inline static heap* get_active();
 
 public:
     heap() = default;
@@ -22,22 +22,29 @@ public:
     void init(pmm& pmm);
 
     constexpr heap_allocator_t& get_allocator();
+    constexpr kmalloc_heap_allocator_t& get_kmalloc_allocator();
 
 private:
     heap_allocator_t _allocator;
+    kmalloc_heap_allocator_t _kmalloc_allocator;
 
 private:
-    inline static heap_allocator_t* _active_allocator{nullptr};
+    inline static heap* _active{nullptr};
 };
 
-inline heap_allocator_t* heap::get_active_allocator()
+inline heap* heap::get_active()
 {
-    return _active_allocator;
+    return _active;
 }
 
 constexpr heap_allocator_t& heap::get_allocator()
 {
     return _allocator;
+}
+
+constexpr kmalloc_heap_allocator_t& heap::get_kmalloc_allocator()
+{
+    return _kmalloc_allocator;
 }
 
 } // namespace nos

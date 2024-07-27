@@ -6,7 +6,7 @@ namespace nos {
 
 namespace {
 
-struct coal_initializer
+struct coal_heap_allocator_initializer
 {
     void init(pmm_allocator& allocator)
     {
@@ -20,22 +20,37 @@ struct coal_initializer
     pmm& mm;
 };
 
+struct coal_kmalloc_heap_allocator_initializer
+{
+    void init(coal::proxy_allocator<heap_allocator_t>& allocator)
+    {
+        allocator.set_allocator(&heap_allocator);
+    }
+
+    void init(auto&)
+    {
+    }
+
+    heap_allocator_t& heap_allocator;
+};
+
 } // namespace
 
 heap::~heap()
 {
-    if (_active_allocator == &_allocator)
+    if (_active == this)
     {
-        _active_allocator = nullptr;
+        _active = nullptr;
     }
 }
 
 heap::heap(heap&& other)
     : _allocator(std::move(other._allocator))
+    , _kmalloc_allocator(std::move(other._kmalloc_allocator))
 {
-    if (_active_allocator == &other._allocator)
+    if (_active == this)
     {
-        _active_allocator = &_allocator;
+        _active = this;
     }
 }
 
@@ -43,12 +58,13 @@ heap& heap::operator=(heap&& other)
 {
     if (this != &other)
     {
-        if (_active_allocator == &other._allocator)
+        if (_active == &other)
         {
-            _active_allocator = &_allocator;
+            _active = this;
         }
 
         _allocator = std::move(other._allocator);
+        _kmalloc_allocator = std::move(other._kmalloc_allocator);
     }
 
     return *this;
@@ -56,12 +72,15 @@ heap& heap::operator=(heap&& other)
 
 void heap::init(pmm& mm)
 {
-    assert(_active_allocator == nullptr);
+    assert(_active == nullptr);
 
-    coal_initializer initializer{mm};
+    coal_heap_allocator_initializer initializer{mm};
     _allocator.init(initializer);
 
-    _active_allocator = &_allocator;
+    coal_kmalloc_heap_allocator_initializer kmalloc_initializer{_allocator};
+    _kmalloc_allocator.init(kmalloc_initializer);
+
+    _active = this;
 }
 
 } // namespace nos
