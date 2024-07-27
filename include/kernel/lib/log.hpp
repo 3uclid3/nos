@@ -44,7 +44,7 @@ public:
     static logger& get();
 
 public:
-    logger() = default;
+    logger();
     ~logger();
 
     template<typename SinkT, typename... ArgsT>
@@ -82,6 +82,8 @@ private:
     sink_node* _first_sink_node{nullptr};
 
     level _level{level::trace};
+
+    inline static logger* _active{nullptr};
 };
 
 inline void sink::log(const message& message)

@@ -8,7 +8,7 @@ BEGIN_C_DECLS
 
 void* malloc(size_t size)
 {
-    return nos::heap::get_active()->get_kmalloc_allocator().allocate(size).ptr;
+    return nos::heap::get().get_kmalloc_allocator().allocate(size).ptr;
 }
 
 void* calloc(size_t num, size_t size)
@@ -20,14 +20,14 @@ void* calloc(size_t num, size_t size)
 void* realloc(void* oldptr, size_t size)
 {
     coal::memory_block block(oldptr, 0);
-    nos::heap::get_active()->get_kmalloc_allocator().reallocate(block, size);
+    nos::heap::get().get_kmalloc_allocator().reallocate(block, size);
     return block.ptr;
 }
 
 void free(void* ptr)
 {
     coal::memory_block block(ptr, 0);
-    nos::heap::get_active()->get_kmalloc_allocator().deallocate(block);
+    nos::heap::get().get_kmalloc_allocator().deallocate(block);
 }
 
 int atoi(const char* str)

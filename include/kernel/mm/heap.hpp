@@ -7,14 +7,14 @@ namespace nos {
 class heap
 {
 public:
-    inline static heap* get_active();
+    static heap& get();
 
 public:
-    heap() = default;
+    heap();
     ~heap();
 
-    heap(heap&& other);
-    heap& operator=(heap&& other);
+    heap(heap&& other) = delete;
+    heap& operator=(heap&& other) = delete;
 
     heap(const heap&) = delete;
     heap& operator=(const heap&) = delete;
@@ -29,12 +29,12 @@ private:
     kmalloc_heap_allocator_t _kmalloc_allocator;
 
 private:
-    inline static heap* _active{nullptr};
+    inline static heap* _instance{nullptr};
 };
 
-inline heap* heap::get_active()
+inline heap& heap::get()
 {
-    return _active;
+    return *_instance;
 }
 
 constexpr heap_allocator_t& heap::get_allocator()

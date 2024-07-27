@@ -1,14 +1,21 @@
 #include <lib/log.hpp>
 
+#include <cassert>
+
 #include <lib/format.hpp>
 
 namespace nos::log {
 
 logger& logger::get()
 {
-    // ensure that the logger is initialized before global constructors are called
-    static logger instance;
-    return instance;
+    assert(_active != nullptr);
+    return *_active;
+}
+
+logger::logger()
+{
+    assert(_active == nullptr);
+    _active = this;
 }
 
 logger::~logger()

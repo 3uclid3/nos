@@ -1,6 +1,7 @@
 #pragma once
 
 #include <arch/arch.hpp>
+#include <lib/log.hpp>
 #include <mm/heap.hpp>
 #include <mm/pmm.hpp>
 
@@ -16,6 +17,8 @@ public:
     void main();
 
 private:
+    log::logger _logger{};
+
     arch _arch{};
 
     pmm _pmm{};

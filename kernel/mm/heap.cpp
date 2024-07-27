@@ -36,51 +36,25 @@ struct coal_kmalloc_heap_allocator_initializer
 
 } // namespace
 
+heap::heap()
+{
+    assert(_instance == nullptr);
+    _instance = this;
+}
+
 heap::~heap()
 {
-    if (_active == this)
-    {
-        _active = nullptr;
-    }
-}
-
-heap::heap(heap&& other)
-    : _allocator(std::move(other._allocator))
-    , _kmalloc_allocator(std::move(other._kmalloc_allocator))
-{
-    if (_active == this)
-    {
-        _active = this;
-    }
-}
-
-heap& heap::operator=(heap&& other)
-{
-    if (this != &other)
-    {
-        if (_active == &other)
-        {
-            _active = this;
-        }
-
-        _allocator = std::move(other._allocator);
-        _kmalloc_allocator = std::move(other._kmalloc_allocator);
-    }
-
-    return *this;
+    assert(_instance == this);
+    _instance = nullptr;
 }
 
 void heap::init(pmm& mm)
 {
-    assert(_active == nullptr);
-
     coal_heap_allocator_initializer initializer{mm};
     _allocator.init(initializer);
 
     coal_kmalloc_heap_allocator_initializer kmalloc_initializer{_allocator};
     _kmalloc_allocator.init(kmalloc_initializer);
-
-    _active = this;
 }
 
 } // namespace nos
