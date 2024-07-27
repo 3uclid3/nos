@@ -7,6 +7,8 @@
 
 #include <init/bootloader.hpp>
 #include <lib/log.hpp>
+#include <lib/managed_object.hpp>
+#include <mm/heap_allocator.hpp>
 #include <mm/sizes.hpp>
 
 namespace nos {

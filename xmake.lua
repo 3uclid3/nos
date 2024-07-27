@@ -400,7 +400,7 @@ task("qemu")
             multi_insert(qemu_args, unpack(qemu_dbg_args))
             if get_config("qgdb") then
                 multi_insert(qemu_args,
-                    "-s"
+                    "-s", "-S"
                 )
             end
         elseif get_config("qaccel") then

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <arch/arch.hpp>
+#include <mm/heap.hpp>
 #include <mm/pmm.hpp>
 
 namespace nos {
@@ -18,6 +19,7 @@ private:
     arch _arch{};
 
     pmm _pmm{};
+    heap _heap{};
 };
 
 } // namespace nos
