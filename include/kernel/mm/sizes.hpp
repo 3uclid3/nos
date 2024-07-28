@@ -4,9 +4,21 @@
 
 namespace nos {
 
+inline static constexpr std::size_t page_size = 0x1000;
+
 inline static constexpr std::size_t kilobyte{1024};
 inline static constexpr std::size_t megabyte{kilobyte * 1024};
 inline static constexpr std::size_t gigabyte{megabyte * 1024};
+
+constexpr std::size_t bytes_to_pages(std::size_t bytes)
+{
+    return (bytes + page_size - 1) / page_size;
+}
+
+constexpr std::size_t pages_to_bytes(std::size_t bytes)
+{
+    return bytes * page_size;
+}
 
 constexpr std::size_t bytes_to_kilobytes(std::size_t bytes)
 {

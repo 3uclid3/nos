@@ -8,7 +8,7 @@ namespace {
 
 struct coal_heap_allocator_initializer
 {
-    void init(pmm_allocator& allocator)
+    void init(hh_pmm_allocator& allocator)
     {
         allocator.set_pmm(mm);
     }

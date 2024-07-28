@@ -9,7 +9,7 @@ namespace nos {
 
 class pmm;
 
-class pmm_allocator
+class hh_pmm_allocator
 {
 public:
     static constexpr std::size_t alignment = coal::default_alignment;
@@ -30,13 +30,13 @@ private:
     pmm* _pmm{nullptr};
 };
 
-constexpr std::size_t pmm_allocator::get_alignment() const
+constexpr std::size_t hh_pmm_allocator::get_alignment() const
 {
     return alignment;
 }
 
 template<typename Initializer>
-void pmm_allocator::init(Initializer& initializer)
+void hh_pmm_allocator::init(Initializer& initializer)
 {
     initializer.init(*this);
 }

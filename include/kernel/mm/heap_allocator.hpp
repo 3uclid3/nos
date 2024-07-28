@@ -11,8 +11,9 @@
 #include <coal/segregator_allocator.hpp>
 #include <coal/slab_allocator.hpp>
 
+#include <mm/hh_pmm_allocator.hpp>
 #include <mm/pmm.hpp>
-#include <mm/pmm_allocator.hpp>
+#include <mm/sizes.hpp>
 
 #ifndef NOS_MEMORY_CORRUPTION_DETECTOR_ENABLED
 #ifdef NDEBUG
@@ -28,8 +29,8 @@ using heap_allocator_t =
 #if NOS_MEMORY_CORRUPTION_DETECTOR_ENABLED
     coal::affix_allocator<
 #endif
-        coal::segregator_allocator<coal::slab_allocator<pmm_allocator, pmm::page_size * 2, 8, 16, 32, 64, 128, 192, 288, 448, 672, 1024>,
-                                   coal::free_list_allocator<coal::prefixed_size_allocator<pmm_allocator>, coal::free_list_strategy::limited_size<coal::free_list_strategy::best_fit, 64>>,
+        coal::segregator_allocator<coal::slab_allocator<hh_pmm_allocator, page_size * 2, 8, 16, 32, 64, 128, 192, 288, 448, 672, 1024>,
+                                   coal::free_list_allocator<coal::prefixed_size_allocator<hh_pmm_allocator>, coal::free_list_strategy::limited_size<coal::free_list_strategy::best_fit, 64>>,
                                    1024>
 #if NOS_MEMORY_CORRUPTION_DETECTOR_ENABLED
         ,
